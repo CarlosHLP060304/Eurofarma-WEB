@@ -1,14 +1,17 @@
+import { recuperarFuncionarios } from "./aluno_service.js"
+
 const pop_up_aula= document.querySelector("#pop_up_aula")
 const btn_salvar = document.querySelector("#btn_salvar")
 let dados_input_treinamento = document.querySelectorAll("input")
 let dados_text_area_treinamento = document.querySelectorAll("textarea")
 let dados_select_treinamento = document.querySelectorAll("select")
+const modalidade = document.querySelector("[name='modalidade']")
 let btns_adicionar= document.querySelectorAll("[btn_adicionar]") 
+const conteudo_pop_up =  document.querySelector("#conteudo-pop-up")
 const apostilas_html = document.querySelector("#apostilas")
 const alunos_html = document.querySelector("#alunos-lista")
 const aulas_html = document.querySelector("#lista_aulas")
 let dados_treinamento = {}
-let dados_aula = {}
 let dados_aluno = {}
 let dados_apostila = ""
 let aulas = []
@@ -25,9 +28,16 @@ btns_adicionar.forEach(
                 exibirApostilas()
 
             }else if(btn_adicionar.id.endsWith("aula")){
-                dados_aula["hora_inicio"] = document.querySelector("#aula_hora_inicio").value
-                dados_aula["hora_fim"] = document.querySelector("#aula_hora_fim").value
-                dados_aula["sala"] = document.querySelector("#aula_sala").value
+                console.log("chamou")
+                let dados_aula = {}
+                dados_aula["nome"] = document.querySelector("#aula_nome").value
+                if(modalidade === "presencial"){
+                    dados_aula["sala"] = document.querySelector("#aula_sala").value
+                    dados_aula["hora_inicio"] = document.querySelector("#aula_hora_inicio").value
+                    dados_aula["hora_fim"] = document.querySelector("#aula_hora_fim").value
+                }else{
+                    dados_aula["duracao"] = document.querySelector("#duracao").value
+                }
                 aulas.push(dados_aula)
                 exibirAulas()
             }else{
@@ -43,11 +53,10 @@ btns_adicionar.forEach(
 
 btn_salvar.addEventListener("click",()=>{
     dados_input_treinamento.forEach(element => { 
-        if(element.id.startsWith("aula_"))
-            dados_treinamento["aulas"] = aulas
-        else if(element.id.startsWith("apostila"))
+        dados_treinamento["aulas"] = aulas
+        if(element.id.startsWith("apostila"))
             dados_treinamento["apostilas"] = apostilas
-        else 
+        else
             dados_treinamento[element.name] = element.value
 
     });
@@ -63,24 +72,51 @@ btn_salvar.addEventListener("click",()=>{
             dados_treinamento[element.name] = element.value
 
     })
-    
-    
-    console.log(dados_treinamento)
+    localStorage.setItem("treinamento",JSON.stringify(dados_treinamento))
+    console.log(JSON.parse(localStorage.getItem("treinamento")))
+    adicionarTreinamento()
 })
-
-
-
-localStorage.setItem("treinamento",dados_treinamento)
-
 
 document.querySelector("#btn_adicionar_aula").addEventListener("click",()=>{
-    pop_up_aula.classList.toggle("d-none")
+        pop_up_aula.classList.toggle("d-none")
+        if(modalidade.value === "remoto"){
+            conteudo_pop_up.innerHTML = `
+                            <div>
+                                <label>Nome</label>
+                                <input type="text" name="sala" id="aula_nome">
+                            </div>
+                            <div>
+                                <label>Duração</label>
+                                <input type="text" name="duracao" id="duracao">
+                            </div>
+                            ` 
+        }else{
+            conteudo_pop_up.innerHTML=`
+    
+                            <div>
+                                <label>Nome</label>
+                                <input type="text" name="sala" id="aula_nome">
+                            </div>
+                                <div>
+                                <label>Sala</label>
+                                <input type="text" name="sala" id="aula_sala">
+                            </div>
+                            <div>
+                                <label>Data início</label>
+                                <input type="datetime-local" name="duracao" id="duracao">
+                            </div>
+                            <div>
+                                <label>Data fim</label>
+                                <input type="datetime-local" name="duracao" id="duracao">
+                            </div>
+                            `
+    
+        }
 })
-
+    
 document.querySelector("#btn_pop_up_adicionar_aula").addEventListener("click",()=>{
-    pop_up_aula.classList.toggle("d-none")
-})
-
+        
+})    
 
 function removerElementosDasListas(){
     document.querySelectorAll(".remove-btn").forEach(
@@ -107,13 +143,12 @@ function removerElementosDasListas(){
     
 }
 
-
 function exibirAlunos(){
     let id = 0
     alunos_html.innerHTML = alunos.map((aluno)=>
         `<li>${aluno}<span class="remove-btn" id_aluno=${id++}>❌</span></li>` 
     ).join("")
-    console.log(alunos_html)
+    //console.log(alunos_html)
 }
 
 function exibirApostilas(){
@@ -121,18 +156,34 @@ function exibirApostilas(){
     apostilas_html.innerHTML =  apostilas.map((apostila)=>
         `<li>${apostila}<span class="remove-btn" id_apostila=${id++}>❌</span></li>` 
     ).join("")
-    console.log(apostilas)
-    console.log(apostilas_html)
+    //console.log(apostilas)
+    //console.log(apostilas_html)
 }
 
 function exibirAulas(){
     let id = 0
     aulas_html.innerHTML = aulas.map((aula)=>
         `
-            <li>{nome da aula????}<span class="remove-btn" id_aula=${id++}>❌</span></li>
+            <li>${aula.nome}<span class="remove-btn" id_aula=${id++}>❌</span></li>
             </br>
         ` 
     ).join("")
-    console.log(aulas_html)
+    //console.log(aulas_html)
+    //console.log(aulas)
 }
+
+function listarAlunosSelect(){
+        recuperarFuncionarios().then(data=>
+            document.querySelector("#aluno").innerHTML = data.content.map(
+                element=>
+                    `
+                        <option value="${element.cpf}">${element.cpf}-${element.nome}</option>
+                    ` 
+            )
+        )
+}
+
+listarAlunosSelect()
+
+
 

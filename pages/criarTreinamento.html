@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adicionar Treinamento</title>
     <link rel="stylesheet" href="../css/criarTreinamento.css">
+    <link rel="stylesheet" href="../css/Style.css">
 </head>
 
 <body>
-
     <div id="navbar-placeholder"></div>
 
     <div class="container">
@@ -43,7 +43,6 @@
                     <select name="modalidade">
                         <option value="remoto">Remoto</option>
                         <option value="presencial">Presencial</option>
-                        <option value="hibrido">Híbrido</option>
                     </select>
 
                 </div>
@@ -58,25 +57,14 @@
 
                 <div class="pop-up-aula d-none" id="pop_up_aula">
                     <h2>Adicionar Aula</h2>
-                    <div>
-                        <label>Sala</label>
-                        <input type="text" name="sala" id="aula_sala">
-                    </div>
-                    <div>
-                        <label>Hora início</label>
-                        <input type="text" name="hora_inicio" id="aula_hora_inicio">
-                    </div>
-                    <div>
-                        <label>Hora fim</label>
-                        <input type="text" name="hora_fim" id="aula_hora_fim">
-                    </div>
+                    <div class="conteudo-pop-up" id="conteudo-pop-up"></div>
                     <button type="button" class="btn btn-success px-4 mb-2" id="btn_pop_up_adicionar_aula" btn_adicionar>Adicionar</button>
                 </div>
 
                 <div class="form-group">
                     <label for="buscar-aluno"><b>Buscar aluno por nome ou email</b></label>
                     <select name="buscar-aluno" id="aluno" name="aluno">
-                        <option value="aluno1">Aluno 1</option>
+                        
                     </select>
                     <blockquote>apos buscar, clique sobre o aluno e aperte em "adicionar"</blockquote>
 
@@ -121,7 +109,7 @@
 
                     <div class="row">
                         <div class="col-md-12 text-center">
-                            <button class="btn btn-primary btn-lg" id="btn_salvar" type="button">Salvar Treinamento</button>
+                            <button class="btn btn-primary btn-lg" id="btn_salvar" type="button" >Salvar Treinamento</button>
                         </div>
                     </div>
 
@@ -130,11 +118,12 @@
             </form>
         </div>
     </div>
-    <script src="../js/treinamento.js"></script>
+    <script src="../js/treinamento.js" type="module"></script>
+    <script src="../js/teste.js"></script>
+    <script src="../js/treinamento_service.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="../js/teste.js"></script>
 </body>
 
 </html>
