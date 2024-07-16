@@ -1,4 +1,5 @@
-import { recuperarFuncionarios } from "./aluno_service.js"
+import { getFuncionarios } from "./aluno_service.js"
+import { postTreinamento } from "./treinamento_service.js"
 
 const pop_up_aula= document.querySelector("#pop_up_aula")
 const btn_salvar = document.querySelector("#btn_salvar")
@@ -31,12 +32,12 @@ btns_adicionar.forEach(
                 console.log("chamou")
                 let dados_aula = {}
                 dados_aula["nome"] = document.querySelector("#aula_nome").value
-                if(modalidade === "presencial"){
+                dados_aula["duracao"] = document.querySelector("#duracao").value
+                if(modalidade.value === "presencial"){
                     dados_aula["sala"] = document.querySelector("#aula_sala").value
                     dados_aula["hora_inicio"] = document.querySelector("#aula_hora_inicio").value
-                    dados_aula["hora_fim"] = document.querySelector("#aula_hora_fim").value
+                    // dados_aula["hora_fim"] = document.querySelector("#aula_hora_fim").value
                 }else{
-                    dados_aula["duracao"] = document.querySelector("#duracao").value
                 }
                 aulas.push(dados_aula)
                 exibirAulas()
@@ -74,7 +75,7 @@ btn_salvar.addEventListener("click",()=>{
     })
     localStorage.setItem("treinamento",JSON.stringify(dados_treinamento))
     console.log(JSON.parse(localStorage.getItem("treinamento")))
-    adicionarTreinamento()
+    postTreinamento()
 })
 
 document.querySelector("#btn_adicionar_aula").addEventListener("click",()=>{
@@ -83,10 +84,10 @@ document.querySelector("#btn_adicionar_aula").addEventListener("click",()=>{
             conteudo_pop_up.innerHTML = `
                             <div>
                                 <label>Nome</label>
-                                <input type="text" name="sala" id="aula_nome">
+                                <input type="text" name="nome" id="aula_nome">
                             </div>
                             <div>
-                                <label>Duração</label>
+                                <label>Duração(em minutos)</label>
                                 <input type="text" name="duracao" id="duracao">
                             </div>
                             ` 
@@ -95,27 +96,27 @@ document.querySelector("#btn_adicionar_aula").addEventListener("click",()=>{
     
                             <div>
                                 <label>Nome</label>
-                                <input type="text" name="sala" id="aula_nome">
+                                <input type="text" name="nome" id="aula_nome">
                             </div>
                                 <div>
                                 <label>Sala</label>
                                 <input type="text" name="sala" id="aula_sala">
                             </div>
                             <div>
-                                <label>Data início</label>
-                                <input type="datetime-local" name="duracao" id="duracao">
+                                <label>Hora de Início</label>
+                                <input type="time" name="hora_inicio" id="aula_hora_inicio">
                             </div>
                             <div>
-                                <label>Data fim</label>
-                                <input type="datetime-local" name="duracao" id="duracao">
+                                <label>Duração</label>
+                                <input type="text" name="duracao" id="duracao">
                             </div>
                             `
     
         }
 })
     
-document.querySelector("#btn_pop_up_adicionar_aula").addEventListener("click",()=>{
-        
+document.querySelector("#btn_fechar_pop_up").addEventListener("click",()=>{
+    pop_up_aula.classList.add("d-none")
 })    
 
 function removerElementosDasListas(){
@@ -154,7 +155,7 @@ function exibirAlunos(){
 function exibirApostilas(){
     let id = 0
     apostilas_html.innerHTML =  apostilas.map((apostila)=>
-        `<li>${apostila}<span class="remove-btn" id_apostila=${id++}>❌</span></li>` 
+        `<li><a href=${apostila} target="_blank">${apostila}</a><span class="remove-btn" id_apostila=${id++}>❌</span></li>` 
     ).join("")
     //console.log(apostilas)
     //console.log(apostilas_html)
@@ -162,18 +163,29 @@ function exibirApostilas(){
 
 function exibirAulas(){
     let id = 0
-    aulas_html.innerHTML = aulas.map((aula)=>
-        `
-            <li>${aula.nome}<span class="remove-btn" id_aula=${id++}>❌</span></li>
-            </br>
-        ` 
-    ).join("")
+    if(modalidade.value === "remoto"){
+        aulas_html.innerHTML = aulas.map((aula)=>
+            
+            `
+                <li>Aula:${aula.nome}  /  Duração:${aula.duracao} min<span class="remove-btn" id_aula=${id++}>❌</span></li>
+                </br>
+            ` 
+        ).join("")
+    }else{
+        aulas_html.innerHTML = aulas.map((aula)=>
+            
+            `
+                <li>Aula:${aula.nome}  /  Duração:${aula.duracao} min  /  Sala:${aula.sala} / Hora de Início:${aula.hora_inicio} <span class="remove-btn" id_aula=${id++}>❌</span></li>
+                </br>
+            ` 
+        ).join("")
+    }
     //console.log(aulas_html)
     //console.log(aulas)
 }
 
 function listarAlunosSelect(){
-        recuperarFuncionarios().then(data=>
+        getFuncionarios().then(data=>
             document.querySelector("#aluno").innerHTML = data.content.map(
                 element=>
                     `
