@@ -1,24 +1,37 @@
-import { getFuncionarios } from "./aluno_service.js"
+import { getFuncionarios } from "../script_usuarios/aluno_service.js"
 import { postTreinamento } from "./treinamento_service.js"
 
 const pop_up_aula= document.querySelector("#pop_up_aula")
 const btn_salvar = document.querySelector("#btn_salvar")
-let dados_input_treinamento = document.querySelectorAll("input")
-let dados_text_area_treinamento = document.querySelectorAll("textarea")
-let dados_select_treinamento = document.querySelectorAll("select")
 const modalidade = document.querySelector("[name='modalidade']")
-let btns_adicionar= document.querySelectorAll("[btn_adicionar]") 
 const conteudo_pop_up =  document.querySelector("#conteudo-pop-up")
 const apostilas_html = document.querySelector("#apostilas")
 const alunos_html = document.querySelector("#alunos-lista")
 const aulas_html = document.querySelector("#lista_aulas")
+const sessao_aulas =document.querySelector("#aulas")
+const sala = document.querySelector("#div_sala")
+let dados_input_treinamento = document.querySelectorAll("input")
+let dados_select_treinamento = document.querySelectorAll("select")
+let dados_text_area_treinamento = document.querySelectorAll("textarea")
 let dados_treinamento = {}
+let btns_adicionar= document.querySelectorAll("[btn_adicionar]") 
 let dados_aluno = {}
 let dados_apostila = ""
 let aulas = []
 let apostilas = []
 let alunos = []
 
+modalidade.addEventListener("change",()=>{
+    if(modalidade.value === "presencial"){
+        sessao_aulas.classList.add("d-none")  
+        sala.classList.remove("d-none")
+    }
+    else{
+        sessao_aulas.classList.remove("d-none")
+        sala.classList.add("d-none")
+    }
+
+})
 
 btns_adicionar.forEach(
     btn_adicionar=>{
@@ -38,6 +51,7 @@ btns_adicionar.forEach(
                     dados_aula["hora_inicio"] = document.querySelector("#aula_hora_inicio").value
                     // dados_aula["hora_fim"] = document.querySelector("#aula_hora_fim").value
                 }else{
+                    dados_aula["link"] = document.querySelector("#aula_link").value
                 }
                 aulas.push(dados_aula)
                 exibirAulas()
@@ -86,6 +100,10 @@ document.querySelector("#btn_adicionar_aula").addEventListener("click",()=>{
                                 <label>Nome</label>
                                 <input type="text" name="nome" id="aula_nome">
                             </div>
+                             <div>
+                                <label>Link da aula</label>
+                                <input type="text" name="link" id="aula_link">
+                            </div>
                             <div>
                                 <label>Duração(em minutos)</label>
                                 <input type="text" name="duracao" id="duracao">
@@ -111,7 +129,6 @@ document.querySelector("#btn_adicionar_aula").addEventListener("click",()=>{
                                 <input type="text" name="duracao" id="duracao">
                             </div>
                             `
-    
         }
 })
     
@@ -167,7 +184,7 @@ function exibirAulas(){
         aulas_html.innerHTML = aulas.map((aula)=>
             
             `
-                <li>Aula:${aula.nome}  /  Duração:${aula.duracao} min<span class="remove-btn" id_aula=${id++}>❌</span></li>
+                <li>Aula:${aula.nome}  / Link para aula: <a href=${aula.link} target="_blank">${aula.link}</a> / Duração:${aula.duracao} min<span class="remove-btn" id_aula=${id++}>❌</span></li>
                 </br>
             ` 
         ).join("")
@@ -189,7 +206,7 @@ function listarAlunosSelect(){
             document.querySelector("#aluno").innerHTML = data.content.map(
                 element=>
                     `
-                        <option value="${element.cpf}">${element.cpf}-${element.nome}</option>
+                        <option value="${element.cpf}-${element.nome}">${element.cpf}-${element.nome}</option>
                     ` 
             )
         )

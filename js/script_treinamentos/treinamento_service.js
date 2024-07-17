@@ -8,6 +8,15 @@ export function getTreinamentos(){
     return response
 }
 
+export function getTreinamento(id){
+    let response =  fetch(`http://localhost:8080/treinamento/${id}`,{
+        method:"GET",
+    }).then(
+        response => response.json()
+    )
+    return response
+}
+
 export function postTreinamento(){
     let treinamento = JSON.parse(localStorage.getItem("treinamento"))
     fetch("http://localhost:8080/treinamento",{
