@@ -11,6 +11,10 @@
     border: none;
     outline: none;
 }
+
+.tr-body:hover{
+    cursor: pointer;
+}
 .table-dark-blue thead th {
             background-color: #00274d;
             color: white;

@@ -1,4 +1,4 @@
- .table-dark-blue thead th {
+.table-dark-blue thead th {
             background-color: #00274d;
             color: white;
             text-align: center;
@@ -20,22 +20,24 @@
             border-radius: 4px;
         }
         .btn-primary-dark {
-            background-color: #0056b3;
-            border-color: #0056b3;
+            background-color: #0056b3 !important;
+            border-color: #0056b3 !important;
+            color: white !important;
         }
         .btn-primary-dark:hover {
-            background-color: #004494;
-            border-color: #004494;
-            color: white;
+            background-color: #004494 !important;
+            border-color: #004494 !important;
+            color: white !important;
         }
         .btn-danger-dark {
-            background-color: #b32400;
-            border-color: #b32400;
+            background-color: #b32400  !important;
+            border-color: #b32400 !important;
+            color: white !important;
         }
         .btn-danger-dark:hover {
-            background-color: #940b00;
-            border-color: #940b00;
-            color: white;
+            background-color: #940b00 !important;
+            border-color: #940b00 !important;
+            color: white !important;
         }
         .container {
             margin-top: 50px;
@@ -44,4 +46,7 @@
             color: #00274d;
             text-align: center;
             margin-bottom: 30px;
+        }
+        tr:hover{
+            cursor: pointer;
         }
