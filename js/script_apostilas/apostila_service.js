@@ -7,3 +7,8 @@ export function getApostilas(id) {
     )
     return response
 }
+
+export function postApostilas(apostilas){
+    console.log(apostilas)
+    
+}

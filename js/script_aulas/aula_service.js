@@ -7,3 +7,21 @@ export function getAulas(id) {
     )
     return response
 }
+
+
+export function postAulas(aulas,alunos){
+
+    let aulas_json = {
+        "aulas": aulas,
+        "alunos":alunos
+    }
+    fetch("http://localhost:8080/aula",
+        {
+            method:"POST",
+            body: JSON.stringify(aulas_json),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem("token")}`
+            }
+        })
+}

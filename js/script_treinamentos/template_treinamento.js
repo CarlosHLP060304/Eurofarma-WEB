@@ -15,22 +15,22 @@ export function TreinamentoBody(props){
                 <div class="form-group">
                     <label for="formato"><b>Selecione o formato </b></label>
                     
-                    <select name="modalidade">
-                        <option value="presencial" ${props.modalidade==="presencial" ? "selected" : ""}>Presencial</option>
-                        <option value="remoto" ${props.modalidade==="remoto" ? "selected" : ""}>Remoto</option>
+                    <select name="formato">
+                        <option value="presencial" ${props.formato==="presencial" ? "selected" : ""}>Presencial</option>
+                        <option value="remoto" ${props.formato==="remoto" ? "selected" : ""}>Remoto</option>
                     </select>
     
                 </div>
     
                 <div class="form-group">
                     <label for="data_inicio"><b>Data Início:</b></label>
-                    <input type="datetime-local" id="data_inicio" name="data_inicio" value=${props.dataInicio ? props.dataInicio : ""}> 
+                    <input type="datetime-local" id="dataInicio" name="dataInicio" value=${props.dataInicio ? props.dataInicio : ""}> 
                 </div>
     
                 
                 <div class="form-group">
                     <label for="data_fim"><b>Data Fim:</b></label>
-                    <input type="datetime-local" id="data_fim" name="data_fim" value=${props.dataFim ? props.dataFim : ""}> 
+                    <input type="datetime-local" id="dataFim" name="dataFim" value=${props.dataFim ? props.dataFim : ""}> 
                 </div>
     
                 <div class="form-group">
@@ -85,7 +85,7 @@ export function TreinamentoBody(props){
                 <!-- lista de professor  -->
                 <div class="form-group">
                     <label for="buscar-professor"><b>Insira o nome do professor </b></label>
-                    <input type="text" name="professor">
+                    <input type="text" name="nomeProfessor">
                 </div>
     
     

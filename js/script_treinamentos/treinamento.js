@@ -9,33 +9,40 @@ let id_treinamento = window.location.search.split("=")[1]
 console.log(id_treinamento)
 
 let dadosTreinamento = {}
-getTreinamento(id_treinamento).then(
-    dados_treinamento=> dadosTreinamento = dados_treinamento
-).
-then(
-   ()=>
-    getAulas(id_treinamento).then(
-        dados_aulas => dadosTreinamento["aulas"] = dados_aulas
+
+if(id_treinamento != null || id_treinamento!= undefined){
+    getTreinamento(id_treinamento).then(
+        dados_treinamento=> dadosTreinamento = dados_treinamento
+    ).
+    then(
+       ()=>
+        getAulas(id_treinamento).then(
+            dados_aulas => dadosTreinamento["aulas"] = dados_aulas
+        )
+    ).then(
+        ()=> getApostilas(id_treinamento).then(
+            dados_apostilas => dadosTreinamento["apostilas"] = dados_apostilas
+        )
+    ).
+    then(
+        ()=> {
+            console.log(dadosTreinamento)
+            document.querySelector("#template").innerHTML = TreinamentoBody(dadosTreinamento)
+        }
+    ).then(
+        ()=>carregarElementosDinamicos(dadosTreinamento)
+        
     )
-).then(
-    ()=> getApostilas(id_treinamento).then(
-        dados_apostilas => dadosTreinamento["apostilas"] = dados_apostilas
-    )
-).
-then(
-    ()=> {
-        console.log(dadosTreinamento)
-        document.querySelector("#template").innerHTML = TreinamentoBody(dadosTreinamento)
-    }
-).then(
-    ()=>carregarElementosDinamicos(dadosTreinamento)
-    
-)
+}else{
+    document.querySelector("#template").innerHTML = TreinamentoBody(dadosTreinamento)
+    carregarElementosDinamicos(dadosTreinamento)
+}
+
 function carregarElementosDinamicos(dadosTreinamento){
 
     const pop_up_aula= document.querySelector("#pop_up_aula")
     const btn_salvar = document.querySelector("#btn_salvar")
-    const modalidade = document.querySelector("[name='modalidade']")
+    const modalidade = document.querySelector("[name='formato']")
     const conteudo_pop_up =  document.querySelector("#conteudo-pop-up")
     const apostilas_html = document.querySelector("#apostilas")
     const alunos_html = document.querySelector("#alunos-lista")
@@ -48,9 +55,10 @@ function carregarElementosDinamicos(dadosTreinamento){
     let dados_treinamento = {}
     let btns_adicionar= document.querySelectorAll("[btn_adicionar]") 
     let dados_aluno = {}
+    let dados_alunos_json = []
     let dados_apostila = ""
-    let aulas = dadosTreinamento.aulas
-    let apostilas = dadosTreinamento.apostilas
+    let aulas = dadosTreinamento.aulas ? dadosTreinamento.aulas : []
+    let apostilas = dadosTreinamento.apostilas ? dadosTreinamento.apostilas : []
     let alunos = []
     
     console.log(apostilas)
@@ -93,11 +101,17 @@ function carregarElementosDinamicos(dadosTreinamento){
                     exibirAulas(modalidade,aulas_html,aulas)
                 }else{
                     dados_aluno = document.querySelector('#aluno').value
-                    alunos.push(dados_aluno)
+                    let dados_aluno_json = {
+                        "id":dados_aluno.split("-")[0]
+                    }
+                    let dados_aluno_exibicao = `${dados_aluno.split("-")[1]}-${dados_aluno.split("-")[2]}  - ${dados_aluno.split("-")[3]}`
+                    console.log(dados_aluno.split("-"))
+                    dados_alunos_json.push(dados_aluno_json)
+                    alunos.push(dados_aluno_exibicao)
                     exibirAlunos(alunos_html,alunos)
                 }
                 
-               removerElementosDasListas(alunos,aulas,apostilas)
+               removerElementosDasListas(alunos,aulas,apostilas,alunos_html,aulas_html,apostilas_html)
             })
         }
     )
@@ -118,13 +132,16 @@ function carregarElementosDinamicos(dadosTreinamento){
         
         dados_select_treinamento.forEach(element=>{
             if(element.id.startsWith("aluno"))
-                dados_treinamento["alunos"] = alunos
+                dados_treinamento["alunos"] = dados_alunos_json
+            else if(element.name === "formato"){
+                    console.log(element.name)
+                    dados_treinamento[element.name] = element.value.toUpperCase()
+                } 
             else
                 dados_treinamento[element.name] = element.value
     
         })
         localStorage.setItem("treinamento",JSON.stringify(dados_treinamento))
-        console.log(JSON.parse(localStorage.getItem("treinamento")))
         postTreinamento()
     })
     
@@ -176,7 +193,7 @@ function carregarElementosDinamicos(dadosTreinamento){
     exibirAlunos(alunos_html,alunos)
 }
 
-function removerElementosDasListas(alunos,aulas,apostilas){
+function removerElementosDasListas(alunos,aulas,apostilas,alunos_html,aulas_html,apostilas_html){
     document.querySelectorAll(".remove-btn").forEach(
         btn=>{
             btn.addEventListener("click",()=>{
@@ -184,17 +201,17 @@ function removerElementosDasListas(alunos,aulas,apostilas){
                 
                 if(btn.hasAttribute("id_aluno")){
                     alunos.splice(btn.getAttribute("id_aluno"),1)
-                    exibirAlunos()
+                    exibirAlunos(alunos_html,alunos)
                 }
                 else if(btn.hasAttribute("id_aula")){
                     aulas.splice(btn.getAttribute("id_aula"),1)
-                    exibirAulas()
+                    exibirAulas(aulas_html,aulas)
                 }
                 else if(btn.hasAttribute("id_apostila")){
                     apostilas.splice(btn.getAttribute("id_apostila"),1)
-                    exibirApostilas()
+                    exibirApostilas(apostilas_html,apostilas)
                 }
-                removerElementosDasListas()
+                removerElementosDasListas(alunos,aulas,apostilas,alunos_html,aulas_html,apostilas_html)
             })
         }
     )    
@@ -212,7 +229,7 @@ function exibirAlunos(alunos_html,alunos){
 function exibirApostilas(apostilas_html,apostilas){
     let id = 0
     apostilas_html.innerHTML =  apostilas.map((apostila)=>
-        `<li><a href=${apostila.link} target="_blank">${apostila.link}</a><span class="remove-btn" id_apostila=${id++}>❌</span></li>` 
+        `<li><a href=${apostila} target="_blank">${apostila}</a><span class="remove-btn" id_apostila=${id++}>❌</span></li>` 
     ).join("")
     //console.log(apostilas)
     //console.log(apostilas_html)
@@ -246,7 +263,7 @@ function listarAlunosSelect(){
             document.querySelector("#aluno").innerHTML = data.content.map(
                 element=>
                     `
-                        <option value="${element.cpf}-${element.nome}">${element.cpf}-${element.nome}</option>
+                        <option value="${element.id}-${element.cpf}-${element.nome}">${element.cpf}-${element.nome}</option>
                     ` 
             )
         )
