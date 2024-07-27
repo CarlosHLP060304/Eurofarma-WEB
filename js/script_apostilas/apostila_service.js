@@ -8,7 +8,24 @@ export function getApostilas(id) {
     return response
 }
 
-export function postApostilas(apostilas){
+export function postApostilas(apostilas,treinamento_id){
     console.log(apostilas)
+    apostilas.forEach(apostila => {
+        console.log(apostila)
+        let apostila_json = {
+            "link": apostila,
+            "treinamento":{
+                "id":treinamento_id
+            }
+        } 
+        fetch("http://localhost:8080/apostila",{
+            method: "POST",
+            headers:
+                {   'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`
+                },
+            body: JSON.stringify(apostila_json)
+        })
+    });
     
 }

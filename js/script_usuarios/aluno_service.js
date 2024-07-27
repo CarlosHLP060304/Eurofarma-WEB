@@ -7,11 +7,11 @@ export function getFuncionarios() {
     return response
 }
 
-// export function getAlunosByTreinamento() {
-//     let response =  fetch("http://localhost:8080/usuario",{
-//         method:"GET",
-//     }).then(
-//         response => response.json()
-//     )
-//     return response
-// }
+export function getAlunosByTreinamento(id_treinamento) {
+    let response =  fetch(`http://localhost:8080/usuario/treinamento/${id_treinamento}`,{
+        method:"GET",
+    }).then(
+        response => response.json()
+    )
+    return response
+}

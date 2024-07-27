@@ -1,16 +1,19 @@
-import { getFuncionarios } from "../script_usuarios/aluno_service.js"
-import { postTreinamento } from "./treinamento_service.js"
+import { postTreinamento, putTreinamento } from "./treinamento_service.js"
 import { getTreinamento } from "../script_treinamentos/treinamento_service.js"
-import { TreinamentoBody } from "./template_treinamento.js"
+import { exibirAlunos, exibirApostilas, exibirAulas, listarAlunosSelect, TreinamentoBody } from "./template_treinamento.js"
 import { getAulas } from "../script_aulas/aula_service.js"
 import { getApostilas } from "../script_apostilas/apostila_service.js"
+import { getAlunosByTreinamento, getFuncionarios } from "../script_usuarios/aluno_service.js"
 
 let id_treinamento = window.location.search.split("=")[1]
 console.log(id_treinamento)
 
 let dadosTreinamento = {}
 
-if(id_treinamento != null || id_treinamento!= undefined){
+
+
+
+if(id_treinamento){
     getTreinamento(id_treinamento).then(
         dados_treinamento=> dadosTreinamento = dados_treinamento
     ).
@@ -25,23 +28,29 @@ if(id_treinamento != null || id_treinamento!= undefined){
         )
     ).
     then(
+        ()=> getAlunosByTreinamento(id_treinamento).then(
+            dados_aluno => dadosTreinamento["alunos"] = dados_aluno
+        )
+    )
+    .
+    then(
         ()=> {
             console.log(dadosTreinamento)
-            document.querySelector("#template").innerHTML = TreinamentoBody(dadosTreinamento)
+            document.querySelector("#template").innerHTML = TreinamentoBody(dadosTreinamento,id_treinamento)
         }
     ).then(
         ()=>carregarElementosDinamicos(dadosTreinamento)
         
     )
 }else{
-    document.querySelector("#template").innerHTML = TreinamentoBody(dadosTreinamento)
+    dadosTreinamento["formato"] = ""
+    dadosTreinamento["aulas"] = []
+    document.querySelector("#template").innerHTML = TreinamentoBody(dadosTreinamento,id_treinamento)
     carregarElementosDinamicos(dadosTreinamento)
 }
 
 function carregarElementosDinamicos(dadosTreinamento){
-
     const pop_up_aula= document.querySelector("#pop_up_aula")
-    const btn_salvar = document.querySelector("#btn_salvar")
     const modalidade = document.querySelector("[name='formato']")
     const conteudo_pop_up =  document.querySelector("#conteudo-pop-up")
     const apostilas_html = document.querySelector("#apostilas")
@@ -49,33 +58,21 @@ function carregarElementosDinamicos(dadosTreinamento){
     const aulas_html = document.querySelector("#lista_aulas")
     const sessao_aulas =document.querySelector("#aulas")
     const sala = document.querySelector("#div_sala")
-    let dados_input_treinamento = document.querySelectorAll("input")
-    let dados_select_treinamento = document.querySelectorAll("select")
-    let dados_text_area_treinamento = document.querySelectorAll("textarea")
-    let dados_treinamento = {}
     let btns_adicionar= document.querySelectorAll("[btn_adicionar]") 
     let dados_aluno = {}
     let dados_alunos_json = []
     let dados_apostila = ""
     let aulas = dadosTreinamento.aulas ? dadosTreinamento.aulas : []
-    let apostilas = dadosTreinamento.apostilas ? dadosTreinamento.apostilas : []
-    let alunos = []
+    let apostilas = dadosTreinamento.apostilas ? retornaListaLinksApostila(dadosTreinamento.apostilas) : []
+    let alunos = dadosTreinamento.alunos ? retornaListaUsuariosTreinamento(dadosTreinamento.alunos) : []
     
-    console.log(apostilas)
-    
-    
+    console.log(dadosTreinamento)
     
     modalidade.addEventListener("change",()=>{
-        if(modalidade.value === "presencial"){
-            sessao_aulas.classList.add("d-none")  
-            sala.classList.remove("d-none")
-        }
-        else{
-            sessao_aulas.classList.remove("d-none")
-            sala.classList.add("d-none")
-        }
-    
+        trocarDeFormatoDeTreinamento(modalidade,sessao_aulas,sala)
     })
+
+    trocarDeFormatoDeTreinamento(modalidade,sessao_aulas,sala)
     
     btns_adicionar.forEach(
         btn_adicionar=>{
@@ -104,50 +101,21 @@ function carregarElementosDinamicos(dadosTreinamento){
                     let dados_aluno_json = {
                         "id":dados_aluno.split("-")[0]
                     }
-                    let dados_aluno_exibicao = `${dados_aluno.split("-")[1]}-${dados_aluno.split("-")[2]}  - ${dados_aluno.split("-")[3]}`
+                    let dados_aluno_exibicao = `${dados_aluno.split("-")[1]}  - ${dados_aluno.split("-")[2]}-${dados_aluno.split("-")[3]}`
                     console.log(dados_aluno.split("-"))
                     dados_alunos_json.push(dados_aluno_json)
                     alunos.push(dados_aluno_exibicao)
                     exibirAlunos(alunos_html,alunos)
                 }
                 
-               removerElementosDasListas(alunos,aulas,apostilas,alunos_html,aulas_html,apostilas_html)
+               removerElementosDasListas(alunos,aulas,apostilas,alunos_html,aulas_html,apostilas_html,modalidade)
             })
         }
     )
     
-    btn_salvar.addEventListener("click",()=>{
-        dados_input_treinamento.forEach(element => { 
-            dados_treinamento["aulas"] = aulas
-            if(element.id.startsWith("apostila"))
-                dados_treinamento["apostilas"] = apostilas
-            else
-                dados_treinamento[element.name] = element.value
-    
-        });
-        
-        dados_text_area_treinamento.forEach(element=>{
-            dados_treinamento[element.name] = element.value
-        })
-        
-        dados_select_treinamento.forEach(element=>{
-            if(element.id.startsWith("aluno"))
-                dados_treinamento["alunos"] = dados_alunos_json
-            else if(element.name === "formato"){
-                    console.log(element.name)
-                    dados_treinamento[element.name] = element.value.toUpperCase()
-                } 
-            else
-                dados_treinamento[element.name] = element.value
-    
-        })
-        localStorage.setItem("treinamento",JSON.stringify(dados_treinamento))
-        postTreinamento()
-    })
-    
     document.querySelector("#btn_adicionar_aula").addEventListener("click",()=>{
             pop_up_aula.classList.toggle("d-none")
-            if(modalidade.value === "remoto"){
+            if(modalidade.value.toLowerCase() === "online"){
                 conteudo_pop_up.innerHTML = `
                                 <div>
                                     <label>Nome</label>
@@ -188,12 +156,14 @@ function carregarElementosDinamicos(dadosTreinamento){
     document.querySelector("#btn_fechar_pop_up").addEventListener("click",()=>{
         pop_up_aula.classList.add("d-none")
     })
-    listarAlunosSelect()    
+    listarAlunosSelect()   
     exibirApostilas(apostilas_html,apostilas)
     exibirAlunos(alunos_html,alunos)
+    exibirAulas(modalidade,aulas_html,aulas)
+    escolheAcao(id_treinamento,aulas,apostilas,dados_alunos_json)
 }
 
-function removerElementosDasListas(alunos,aulas,apostilas,alunos_html,aulas_html,apostilas_html){
+function removerElementosDasListas(alunos,aulas,apostilas,alunos_html,aulas_html,apostilas_html,modalidade){
     document.querySelectorAll(".remove-btn").forEach(
         btn=>{
             btn.addEventListener("click",()=>{
@@ -205,71 +175,109 @@ function removerElementosDasListas(alunos,aulas,apostilas,alunos_html,aulas_html
                 }
                 else if(btn.hasAttribute("id_aula")){
                     aulas.splice(btn.getAttribute("id_aula"),1)
-                    exibirAulas(aulas_html,aulas)
+                    exibirAulas(modalidade,aulas_html,aulas)
                 }
                 else if(btn.hasAttribute("id_apostila")){
                     apostilas.splice(btn.getAttribute("id_apostila"),1)
                     exibirApostilas(apostilas_html,apostilas)
                 }
-                removerElementosDasListas(alunos,aulas,apostilas,alunos_html,aulas_html,apostilas_html)
+                removerElementosDasListas(alunos,aulas,apostilas,alunos_html,aulas_html,apostilas_html,modalidade)
             })
         }
     )    
     
 }
 
-function exibirAlunos(alunos_html,alunos){
-    let id = 0
-    alunos_html.innerHTML = alunos.map((aluno)=>
-        `<li>${aluno}<span class="remove-btn" id_aluno=${id++}>❌</span></li>` 
-    ).join("")
-    //console.log(alunos_html)
-}
-
-function exibirApostilas(apostilas_html,apostilas){
-    let id = 0
-    apostilas_html.innerHTML =  apostilas.map((apostila)=>
-        `<li><a href=${apostila} target="_blank">${apostila}</a><span class="remove-btn" id_apostila=${id++}>❌</span></li>` 
-    ).join("")
-    //console.log(apostilas)
-    //console.log(apostilas_html)
-}
-
-function exibirAulas(modalidade,aulas_html,aulas){
-    let id = 0
-    if(modalidade.value === "remoto"){
-        aulas_html.innerHTML = aulas.map((aula)=>
-            
-            `
-                <li>Aula:${aula.nome}  / Link para aula: <a href=${aula.link} target="_blank">${aula.link}</a> / Duração:${aula.duracao} min<span class="remove-btn" id_aula=${id++}>❌</span></li>
-                </br>
-            ` 
-        ).join("")
-    }else{
-        aulas_html.innerHTML = aulas.map((aula)=>
-            
-            `
-                <li>Aula:${aula.nome}  /  Duração:${aula.duracao} min  /  Sala:${aula.sala} / Hora de Início:${aula.hora_inicio} <span class="remove-btn" id_aula=${id++}>❌</span></li>
-                </br>
-            ` 
-        ).join("")
+function trocarDeFormatoDeTreinamento(modalidade,sessao_aulas,sala){
+    if(modalidade.value.toLowerCase() === "presencial"){
+        sessao_aulas.classList.add("d-none")  
+        sala.classList.remove("d-none")
     }
-    //console.log(aulas_html)
-    //console.log(aulas)
-}
-
-function listarAlunosSelect(){
-        getFuncionarios().then(data=>
-            document.querySelector("#aluno").innerHTML = data.content.map(
-                element=>
-                    `
-                        <option value="${element.id}-${element.cpf}-${element.nome}">${element.cpf}-${element.nome}</option>
-                    ` 
-            )
-        )
+    else{
+        sessao_aulas.classList.remove("d-none")
+        sala.classList.add("d-none")
+    }
 }
 
 
+function retornaListaLinksApostila(apostilas){
+    let links = []
+    apostilas.forEach(apostila => {
+        links.push(apostila.link)
+    });
+    return links
+}
+
+function retornaListaUsuariosTreinamento(alunos){
+    let alunos_treinamento = []
+    alunos.forEach(aluno => {
+        alunos_treinamento.push(`${aluno.nome} - ${aluno.cpf}`)
+    });
+    return alunos_treinamento
+}
 
 
+function retornaDadosTreinamento(aulas,apostilas,dados_alunos_json){
+
+    let dados_input_treinamento = document.querySelectorAll("input")
+    let dados_select_treinamento = document.querySelectorAll("select")
+    let dados_text_area_treinamento = document.querySelectorAll("textarea")
+    let dados_treinamento = {}
+    dados_input_treinamento.forEach(element => { 
+        dados_treinamento["aulas"] = aulas
+        if(element.id.startsWith("apostila"))
+            dados_treinamento["apostilas"] = apostilas
+        else{
+            dados_treinamento[element.name] = element.value
+            console.log(element)
+        }
+    });
+    
+    dados_text_area_treinamento.forEach(element=>{
+        dados_treinamento[element.name] = element.value
+    })
+    
+    dados_select_treinamento.forEach(element=>{
+        if(element.id.startsWith("aluno"))
+            dados_treinamento["alunos"] = dados_alunos_json
+        else if(element.name === "formato"){
+                console.log(element.name)
+                dados_treinamento[element.name] = element.value.toUpperCase()
+            } 
+        else{
+            dados_treinamento[element.name] = element.value
+            console.log(element)
+        }
+
+    })
+    console.log(dadosTreinamento)
+    return dados_treinamento
+}
+
+function salvarTreinamento(aulas,apostilas,dados_alunos_json){
+    const btn_salvar = document.querySelector("#btn_salvar_treinamento")
+    btn_salvar.addEventListener("click",()=>{
+        let dados_treinamento = retornaDadosTreinamento(aulas,apostilas,dados_alunos_json)
+        console.log(dadosTreinamento)
+        localStorage.setItem("treinamento",JSON.stringify(dados_treinamento))
+        postTreinamento()
+    })
+}
+
+function salvarAlteracoes(aulas,apostilas,dados_alunos_json){
+    let btn_editar_treinamento = document.querySelector("#btn_editar_treinamento")
+    btn_editar_treinamento.addEventListener("click",()=>{
+        console.log("salvando alterações...")
+        putTreinamento()
+    })
+}
+
+function escolheAcao(id_treinamento,aulas,apostilas,dados_alunos_json){
+    
+    if(id_treinamento){
+        salvarAlteracoes(aulas,apostilas,dados_alunos_json)
+    }else{
+        salvarTreinamento(aulas,apostilas,dados_alunos_json)
+    }
+}
 

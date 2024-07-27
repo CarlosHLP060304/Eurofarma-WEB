@@ -25,3 +25,21 @@ export function postAulas(aulas,alunos){
             }
         })
 }
+
+
+export function putAulas(aulas,alunos){
+
+    let aulas_json = {
+        "aulas": aulas,
+        "alunos":alunos
+    }
+    fetch("http://localhost:8080/aula",
+        {
+            method:"POST",
+            body: JSON.stringify(aulas_json),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem("token")}`
+            }
+        })
+}

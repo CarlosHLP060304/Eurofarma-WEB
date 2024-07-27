@@ -1,6 +1,6 @@
+import { getFuncionarios } from "../script_usuarios/aluno_service.js"
 
-
-export function TreinamentoBody(props){
+export function TreinamentoBody(props,id_treinamento){
     return `
    
 
@@ -16,8 +16,8 @@ export function TreinamentoBody(props){
                     <label for="formato"><b>Selecione o formato </b></label>
                     
                     <select name="formato">
-                        <option value="presencial" ${props.formato==="presencial" ? "selected" : ""}>Presencial</option>
-                        <option value="remoto" ${props.formato==="remoto" ? "selected" : ""}>Remoto</option>
+                        <option value="presencial" ${props.formato.toLowerCase()==="presencial" ? "selected" : ""}>Presencial</option>
+                        <option value="online" ${props.formato.toLowerCase()==="online" ? "selected" : ""}>Remoto</option>
                     </select>
     
                 </div>
@@ -40,7 +40,7 @@ export function TreinamentoBody(props){
     
                 <div class="form-group" id="div_sala">
                     <label for="sala"><b>Local/Sala:</b></label>
-                    <input id="sala" name="sala" value=${props.sala ? props.sala : ""}>
+                    <input id="sala" name="sala" value=${props.aulas.length===1 && props.formato.toLowerCase() === "presencial" ? props.aulas[0].sala : ""}>
                 </div>
                 
     
@@ -85,7 +85,7 @@ export function TreinamentoBody(props){
                 <!-- lista de professor  -->
                 <div class="form-group">
                     <label for="buscar-professor"><b>Insira o nome do professor </b></label>
-                    <input type="text" name="nomeProfessor">
+                    <input type="text" name="nomeProfessor" value=${props.nomeProfessor? props.nomeProfessor : ""}>
                 </div>
     
     
@@ -106,12 +106,7 @@ export function TreinamentoBody(props){
                     </div>
     
     
-    
-                    <div class="row">
-                        <div class="col-md-12 text-center">
-                            <button class="btn btn-primary btn-lg" id="btn_salvar" type="button" >Criar Treinamento</button>
-                        </div>
-                    </div>
+                    ${retornabotaoForm(id_treinamento)}
     
     
     
@@ -122,10 +117,80 @@ export function TreinamentoBody(props){
     
 }
 
+export function exibirAlunos(alunos_html,alunos){
+    let id = 0
+    alunos_html.innerHTML = alunos.map((aluno)=>
+        `<li>${aluno}<span class="remove-btn" id_aluno=${id++}>❌</span></li>` 
+    ).join("")
+    //console.log(alunos_html)
+}
 
+export function exibirApostilas(apostilas_html,apostilas){
+    let id = 0
+        
+            apostilas_html.innerHTML =  apostilas.map((apostila)=>
+                `<li><a href=${apostila} target="_blank">${apostila}</a><span class="remove-btn" id_apostila=${id++}>❌</span></li>` 
+            ).join("")
+        
+    
 
+    //console.log(apostilas)
+    //console.log(apostilas_html)
+}
 
- 
+export function exibirAulas(modalidade,aulas_html,aulas){
+    let id = 0
+    console.log(modalidade.value)
+    if(modalidade.value.toLowerCase() === "online"){
+        aulas_html.innerHTML = aulas.map((aula)=>
+            
+            `
+                <li>Aula:${aula.nome}  / Link para aula: <a href=${aula.link} target="_blank">${aula.link}</a> / Duração:${aula.duracao} min<span class="remove-btn" id_aula=${id++}>❌</span></li>
+                </br>
+            ` 
+        ).join("")
+    }else{
+        aulas_html.innerHTML = aulas.map((aula)=>
+            
+            `
+                <li>Aula:${aula.nome}  /  Duração:${aula.duracao} min  /  Sala:${aula.sala} / Hora de Início:${aula.hora_inicio} <span class="remove-btn" id_aula=${id++}>❌</span></li>
+                </br>
+            ` 
+        ).join("")
+    }
+    //console.log(aulas_html)
+    //console.log(aulas)
+}
+
+export function listarAlunosSelect(){
+        getFuncionarios().then(data=>
+            document.querySelector("#aluno").innerHTML = data.content.map(
+                element=>
+                    `
+                        <option value="${element.id}-${element.nome}-${element.cpf}">${element.nome}-${element.cpf}</option>
+                    ` 
+            )
+        )
+}
+
+function retornabotaoForm(id_treinamento){
+    console.log(id_treinamento)
+    if (id_treinamento) {
+        return `
+              <div class="row">
+                        <div class="col-md-12 text-center">
+                            <button class="btn btn-warning btn-lg" id="btn_editar_treinamento" type="button" >Salvar Alterações</button>
+                        </div>
+                    </div>
+        `
+    } 
+    return   `<div class="row">
+                        <div class="col-md-12 text-center">
+                            <button class="btn btn-primary btn-lg" id="btn_salvar_treinamento" type="button" >Criar Treinamento</button>
+                        </div>
+                    </div>`
+}
+
 
 
    
