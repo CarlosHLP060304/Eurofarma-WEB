@@ -1,5 +1,5 @@
-import { postApostilas } from "../script_apostilas/apostila_service.js"
-import { postAulas } from "../script_aulas/aula_service.js"
+import { alterarApostilasTreinamento, postApostilas } from "../script_apostilas/apostila_service.js"
+import { alterarAulasTreinamento, postAulas } from "../script_aulas/aula_service.js"
 
 
 
@@ -45,7 +45,8 @@ function returnLocalAulas(treinamento){
     
     if(treinamento.formato==="PRESENCIAL"){
         aulas = [
-            {
+            {   
+                "id": treinamento.aulas[0] ? treinamento.aulas[0].id : "",
                 "sala": treinamento.sala,
                 "nome": treinamento.nome,
                 "duracao": calculaDuracaoAula(treinamento.dataInicio,treinamento.dataFim)  
@@ -71,7 +72,8 @@ export async function postTreinamento(){
     let aulas = returnLocalAulas(local_storage_treinamento)
     let alunos = returnLocalAlunos(local_storage_treinamento)
     let apostilas = returnLocalApostilas(local_storage_treinamento) 
-    let treinamento = returnLocalOnlyTreinamento(JSON.parse(localStorage.getItem("treinamento"))) 
+    let treinamento = returnLocalOnlyTreinamento(JSON.parse(localStorage.getItem("treinamento")))
+     
     console.log(alunos)
     console.log(treinamento)
     
@@ -93,19 +95,21 @@ export async function postTreinamento(){
     });
     postAulas(aulas,alunos)
     postApostilas(apostilas,treinamento_json.id)
+
+    
 }
 
 
-export async function putTreinamento(){
+export async function putTreinamento(id_treinamento,ids_aulas_deletadas_ou_nao,ids_alunos_deletados_ou_nao,ids_apostilas_deletadas_ou_nao){
     let local_storage_treinamento = JSON.parse(localStorage.getItem("treinamento"))
-    let treinamento = returnLocalOnlyTreinamento(local_storage_treinamento) 
+    let treinamento = returnLocalOnlyTreinamento(JSON.parse(localStorage.getItem("treinamento"))) 
     let aulas = returnLocalAulas(local_storage_treinamento)
     let alunos = returnLocalAlunos(local_storage_treinamento)
     let apostilas = returnLocalApostilas(local_storage_treinamento) 
     console.log(alunos)
     console.log(treinamento)
 
-    let response = await fetch(`http://localhost:8080/treinamento/${treinamento.id}`,{
+    await fetch(`http://localhost:8080/treinamento/${id_treinamento}`,{
         method:"PUT",
         body: JSON.stringify(treinamento),
         headers: {
@@ -113,16 +117,16 @@ export async function putTreinamento(){
             'Authorization': `Bearer ${localStorage.getItem("token")}`
         },
     })
-    let treinamento_json = await response.json()
-    console.log(treinamento_json)
 
     aulas.forEach(aula => {
         aula["treinamento"] = {
-            "id" : treinamento_json.id
+            "id" : id_treinamento
         }
-        postAulas(aulas,alunos)
+        
     });
-    postApostilas(apostilas,treinamento_json.id)
+
+    await alterarAulasTreinamento(id_treinamento,aulas,alunos,ids_aulas_deletadas_ou_nao,ids_alunos_deletados_ou_nao)
+    alterarApostilasTreinamento(id_treinamento,apostilas,ids_apostilas_deletadas_ou_nao)
 }
 
 

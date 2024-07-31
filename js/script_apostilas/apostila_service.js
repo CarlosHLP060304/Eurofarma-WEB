@@ -8,12 +8,12 @@ export function getApostilas(id) {
     return response
 }
 
-export function postApostilas(apostilas,treinamento_id){
+export async function postApostilas(apostilas,treinamento_id){
     console.log(apostilas)
     apostilas.forEach(apostila => {
         console.log(apostila)
         let apostila_json = {
-            "link": apostila,
+            "link": apostila.link,
             "treinamento":{
                 "id":treinamento_id
             }
@@ -28,4 +28,32 @@ export function postApostilas(apostilas,treinamento_id){
         })
     });
     
+}
+
+
+export async function deleteApostilas(ids_apostilas_deletadas_ou_nao){
+    ids_apostilas_deletadas_ou_nao.ids_apostilas_deletadas.forEach(apostila => {
+        console.log(apostila)
+        fetch(`http://localhost:8080/apostila/${apostila.id}`,{
+            method: "DELETE",
+            headers:
+                {   'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`
+                },
+        })
+    });    
+}
+
+export async function alterarApostilasTreinamento(id_treinamento,apostilas,ids_apostilas_deletadas_ou_nao){
+    console.log(ids_apostilas_deletadas_ou_nao)
+    let apostilas_sem_id = []
+    apostilas.forEach(
+        apostila=>{
+            if(!apostila.id){
+                apostilas_sem_id.push(apostila)
+            }
+        } 
+    )
+    await deleteApostilas(ids_apostilas_deletadas_ou_nao)
+    postApostilas(apostilas_sem_id,id_treinamento)
 }

@@ -9,13 +9,13 @@ export function getAulas(id) {
 }
 
 
-export function postAulas(aulas,alunos){
+export async function postAulas(aulas,alunos){
 
     let aulas_json = {
         "aulas": aulas,
         "alunos":alunos
     }
-    fetch("http://localhost:8080/aula",
+    await fetch("http://localhost:8080/aula",
         {
             method:"POST",
             body: JSON.stringify(aulas_json),
@@ -27,19 +27,71 @@ export function postAulas(aulas,alunos){
 }
 
 
-export function putAulas(aulas,alunos){
+export async function deleteAulas(ids_aulas_deletadas_ou_nao){
+    ids_aulas_deletadas_ou_nao.ids_aulas_deletadas.forEach(id_aula_deletada => {
+        fetch(`http://localhost:8080/aula/${id_aula_deletada.id}`,
+            {
+                method:"DELETE",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`
+                }
+            })
+      
+    });
+}
 
+async function putAlunosAulas(ids_aulas_nao_deletadas,ids_alunos_nao_deletados,ids_alunos_deletados){
     let aulas_json = {
-        "aulas": aulas,
-        "alunos":alunos
+        "aulas": ids_aulas_nao_deletadas,
+        "alunos":ids_alunos_nao_deletados,
+        "alunos_deletados": ids_alunos_deletados
     }
-    fetch("http://localhost:8080/aula",
+    console.log(aulas_json)
+    await fetch("http://localhost:8080/aula/users/edit",
         {
-            method:"POST",
+            method:"PUT",
             body: JSON.stringify(aulas_json),
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${localStorage.getItem("token")}`
             }
         })
+}
+
+export async function alterarAulasTreinamento(id_treinamento,aulas,alunos,ids_aulas_deletadas_ou_nao,ids_alunos_deletados_ou_nao){
+    
+    let aulas_sem_id = []
+    console.log(ids_alunos_deletados_ou_nao)
+    aulas.forEach(
+        aula=>{
+            if(!aula.id){
+                aulas_sem_id.push(aula)
+            }else{
+                console.log(aula.id)
+                ids_aulas_deletadas_ou_nao.ids_aulas_nao_deletadas.push({"id":aula.id})
+                console.log(ids_aulas_deletadas_ou_nao)
+                ids_aulas_deletadas_ou_nao.ids_aulas_deletadas.forEach(
+                    id_aula_deletada =>{
+                        console.log(id_aula_deletada === aula.id)
+                        if(id_aula_deletada === aula.id){
+                            ids_aulas_deletadas_ou_nao.ids_aulas_nao_deletadas.splice(ids_alunos_deletados_ou_nao.ids_aulas_nao_deletadas.indexOf((aula.id)),1)
+                        }    
+                    }
+                )
+            }
+        } 
+    )
+    
+    alunos.forEach(
+        aluno=> {
+            ids_alunos_deletados_ou_nao.ids_alunos_nao_deletados.push({"id":aluno.id})           
+        }
+    )
+
+    console.log(ids_aulas_deletadas_ou_nao)
+    await deleteAulas(ids_aulas_deletadas_ou_nao)
+    await postAulas(aulas_sem_id,alunos)
+    putAlunosAulas(ids_aulas_deletadas_ou_nao.ids_aulas_nao_deletadas, ids_alunos_deletados_ou_nao.ids_alunos_nao_deletados,ids_alunos_deletados_ou_nao.ids_alunos_deletados)
+
 }

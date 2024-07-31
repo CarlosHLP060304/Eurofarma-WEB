@@ -15,3 +15,19 @@ export function getAlunosByTreinamento(id_treinamento) {
     )
     return response
 }
+
+export async function deleteUsuarios(id_treinamento){
+    const usuarios_banco = await getAlunosByTreinamento(id_treinamento)
+    
+    usuarios_banco.forEach(usuario => {
+        fetch(`http://localhost:8080/usuario/treinamento/${id_treinamento}`,
+            {
+                method:"DELETE",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`
+                }
+            })
+      
+    });
+}

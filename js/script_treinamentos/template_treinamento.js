@@ -117,19 +117,23 @@ export function TreinamentoBody(props,id_treinamento){
     
 }
 
-export function exibirAlunos(alunos_html,alunos){
+export function exibirAlunos(alunos){
+    const alunos_html = document.querySelector("#alunos-lista")
+
     let id = 0
     alunos_html.innerHTML = alunos.map((aluno)=>
-        `<li>${aluno}<span class="remove-btn" id_aluno=${id++}>❌</span></li>` 
+        `<li>${aluno.exibicao}<span class="remove-btn" id_aluno=${id++} id_aluno_banco=${aluno.id}>❌</span></li>` 
     ).join("")
     //console.log(alunos_html)
 }
 
-export function exibirApostilas(apostilas_html,apostilas){
+export function exibirApostilas(apostilas){
+    const apostilas_html = document.querySelector("#apostilas")
     let id = 0
         
             apostilas_html.innerHTML =  apostilas.map((apostila)=>
-                `<li><a href=${apostila} target="_blank">${apostila}</a><span class="remove-btn" id_apostila=${id++}>❌</span></li>` 
+
+                `<li><a href=${apostila} target="_blank">${apostila.link}</a><span class="remove-btn" id_apostila=${id++} id_apostila_banco=${apostila.id}>❌</span></li>` 
             ).join("")
         
     
@@ -138,14 +142,15 @@ export function exibirApostilas(apostilas_html,apostilas){
     //console.log(apostilas_html)
 }
 
-export function exibirAulas(modalidade,aulas_html,aulas){
+export function exibirAulas(modalidade,aulas){
+    const aulas_html = document.querySelector("#lista_aulas")
     let id = 0
     console.log(modalidade.value)
     if(modalidade.value.toLowerCase() === "online"){
         aulas_html.innerHTML = aulas.map((aula)=>
             
             `
-                <li>Aula:${aula.nome}  / Link para aula: <a href=${aula.link} target="_blank">${aula.link}</a> / Duração:${aula.duracao} min<span class="remove-btn" id_aula=${id++}>❌</span></li>
+                <li>Aula:${aula.nome}  / Link para aula: <a href=${aula.link} target="_blank">${aula.link}</a> / Duração:${aula.duracao} min<span class="remove-btn" id_aula=${id++} id_aula_banco=${aula.id}>❌</span></li>
                 </br>
             ` 
         ).join("")
