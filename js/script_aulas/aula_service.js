@@ -29,8 +29,8 @@ export async function postAulas(aulas,alunos){
 
 
 export async function deleteAulas(ids_aulas_deletadas_ou_nao){
-    ids_aulas_deletadas_ou_nao.ids_aulas_deletadas.forEach(id_aula_deletada => {
-        fetch(`http://localhost:8080/aula/${id_aula_deletada.id}`,
+    let responses = ids_aulas_deletadas_ou_nao.ids_aulas_deletadas.map(id_aula_deletada => {
+        return fetch(`http://localhost:8080/aula/${id_aula_deletada.id}`,
             {
                 method:"DELETE",
                 headers: {
@@ -40,6 +40,7 @@ export async function deleteAulas(ids_aulas_deletadas_ou_nao){
             })
       
     });
+    return await Promise.all(responses)
 }
 
 async function putAlunosAulas(ids_aulas_nao_deletadas,ids_alunos_nao_deletados,ids_alunos_deletados){
@@ -49,7 +50,7 @@ async function putAlunosAulas(ids_aulas_nao_deletadas,ids_alunos_nao_deletados,i
         "alunos_deletados": ids_alunos_deletados
     }
     console.log(aulas_json)
-    await fetch("http://localhost:8080/aula/users/edit",
+    return await fetch("http://localhost:8080/aula/users/edit",
         {
             method:"PUT",
             body: JSON.stringify(aulas_json),
@@ -89,10 +90,10 @@ export async function alterarAulasTreinamento(id_treinamento,aulas,alunos,ids_au
             ids_alunos_deletados_ou_nao.ids_alunos_nao_deletados.push({"id":aluno.id})           
         }
     )
-
+    const lista_responses = []
     console.log(ids_aulas_deletadas_ou_nao)
-    await deleteAulas(ids_aulas_deletadas_ou_nao)
-    await postAulas(aulas_sem_id,alunos)
-    putAlunosAulas(ids_aulas_deletadas_ou_nao.ids_aulas_nao_deletadas, ids_alunos_deletados_ou_nao.ids_alunos_nao_deletados,ids_alunos_deletados_ou_nao.ids_alunos_deletados)
-
+    lista_responses.push(await deleteAulas(ids_aulas_deletadas_ou_nao))
+    lista_responses.push(await postAulas(aulas_sem_id,alunos))
+    lista_responses.push( await putAlunosAulas(ids_aulas_deletadas_ou_nao.ids_aulas_nao_deletadas, ids_alunos_deletados_ou_nao.ids_alunos_nao_deletados,ids_alunos_deletados_ou_nao.ids_alunos_deletados))   
+    return Promise.all(lista_responses)
 }

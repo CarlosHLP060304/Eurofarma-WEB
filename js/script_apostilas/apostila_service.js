@@ -36,7 +36,7 @@ export async function postApostilas(apostilas,treinamento_id){
 
 
 export async function deleteApostilas(ids_apostilas_deletadas_ou_nao){
-    ids_apostilas_deletadas_ou_nao.ids_apostilas_deletadas.forEach(apostila => {
+    let responses = ids_apostilas_deletadas_ou_nao.ids_apostilas_deletadas.map(apostila => {
         console.log(apostila)
         fetch(`http://localhost:8080/apostila/${apostila.id}`,{
             method: "DELETE",
@@ -46,11 +46,13 @@ export async function deleteApostilas(ids_apostilas_deletadas_ou_nao){
                 },
         })
     });    
+    return await Promise.all(responses)
 }
 
 export async function alterarApostilasTreinamento(id_treinamento,apostilas,ids_apostilas_deletadas_ou_nao){
     console.log(ids_apostilas_deletadas_ou_nao)
     let apostilas_sem_id = []
+    let lista_responses = []
     apostilas.forEach(
         apostila=>{
             if(!apostila.id){
@@ -58,6 +60,7 @@ export async function alterarApostilasTreinamento(id_treinamento,apostilas,ids_a
             }
         } 
     )
-    await deleteApostilas(ids_apostilas_deletadas_ou_nao)
-    postApostilas(apostilas_sem_id,id_treinamento)
+    lista_responses.push(await deleteApostilas(ids_apostilas_deletadas_ou_nao))
+    lista_responses.push(await postApostilas(apostilas_sem_id,id_treinamento))    
+    return await Promise.all(lista_responses)
 }

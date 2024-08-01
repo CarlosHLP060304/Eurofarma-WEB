@@ -121,7 +121,7 @@ export async function putTreinamento(id_treinamento,ids_aulas_deletadas_ou_nao,i
     console.log(alunos)
     console.log(treinamento)
 
-    await fetch(`http://localhost:8080/treinamento/${id_treinamento}`,{
+    const response_treinamento= await fetch(`http://localhost:8080/treinamento/${id_treinamento}`,{
         method:"PUT",
         body: JSON.stringify(treinamento),
         headers: {
@@ -137,8 +137,50 @@ export async function putTreinamento(id_treinamento,ids_aulas_deletadas_ou_nao,i
         
     });
 
-    await alterarAulasTreinamento(id_treinamento,aulas,alunos,ids_aulas_deletadas_ou_nao,ids_alunos_deletados_ou_nao)
-    alterarApostilasTreinamento(id_treinamento,apostilas,ids_apostilas_deletadas_ou_nao)
+    const responses_aula = await alterarAulasTreinamento(id_treinamento,aulas,alunos,ids_aulas_deletadas_ou_nao,ids_alunos_deletados_ou_nao)
+    const responses_apostilas =  await alterarApostilasTreinamento(id_treinamento,apostilas,ids_apostilas_deletadas_ou_nao)
+
+    console.log(response_treinamento)
+    console.log(responses_aula)
+    console.log(responses_apostilas)
+
+    let resultadoFetchAulas = true
+    let resultadoFetchApostilas = true
+    
+
+    responses_aula[0].forEach(
+        response_aula => {
+            if(!response_aula.ok){
+                resultadoFetchAulas = false
+            }
+        }
+    )
+
+
+    if(!responses_aula[1].ok || !responses_aula[2].ok){
+        resultadoFetchAulas = false
+    }
+
+    responses_apostilas[0].forEach(
+        response_apostila=>{
+            if(!response_apostila.ok){
+                resultadoFetchApostilas = false
+            }
+        }
+    )
+    responses_apostilas[1].forEach(
+        response_apostila=>{
+            if(!response_apostila.ok){
+                resultadoFetchApostilas = false
+            }
+        }
+    )
+
+    if(response_treinamento.ok,resultadoFetchAulas,resultadoFetchApostilas){
+        window.location.href = `/pages/listarTreinamento.html` 
+    }
+
+
 }
 
 export function deleteTreinamento(id){
