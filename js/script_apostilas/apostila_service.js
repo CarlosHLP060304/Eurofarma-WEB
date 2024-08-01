@@ -10,7 +10,7 @@ export function getApostilas(id) {
 
 export async function postApostilas(apostilas,treinamento_id){
     console.log(apostilas)
-    apostilas.forEach(apostila => {
+    let promises = apostilas.map(apostila => {
         console.log(apostila)
         let apostila_json = {
             "link": apostila.link,
@@ -18,7 +18,7 @@ export async function postApostilas(apostilas,treinamento_id){
                 "id":treinamento_id
             }
         } 
-        fetch("http://localhost:8080/apostila",{
+        return fetch("http://localhost:8080/apostila",{
             method: "POST",
             headers:
                 {   'Content-Type': 'application/json',
@@ -27,8 +27,12 @@ export async function postApostilas(apostilas,treinamento_id){
             body: JSON.stringify(apostila_json)
         })
     });
-    
+    console.log(promises)
+    return await Promise.all(promises)
 }
+
+
+
 
 
 export async function deleteApostilas(ids_apostilas_deletadas_ou_nao){

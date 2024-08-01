@@ -1,8 +1,6 @@
 import { alterarApostilasTreinamento, postApostilas } from "../script_apostilas/apostila_service.js"
 import { alterarAulasTreinamento, postAulas } from "../script_aulas/aula_service.js"
 
-
-
 export function getTreinamentos(){
     let response =  fetch("http://localhost:8080/treinamento",{
         method:"GET",
@@ -77,7 +75,8 @@ export async function postTreinamento(){
     console.log(alunos)
     console.log(treinamento)
     
-    let response = await fetch("http://localhost:8080/treinamento",{
+
+    let response_treinamento = await fetch("http://localhost:8080/treinamento",{
         method:"POST",
         body: JSON.stringify(treinamento),
         headers: {
@@ -85,7 +84,7 @@ export async function postTreinamento(){
             'Authorization': `Bearer ${localStorage.getItem("token")}`
         },
     })
-    let treinamento_json = await response.json()
+    let treinamento_json = await response_treinamento.json()
     console.log(treinamento_json)
 
     aulas.forEach(aula => {
@@ -93,12 +92,25 @@ export async function postTreinamento(){
             "id" : treinamento_json.id
         }
     });
-    postAulas(aulas,alunos)
-    postApostilas(apostilas,treinamento_json.id)
+    let response_aulas = await postAulas(aulas,alunos)
+    let response_apostilas = await postApostilas(apostilas,treinamento_json.id)
+    let  resultadoFetchApostilas = true
+    let funcResultadoFetchApostilas =()=>{
+        response_apostilas.forEach(
+            response_apostila=>{ 
+                    if(!response_apostila.ok){
+                        resultadoFetchApostilas = false
+                    }
 
+            })
+    } 
+    funcResultadoFetchApostilas()
+    console.log(resultadoFetchApostilas)
+    if(response_treinamento.ok && response_aulas.ok && resultadoFetchApostilas){
+        window.location.href = "/pages/listarTreinamento.html"
+    }
     
 }
-
 
 export async function putTreinamento(id_treinamento,ids_aulas_deletadas_ou_nao,ids_alunos_deletados_ou_nao,ids_apostilas_deletadas_ou_nao){
     let local_storage_treinamento = JSON.parse(localStorage.getItem("treinamento"))
@@ -128,7 +140,6 @@ export async function putTreinamento(id_treinamento,ids_aulas_deletadas_ou_nao,i
     await alterarAulasTreinamento(id_treinamento,aulas,alunos,ids_aulas_deletadas_ou_nao,ids_alunos_deletados_ou_nao)
     alterarApostilasTreinamento(id_treinamento,apostilas,ids_apostilas_deletadas_ou_nao)
 }
-
 
 export function deleteTreinamento(id){
     fetch(`http://localhost:8080/treinamento/${id}`,{

@@ -15,7 +15,7 @@ export async function postAulas(aulas,alunos){
         "aulas": aulas,
         "alunos":alunos
     }
-    await fetch("http://localhost:8080/aula",
+    return await fetch("http://localhost:8080/aula",
         {
             method:"POST",
             body: JSON.stringify(aulas_json),
@@ -24,6 +24,7 @@ export async function postAulas(aulas,alunos){
                 'Authorization': `Bearer ${localStorage.getItem("token")}`
             }
         })
+    
 }
 
 
