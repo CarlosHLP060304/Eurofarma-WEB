@@ -7,6 +7,8 @@ const btn_adicionar_questao = document.querySelector("#btn-adicionar-questao")
 let questoes = []
 function QuestaoObjetiva(){
     return `
+        <label>Digite a pergunta da questão:</label>
+        <input type="text" id="pergunta">
         <label>Digite a quantidade de alternativas:</label>
         <input type="number" placeholder="5" id="quantidade_alternativas">
         <button class="btn btn-info" id="exibir_alternativas">Exibir</button>
@@ -30,14 +32,16 @@ btn_adicionar_questao.addEventListener("click",()=>{
     let dadosQuestao = {}
     let alternativas = []
     let numero_alternativa = 0
+    console.log(pop_up_criacao_questao.querySelectorAll("[alternativa]"))
     pop_up_criacao_questao.querySelectorAll("[alternativa]").forEach(
         alternativa => {
             numero_alternativa++
-            alternativas.push(alternativa)
+            alternativas.push(alternativa.value)
         }
     )
+    dadosQuestao["pergunta"] = document.querySelector("#pergunta").value
     dadosQuestao["alternativas"] = alternativas
-    dadosQuestao["resposta"] = document.querySelector("#btn-adicionar-questao").value
+    dadosQuestao["resposta"] = document.querySelector("#resposta").value
     questoes.push(dadosQuestao) 
     console.log(questoes)
     exibirQuestoes(questoes)
@@ -62,7 +66,7 @@ tipo_questao.addEventListener("change",()=>{
                 document.querySelector("#objetiva").innerHTML = `
                 ${alternativas}
                 <p>Digite a resposta correta:</p>
-                <input type="text" name="resposta">`
+                <input type="text" name="resposta" id="resposta">`
             }
         })
     }else{
