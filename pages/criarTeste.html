@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Teste</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/Style.css">
+    <link rel="shortcut icon" href="../images/logo.png" type="image/x-icon">
+</head>
+<body>
+    <main>
+        <div id="navbar-placeholder"></div>
+        <h1>Criar Teste</h1>
+        <section>
+            <h2 class="text-center">Questões</h2>
+            <div class="d-flex justify-content-center p-2">
+                <button class="btn btn-success" id="btn_criar_questao">Criar questão</button>
+            </div>
+            <ul class="d-flex justify-content-center p-2 flex-column" id="questoes">
+                
+            </ul>
+            <div class="pop-up-criacao-questao p-2 d-none" id="pop_up_criacao_questao">
+                <div class="d-flex">
+                    <h3>Adicionar Questão</h3>
+                    <button type="button" class="btn" id="close_pop_up_adicionar_questao">❌</button>
+                </div>
+                <select name="tipo_questao" id="tipo_questao">
+                    <option value="">Tipo de Questão</option>
+                    <!-- <option value="dissertativa">Dissertativa</option> -->
+                    <option value="objetiva">Múltipla Escolha</option>
+                </select>
+               
+               <div id="div_criacao_questao_especificada">
+
+               </div>
+                <button class="btn btn-success" id="btn-adicionar-questao">Adicionar Questão</button>
+            </div>
+        </section>
+    </main>
+    <style>
+        .pop-up-criacao-questao{
+            margin: 0 0 0 40%;
+            border: #000 solid 2px;
+            width: 20%; 
+        }
+        .pop-up-criacao-questao *{
+            margin: 5px 0;
+        }
+    </style>
+    <script src="../js/teste.js"></script>
+    <script src="../js/script_teste/teste.js"></script>
+</body>
+</html>

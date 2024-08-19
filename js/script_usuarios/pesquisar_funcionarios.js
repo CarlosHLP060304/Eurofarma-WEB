@@ -12,6 +12,7 @@ getFuncionarios().then(
                                     <tr id_aluno=${dado.id} class="tr-body">
                                         <td>${dado.nome}</td>
                                         <td>${dado.cpf}</td>
+                                        <td>${dado.re}</td>
                                       </tr>` 
                         }
                         
@@ -27,4 +28,8 @@ getFuncionarios().then(
     )
 
 
-
+document.querySelector("#btn_pesquisa_funcionario").addEventListener("click",()=>{
+    let pesquisa= document.querySelector("#pesquisa_funcionario").value
+    console.log(window.location.search)
+    window.location.search = `query=${pesquisa}`
+})
