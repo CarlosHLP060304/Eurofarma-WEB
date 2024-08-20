@@ -12,6 +12,9 @@
     <main>
         <div id="navbar-placeholder"></div>
         <h1>Criar Teste</h1>
+        <select name="select_treinamento" id="select_treinamento">
+            
+        </select>
         <section>
             <h2 class="text-center">Questões</h2>
             <div class="d-flex justify-content-center p-2">
@@ -37,18 +40,23 @@
                 <button class="btn btn-success" id="btn-adicionar-questao">Adicionar Questão</button>
             </div>
         </section>
+        <div class="d-flex justify-content-center">
+            <button button class="btn btn-success" id="btn_adicionar_questionario">Adicionar Questionário</button>
+        </div>
     </main>
-    <style>
+    <style>   
         .pop-up-criacao-questao{
-            margin: 0 0 0 40%;
+            margin: 0 0 10% 40%;
+            position: absolute;
             border: #000 solid 2px;
             width: 20%; 
+            background-color: aqua;
         }
         .pop-up-criacao-questao *{
             margin: 5px 0;
         }
     </style>
     <script src="../js/teste.js"></script>
-    <script src="../js/script_teste/teste.js"></script>
+    <script src="../js/script_teste/teste.js" type="module"></script>
 </body>
 </html>
