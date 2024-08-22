@@ -91,8 +91,21 @@ function exibirQuestoes(questoes){
                 questao=>
                     `
                     <li>
-                    <h3>Questão ${questoes.indexOf(questao)}</h3>
-                    <span>${JSON.stringify(questao)}</span>
+                    <h3>Questão ${questoes.indexOf(questao)+1}</h3>
+                    <ul>
+                        <li><strong>Pergunta:</strong> ${questao.pergunta}</li>
+                        <li>
+                        <strong>Alternativas:</strong>
+                            <ol>
+                                ${questao.alternativas.map(
+                                    alternativa=>{
+                                        return `<li>${alternativa}</li>`    
+                                    }
+                                ).join("")}
+                            </ol>
+                        </li>
+                        <li><strong>Resposta:</strong> ${questao.resposta}</li>
+                    </ul>
                     </li>
                 `
             ).join("")
@@ -106,9 +119,13 @@ async function exibirTreinamentos(){
     console.log(treinamentos)
     select_treinamento.innerHTML = `
         ${treinamentos.map(
-            treinamento => `
+            treinamento => {
+            if(treinamento.ativo == true){
+               return `
                 <option value=${treinamento.id}>${treinamento.nome}</option>
             `
+            }}
+               
         )}
     `
 }
