@@ -9,20 +9,22 @@
 <body>
     <div id="navbar-placeholder"></div>
     <main class="d-flex flex-column">
+        <h1 class="text-center">Gerar QRCode</h1>
         <div class="d-flex flex-column  align-items-center justify-content-center">
-            <select name="nome_aula" id="nome_aula" class="my-4 mx-3" style="width: 20%;">
-                <option value="">Treinamento 1</option>
-                <option value="">Treinamento 2</option>
+            <select name="select_treinamento" id="select_treinamento" class="my-4 mx-3" style="width: 20%;">
+                
             </select>
-            <img src="../images/qrcode.png" alt="" width="10%"> 
-            <p>ou</p>
+            <img src="" alt="" width="10%" id="qr_code"> 
+            <button id="btn_gerar_qrcode" class="btn btn-info my-5">Gerar QRCode</button>
+            <!-- <p>ou</p>
             <p>Acesse o link: </p>
-            <a href="https://google.com">https://google.com</a>
+            <a href="https://google.com">https://google.com</a> -->
         </div>
     </main>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="../js/teste.js"></script>
+    <script type="module" src="../js/script_qrcode/script_qrcode.js"></script>
 </body>
 </html>
