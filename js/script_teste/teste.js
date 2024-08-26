@@ -14,11 +14,15 @@ let questionario = {}
 
 function QuestaoObjetiva(){
     return `
-        <label>Digite a pergunta da questão:</label>
+        <label>Digite a pergunta da questão: </label>
+        <br>
         <input type="text" id="pergunta">
+        <br>
         <label>Digite a quantidade de alternativas:</label>
+        <br>
         <input type="number" placeholder="5" id="quantidade_alternativas">
         <button class="btn btn-info" id="exibir_alternativas">Exibir</button>
+        <br>
         <div id="objetiva">
             
         </div>
