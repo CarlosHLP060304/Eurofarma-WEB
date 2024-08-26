@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pesquisar funcionários</title>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../css/Style.css">
+    <link rel="stylesheet" href="../css/pesquisarFuncionarios.css">
+</head>
+<body>
+    <div id="navbar-placeholder"></div>
+    <div class="container">
+        <h1>Pesquisar Funcionários</h1>
+        <div class="d-flex justify-content-center align-items-center div-search-funcionario mb-3">
+            <input type="search" name="pesquisa_funcionario" id="pesquisa_funcionario" class="search-funcionario p-2" placeholder="Pesquisar por nome, re ou cpf do funcionário" style="width: 100%;">
+            <button type="button" class="btn" id="btn_pesquisa_funcionario">🔎</button>
+        </div>
+        <table class="table table-dark-blue">
+            <thead>
+                <tr>
+                    <th>Nome do Funcionário</th>
+                    <th>CPF</th>
+                    <th>RE</th>
+                </tr>
+            </thead>
+            <tbody>
+              
+            </tbody>
+        </table>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="../js/teste.js"></script>
+    <script src="../js/script_usuarios/pesquisar_funcionarios.js" type="module"></script>
+    <div vw class="enabled">
+        <div vw-access-button class="active"></div>
+        <div vw-plugin-wrapper>
+          <div class="vw-plugin-top-wrapper"></div>
+        </div>
+      </div>
+      <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+      <script>
+        new window.VLibras.Widget('https://vlibras.gov.br/app');
+      </script>
+</body>
+</html>

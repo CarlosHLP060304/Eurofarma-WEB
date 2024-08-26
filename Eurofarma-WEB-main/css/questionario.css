@@ -1,0 +1,108 @@
+/* Elementos gerais */
+
+
+.btn {
+    width: 40%;
+}
+
+main {
+    background: #fff;
+    margin: 20px auto;
+    padding: 30px 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.425);
+}
+
+/* Estilos para a criação e exibição das questões */
+#questoes {
+    list-style: none;
+    padding: 0;
+}
+
+#questoes > li {
+    border: 2px solid #00000029;
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 15px;
+    margin-right: 5px;
+    list-style-type: none;
+}
+
+.questao-item {
+    flex: 1 0 30%;
+    max-width: 30%;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+#btn_criar_questao,
+#btn_adicionar_questionario {
+    margin-top: 10px;
+}
+
+/* Estilos para a criação de uma nova questão (pop-up) */
+.pop-up-criacao-questao {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: #0000004f solid 2px;
+    width: 80%;
+    max-width: 500px;
+    background-color: #f8f9fa;
+    padding: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    border-radius: 8px;
+}
+
+.pop-up-criacao-questao h3 {
+    margin-right: auto;
+}
+
+.pop-up-criacao-questao .btn {
+    margin-left: auto;
+}
+
+.pop-up-criacao-questao select,
+.pop-up-criacao-questao button {
+    margin-top: 10px;
+    width: 100%;
+}
+
+/* Estilos para inputs específicos */
+#quantidade_alternativas,
+#pergunta,
+#objetiva input,
+#resposta {
+    width: 100%;
+}
+
+
+
+/* Estilo do Título */
+h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Estilo do Select de Treinamento */
+#select_treinamento {
+    display: block;
+    margin: 0 auto 20px auto;
+    width: 50%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+
+
+h2 {
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
