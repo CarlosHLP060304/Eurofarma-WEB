@@ -1,76 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Criar Teste</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/Style.css">
+    <link rel="stylesheet" href="../css/questionario.css">
     <link rel="shortcut icon" href="../images/logo.png" type="image/x-icon">
 </head>
+
 <body>
-    <main>
-        <div id="navbar-placeholder"></div>
-        <h1>Criar Questionário</h1>
-        <select name="select_treinamento" id="select_treinamento">
-            
+    <div id="navbar-placeholder"></div>
+    <div class="container">
+        <h1 class="text-center fs-5 my-3">Criar Teste</h1>
+        <select name="select_treinamento" id="select_treinamento" class="form-select">
+            <!-- Opções serão carregadas dinamicamente -->
         </select>
-        <section>
-            <h2 class="text-center">Questões</h2>
-            <div class="d-flex justify-content-center p-2">
-                <button class="btn btn-success" id="btn_criar_questao">Criar questão</button>
+        <main>
+            <h2 class="text-center">Adicionar Questões</h2>
+            <div class="d-flex justify-content-center py-2">
+                <button class="btn btn-primary" id="btn_criar_questao">Add questão</button>
             </div>
-            <ul class="d-flex justify-content-center p-2 flex-column" id="questoes">
-                
+            <ul class="d-flex flex-wrap justify-content-center py-2" id="questoes">
+                <!-- Itens de lista gerados por JS -->
             </ul>
-            <div class="pop-up-criacao-questao p-2 d-none" id="pop_up_criacao_questao">
-                <div class="d-flex">
+            <div class="pop-up-criacao-questao p-3 m-2 d-none" id="pop_up_criacao_questao">
+                <div class="d-flex justify-content-between">
                     <h3>Adicionar Questão</h3>
-                    <button type="button" class="btn" id="close_pop_up_adicionar_questao">❌</button>
+                    <i type="button" class="" id="close_pop_up_adicionar_questao">❌</i>
                 </div>
-                <select name="tipo_questao" id="tipo_questao">
+                <select name="tipo_questao" id="tipo_questao" class="form-select my-2">
                     <option value="">Tipo de Questão</option>
-                    <!-- <option value="dissertativa">Dissertativa</option> -->
                     <option value="objetiva">Múltipla Escolha</option>
                 </select>
-               
-               <div id="div_criacao_questao_especificada">
-
-               </div>
-                <button class="btn btn-success" id="btn-adicionar-questao">Adicionar Questão</button>
+                <div id="div_criacao_questao_especificada"></div>
+                <button class="btn btn-primary mt-3" id="btn-adicionar-questao">Adicionar Questão</button>
             </div>
-        </section>
-        <div class="d-flex justify-content-center">
-            <button button class="btn btn-success" id="btn_adicionar_questionario">Adicionar Questionário</button>
-        </div>
-    </main>
-    <style>   
-        .pop-up-criacao-questao{
-            margin: 0 0 10% 40%;
-            position: absolute;
-            border: #000 solid 2px;
-            width: 20%; 
-            background-color: aqua;
-        }
-        .pop-up-criacao-questao *{
-            margin: 5px 0;
-        }
-    </style>
+            <div class="d-flex justify-content-center">
+                <button class="btn btn-success mt-3" id="btn_adicionar_questionario">Criar Questionário</button>
+            </div>
+        </main>
+    </div>
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="../js/teste.js"></script>
     <script src="../js/script_teste/teste.js" type="module"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
     <div vw class="enabled">
         <div vw-access-button class="active"></div>
         <div vw-plugin-wrapper>
-          <div class="vw-plugin-top-wrapper"></div>
+            <div class="vw-plugin-top-wrapper"></div>
         </div>
-      </div>
-      <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
-      <script>
+    </div>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
         new window.VLibras.Widget('https://vlibras.gov.br/app');
-      </script>
+    </script>
 </body>
+
 </html>
