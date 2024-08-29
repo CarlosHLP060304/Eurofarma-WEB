@@ -19,13 +19,26 @@ export function getTreinamento(id){
     return response
 }
 
-export function calculaDuracaoAula(data_inicio,data_fim){
-    let dataInicio = new Date(data_inicio)
-    let dataFim = new Date(data_fim)
-    let totalMinutosInicio = dataInicio.getHours()*60 + dataInicio.getMinutes()
-    let totalMinutosFim = dataFim.getHours()*60 + dataFim.getMinutes() 
-    let diferenca_minutos = totalMinutosFim - totalMinutosInicio
-    return diferenca_minutos 
+export function calculaDuracaoTreinamento(treinamento){
+    if(treinamento.formato === "PRESENCIAL"){
+        let dataInicio = new Date(treinamento.dataInicio)
+        let dataFim = new Date(treinamento.dataFim)
+        let totalMinutosInicio = dataInicio.getHours()*60 + dataInicio.getMinutes()
+        let totalMinutosFim = dataFim.getHours()*60 + dataFim.getMinutes() 
+        let diferenca_minutos = totalMinutosFim - totalMinutosInicio
+        return diferenca_minutos 
+    }
+}
+
+export function calculaDuracaoAula(treinamento){
+    if(treinamento.formato === "PRESENCIAL"){
+        let dataInicio = new Date(treinamento.dataInicio)
+        let dataFim = new Date(treinamento.dataFim)
+        let totalMinutosInicio = dataInicio.getHours()*60 + dataInicio.getMinutes()
+        let totalMinutosFim = dataFim.getHours()*60 + dataFim.getMinutes() 
+        let diferenca_minutos = totalMinutosFim - totalMinutosInicio
+        return diferenca_minutos 
+    }
 }
 
 function returnLocalOnlyTreinamento(treinamento){
@@ -47,13 +60,14 @@ function returnLocalAulas(treinamento){
                 "id": treinamento.aulas[0] ? treinamento.aulas[0].id : "",
                 "sala": treinamento.sala,
                 "nome": treinamento.nome,
-                "duracao": calculaDuracaoAula(treinamento.dataInicio,treinamento.dataFim)  
+                "duracao": calculaDuracaoAula(treinamento)
             }
         ]
         console.log(aulas)
     }
     return aulas
 }
+
 
 function returnLocalAlunos(treinamento){
     console.log(treinamento)

@@ -1,9 +1,10 @@
-import { deleteTreinamento, getTreinamentos } from "./treinamento_service.js"
+import { calculaDuracaoAula, calculaDuracaoTreinamento, deleteTreinamento, getTreinamentos } from "./treinamento_service.js"
 import {criarExcelDetalhamentoTreinamento} from "../script_excel/excel_service.js"
 
 getTreinamentos().then(
                     dados=> document.querySelector("tbody").innerHTML =  dados.content.map(
                         dado=>{
+                            console.log(dado)
                             if(dado.ativo == true){
                                return  ` 
                              <tr>
@@ -14,7 +15,7 @@ getTreinamentos().then(
                                 </td>
                                 <td>
                                 <div class="d-flex justify-content-center" >
-                                        ${dado.id}horas
+                                        ${calculaDuracaoTreinamento(dado)} min
                                     </div>
                                 </td>
                                 <td>
