@@ -210,7 +210,7 @@ function retornaListaUsuariosTreinamento(alunos){
     let alunos_treinamento = []
     alunos.forEach(aluno => {
         let dados_aluno_exibicao = {
-            "exibicao": `${aluno.nome} - ${aluno.cpf}`,
+            "exibicao": `Nome: ${aluno.nome} - RE: ${aluno.re} - CPF: ${aluno.cpf}`,
             "id": aluno.id                    
         }
         alunos_treinamento.push(dados_aluno_exibicao)

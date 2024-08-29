@@ -170,10 +170,14 @@ export function exibirAulas(modalidade,aulas){
 export function listarAlunosSelect(){
         getFuncionarios().then(data=>
             document.querySelector("#aluno").innerHTML = data.content.map(
-                element=>
-                    `
-                        <option value="${element.id}-${element.nome}-${element.cpf}">${element.nome}-${element.cpf}</option>
-                    ` 
+                element=>{
+                    if(element.tipo === "ALUNO"){
+                        return `
+                           <option value="${element.id}-${element.nome}-${element.cpf}">${element.nome}-${element.cpf}</option>
+                        ` 
+                    }
+
+                }
             )
         )
 }
