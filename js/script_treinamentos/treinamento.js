@@ -188,6 +188,7 @@ function carregarElementosDinamicos(dadosTreinamento){
             }
         }
     )
+
       
     escolheAcao(id_treinamento,aulas,apostilas,dados_alunos_json,ids_aulas_deletadas_ou_nao,ids_alunos_deletados_ou_nao,ids_apostilas_deletadas_ou_nao)
 
@@ -311,5 +312,7 @@ function guardaApostilasBancoDeletadasOuNao(btn,ids_apostilas_deletadas_ou_nao){
          ids_apostilas_deletadas_ou_nao.ids_apostilas_deletadas.push({"id":id_apostila_banco})
      }
 }
+
+
 
 carregarDadosHTML()

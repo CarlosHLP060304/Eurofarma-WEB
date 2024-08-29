@@ -2,11 +2,14 @@ import { getTreinamento } from "../script_treinamentos/treinamento_service.js";
 import { getAlunoById } from "../script_usuarios/aluno_service.js";
 
 export async function criarExcelDetalhamentoAluno(id_aluno) {
+    console.log(id_aluno)
+
     // Função para buscar aluno pelo ID
     let aluno = await getAlunoById(id_aluno);
 
     // Verifique os dados recebidos para garantir que estão corretos
     console.log(aluno);
+    console.log(aluno.re)
 
     // Envie a requisição para o backend
     fetch(`http://localhost:8080/excel/download/historicoAluno?id=${id_aluno}`, {

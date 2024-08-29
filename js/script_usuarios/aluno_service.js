@@ -31,3 +31,13 @@ export async function deleteUsuarios(id_treinamento){
       
     });
 }
+
+
+export async function getAlunoById(id_aluno){
+        let response = fetch(`http://localhost:8080/usuario/${id_aluno}`,{
+            method:"GET",
+        }).then(
+            response => response.json()
+        )
+        return response
+}
