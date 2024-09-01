@@ -61,10 +61,12 @@ function deletarItensLista() {
 }
 
 document.addEventListener("click",(e)=>{
-    if(e.target.id.startsWith("btn_baixar_excel_")){
-        let id_treinamento = e.target.id.split("btn_baixar_excel_")[1]
-        criarExcelDetalhamentoTreinamento(id_treinamento)
-    } 
+        // Verifica se o elemento clicado ou um de seus ancestrais é um botão com o id que começa com "btn_baixar_excel_"
+        const button = e.target.closest("button[id^='btn_baixar_excel_']");
+        if (button) {
+            let id_treinamento = button.id.split("btn_baixar_excel_")[1];
+            criarExcelDetalhamentoTreinamento(id_treinamento);
+        }
 })
 
 
