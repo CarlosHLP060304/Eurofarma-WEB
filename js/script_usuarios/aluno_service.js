@@ -32,6 +32,15 @@ export async function deleteUsuarios(id_treinamento){
     });
 }
 
+export async function getHistoricoAlunoTreinamentos(id_aluno){
+    const response_presencas_aluno = await fetch(`http://localhost:8080/treinamento/findByAluno/${id_aluno}`)
+    const presencas_aluno = await response_presencas_aluno.json() 
+    const dados_basicos_aluno = await getAlunoById(id_aluno)
+
+    let dadosAluno =  {presencas_aluno,dados_basicos_aluno} //une os dois objetos em um único
+    console.log(dadosAluno)
+    return dadosAluno
+}
 
 export async function getAlunoById(id_aluno){
         let response = fetch(`http://localhost:8080/usuario/${id_aluno}`,{
