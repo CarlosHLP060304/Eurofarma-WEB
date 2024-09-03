@@ -43,12 +43,13 @@ export async function deleteAulas(ids_aulas_deletadas_ou_nao){
     return await Promise.all(responses)
 }
 
-async function putAlunosAulas(ids_aulas_nao_deletadas,ids_alunos_nao_deletados,ids_alunos_deletados){
+async function putAlunosAulas(id_treinamento,ids_aulas_nao_deletadas,ids_alunos_nao_deletados,ids_alunos_deletados,ids_alunos_adicionados){
     let aulas_json = {
-        "aulas": ids_aulas_nao_deletadas,
-        "alunos":ids_alunos_nao_deletados,
-        "alunos_deletados": ids_alunos_deletados
+        "alunos_deletados": ids_alunos_deletados,
+        "alunos_adicionados": ids_alunos_adicionados,
+        "id_treinamento": parseInt(id_treinamento)
     }
+    console.log(ids_alunos_adicionados)
     console.log(aulas_json)
     return await fetch("http://localhost:8080/aula/users/edit",
         {
@@ -94,6 +95,9 @@ export async function alterarAulasTreinamento(id_treinamento,aulas,alunos,ids_au
     console.log(ids_aulas_deletadas_ou_nao)
     lista_responses.push(await deleteAulas(ids_aulas_deletadas_ou_nao))
     lista_responses.push(await postAulas(aulas_sem_id,alunos))
-    lista_responses.push( await putAlunosAulas(ids_aulas_deletadas_ou_nao.ids_aulas_nao_deletadas, ids_alunos_deletados_ou_nao.ids_alunos_nao_deletados,ids_alunos_deletados_ou_nao.ids_alunos_deletados))   
+    lista_responses.push( await putAlunosAulas(id_treinamento,ids_aulas_deletadas_ou_nao.ids_aulas_nao_deletadas, ids_alunos_deletados_ou_nao.ids_alunos_nao_deletados,ids_alunos_deletados_ou_nao.ids_alunos_deletados,ids_alunos_deletados_ou_nao.ids_alunos_adicionados))   
     return Promise.all(lista_responses)
 }
+
+
+

@@ -10,7 +10,7 @@ export function TreinamentoBody(props,id_treinamento){
     
                 <div class="form-group">
                     <label for="nome"><b>Nome do Treinamento:</b></label>
-                    <input type="text" id="nome" name="nome" value=${props.nome ? props.nome : ""}>
+                    <input type="text" id="nome" name="nome" value="${props.nome ? props.nome : ""}">
                 </div>
                 <div class="form-group">
                     <label for="formato"><b>Selecione o formato </b></label>
@@ -173,7 +173,7 @@ export function listarAlunosSelect(){
                 element=>{
                     if(element.tipo === "ALUNO"){
                         return `
-                           <option value="${element.id}-${element.nome}-${element.cpf}">${element.nome}-${element.cpf}</option>
+                           <option value="${element.id}-${element.nome}-${element.re}-${element.cpf}">Nome: ${element.nome} - RE: ${element.re} - CPF: ${element.cpf}</option>
                         ` 
                     }
 

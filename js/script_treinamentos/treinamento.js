@@ -3,7 +3,7 @@ import { getTreinamento } from "../script_treinamentos/treinamento_service.js"
 import { exibirAlunos, exibirApostilas, exibirAulas, listarAlunosSelect, TreinamentoBody } from "./template_treinamento.js"
 import { getAulas } from "../script_aulas/aula_service.js"
 import { getApostilas } from "../script_apostilas/apostila_service.js"
-import { getAlunosByTreinamento} from "../script_usuarios/aluno_service.js"
+import { adicionarAlunosNovos, getAlunosByTreinamento} from "../script_usuarios/aluno_service.js"
 
 let id_treinamento = window.location.search.split("=")[1]
 console.log(id_treinamento)
@@ -36,7 +36,7 @@ async function carregarDadosHTML(){
 function carregarElementosDinamicos(dadosTreinamento){
     const ids_aulas_deletadas_ou_nao = {
         ids_aulas_deletadas : [],
-        ids_aulas_nao_deletadas : []
+        ids_aulas_nao_deletadas : [],
     }
     const ids_apostilas_deletadas_ou_nao = {
         ids_apostilas_deletadas : [],
@@ -44,7 +44,8 @@ function carregarElementosDinamicos(dadosTreinamento){
     }
     const ids_alunos_deletados_ou_nao = {
         ids_alunos_deletados : [],
-        ids_alunos_nao_deletados : []
+        ids_alunos_nao_deletados : [],
+        ids_alunos_adicionados : []
     }
 
     const pop_up_aula= document.querySelector("#pop_up_aula")
@@ -57,7 +58,7 @@ function carregarElementosDinamicos(dadosTreinamento){
     let aulas = dadosTreinamento.aulas ? dadosTreinamento.aulas : []
     let apostilas = dadosTreinamento.apostilas ? dadosTreinamento.apostilas : []
     let alunos = dadosTreinamento.alunos ? retornaListaUsuariosTreinamento(dadosTreinamento.alunos) : []
-    
+
     const btns_adicionar= document.querySelectorAll("[btn_adicionar]")
     let dados_aluno = {}
     btns_adicionar.forEach(
@@ -86,11 +87,12 @@ function carregarElementosDinamicos(dadosTreinamento){
                     exibirAulas(modalidade,aulas)
                 }else{
                     dados_aluno = document.querySelector('#aluno').value
+                    adicionarAlunosNovos(dados_aluno,ids_alunos_deletados_ou_nao.ids_alunos_adicionados,id_treinamento) 
                     let dados_aluno_json = {
                         "id":dados_aluno.split("-")[0]
                     }
                     let dados_aluno_exibicao = {
-                        "exibicao": `${dados_aluno.split("-")[1]}  - ${dados_aluno.split("-")[2]}-${dados_aluno.split("-")[3]}`,
+                        "exibicao": `Nome: ${dados_aluno.split("-")[1]} - RE: ${dados_aluno.split("-")[2]} - CPF: ${dados_aluno.split("-")[3]}-${dados_aluno.split("-")[4]} `,
                         "id":dados_aluno_json.id                        
                     }
                     console.log(dados_aluno.split("-"))
@@ -157,10 +159,13 @@ function carregarElementosDinamicos(dadosTreinamento){
     document.querySelector("#btn_fechar_pop_up").addEventListener("click",()=>{
         pop_up_aula.classList.add("d-none")
     })
+
+
     listarAlunosSelect()   
     exibirApostilas(apostilas)
     exibirAlunos(alunos)
     exibirAulas(modalidade,aulas)
+
     document.addEventListener(
         "click",(e)=>{
             let btn = e.target 
@@ -300,7 +305,7 @@ function guardaAlunosBancoDeletadosOuNao(btn,ids_alunos_deletados_ou_nao){
     console.log("oiii")
     console.log(id_aluno_banco)
      if( id_aluno_banco !== "undefined"){
-         ids_alunos_deletados_ou_nao.ids_alunos_deletados.push({"id":parseInt(id_aluno_banco)})
+         ids_alunos_deletados_ou_nao.ids_alunos_deletados.push(parseInt(id_aluno_banco))
      }
 }
 

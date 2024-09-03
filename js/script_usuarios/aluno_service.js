@@ -16,6 +16,19 @@ export function getAlunosByTreinamento(id_treinamento) {
     return response
 }
 
+
+export async function adicionarAlunosNovos(aluno_adicionado,alunos_adicionados,id_treinamento){
+    const alunos_banco = await getAlunosByTreinamento(id_treinamento)
+    
+    const idProcurado = parseInt(aluno_adicionado.split("-")[0])
+    const usuarioEncontrado = alunos_banco.find(aluno => aluno.id === idProcurado);
+
+    if (!usuarioEncontrado) {
+        alunos_adicionados.push(idProcurado)
+    }
+}
+
+
 export async function deleteUsuarios(id_treinamento){
     const usuarios_banco = await getAlunosByTreinamento(id_treinamento)
     
@@ -38,7 +51,6 @@ export async function getHistoricoAlunoTreinamentos(id_aluno){
     const dados_basicos_aluno = await getAlunoById(id_aluno)
 
     let dadosAluno =  {presencas_aluno,dados_basicos_aluno} //une os dois objetos em um único
-    console.log(dadosAluno)
     return dadosAluno
 }
 
