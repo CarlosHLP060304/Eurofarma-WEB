@@ -9,6 +9,8 @@ const close_pop_up_adicionar_questao = document.querySelector("#close_pop_up_adi
 const btn_adicionar_questao = document.querySelector("#btn-adicionar-questao")
 const select_treinamento =  document.querySelector("#select_treinamento")
 const btn_adicionar_questionario =  document.querySelector("#btn_adicionar_questionario")
+const btn_close_pop_up = document.querySelector("#close_pop_up_questionario")
+const modal = document.querySelector("dialog")
 let questoes = []
 let questionario = {}
 
@@ -135,12 +137,30 @@ async function exibirTreinamentos(){
 }
 
 
-function guardarDadosDB(questoes){
-    btn_adicionar_questionario.addEventListener("click",()=>{
-        questionario["id_treinamento"] =  parseInt(select_treinamento.value)
-        questionario["questoes"] = questoes
+function guardarDadosDB(questoes) {
+    btn_adicionar_questionario.addEventListener("click", () => {
+        questionario["id_treinamento"] = parseInt(select_treinamento.value);
+        questionario["questoes"] = questoes;
+
         postQuestionario(questionario)
-    })
+            .then((resultado) => {
+               
+                if (resultado) {
+                    modal.showModal();
+
+                   
+                    const btn_close_pop_up = document.querySelector("#btn_close_pop_up");
+                    btn_close_pop_up.addEventListener("click", () => {
+                        modal.close(); 
+                    });
+                }
+            })
+            .catch((erro) => {
+                console.error("Erro ao criar questionário:", erro);
+            });
+    });
 }
+
+
 
 exibirTreinamentos()
