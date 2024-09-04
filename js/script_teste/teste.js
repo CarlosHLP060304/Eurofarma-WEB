@@ -143,17 +143,17 @@ function guardarDadosDB(questoes) {
         questionario["questoes"] = questoes;
 
         postQuestionario(questionario)
-            .then((resultado) => {
+            .then(() => {
                
-                if (resultado) {
+              
                     modal.showModal();
 
                    
-                    const btn_close_pop_up = document.querySelector("#btn_close_pop_up");
+                    const btn_close_pop_up = document.querySelector("#close_pop_up_questionario");
                     btn_close_pop_up.addEventListener("click", () => {
-                        modal.close(); 
+                        window.location.href="/pages/criarQuestionario.html" 
                     });
-                }
+                
             })
             .catch((erro) => {
                 console.error("Erro ao criar questionário:", erro);
