@@ -67,32 +67,11 @@ export function TreinamentoBody(props,id_treinamento){
                     <blockquote>apos buscar, clique sobre o aluno e aperte em "adicionar"</blockquote>
     
                 </div>
-
-                <fieldset id="selecionar_funcionarios" class="py-4">
-                    <label><b>Selecionar funcionários</b></label>
-                  
-                    <div class="d-flex">
-                        <select class="mx-2 p-0" style="border-radius: 5px;" id="select_tipo_pesquisa">
-                            <option value="setor">Setor</option>
-                            <option value="individual">Individualmente (CPF, RE ou Nome)</option>
-                        </select>
-                        <div id="pesquisa_selecionada">
-
-                        </div>
-                        <div class="d-flex justify-content-center align-items-center div-search-funcionario">
-                            <input type="search" name="pesquisa_funcionario" id="pesquisa_funcionario" class="search-funcionario p-2" placeholder="Pesquisar por nome, re ou cpf do funcionário" style="width: 100%;">
-                            <button type="button" class="btn" id="btn_pesquisa_funcionario">🔎</button>
-                        </div>
-                    </div>
-                    <ul id="lista_pesquisa">
-                        
-                    </ul>
-                </fieldset>
     
                 <!-- lista de aluno  -->
                 <div class="form-group">
                     <ul id="alunos-lista">
-
+                      
                     </ul>
     
                     <div class=" text-center">
@@ -223,3 +202,4 @@ function retornabotaoForm(id_treinamento){
 
 
 
+   

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhamento do Funcionario</title>
+    <!-- Link do Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/listarTreinamento.css">
+    <link rel="stylesheet" href="../css/detalhamento.css">
+
+</head>
+
+
+<body>
+
+ <div id="navbar-placeholder"></div>
+
+    <div class="container">
+        <div class="py-2 d-flex justify-content-end">
+            <button type="button" class="btn btn-sm d-flex align-items-center text-light" id="btn_baixar_excel" style="background-color: #217346;">
+                <span class="mr-2">Baixar Excel Histórico Aluno</span> 
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+                    <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
+                    <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708z"/>
+                  </svg>
+            </button>
+        </div>
+        
+        <h3 class="">Grade de treinamentos: </h3>
+        <h5 id="nome_funcionario"></h5>
+        <p class="mb-2">RE: <span id="re"></span></p>
+        <p class="mb-4">CPF: <span id="cpf"></span></p>
+        
+        <table class="table table-dark-blue" id="tabela-status">
+            <thead>
+                <tr>
+                    <th>Treinamento:</th>
+                    <th>Status:</th>
+                    <th>Data:</th>
+                </tr>
+            </thead>
+            <tbody id="listagem_treinamentos">
+               
+            </tbody>
+        </table>
+    </div>
+
+
+    <!-- // script para mudar de cor conforme os status -->
+
+    <script type="module" src="../js/script_usuarios/detalhamento_aluno.js"></script>
+        
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="../js/teste.js"></script>
+  
+</body>
+</html>
