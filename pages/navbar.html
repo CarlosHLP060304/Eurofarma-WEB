@@ -30,9 +30,13 @@
                         <i class="fas fa-chalkboard-teacher"></i><span class="mx-2"> Treinamentos</span>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown1">
-                        <a class="dropdown-item" href="./criarTreinamento.html">Criar</a> 
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="../pages/listarTreinamento.html">Listar</a>
+                        <a class="dropdown-item" href="./criarTreinamento.html">
+                            <i class="fas fa-plus"></i> Criar
+                        </a> 
+                        <div class="dropdown-divider dropdown-divider-custom"></div>
+                        <a class="dropdown-item" href="../pages/listarTreinamento.html">
+                            <i class="fas fa-list"></i> Listar
+                        </a>
                     </div>
                 </li>
                 <li class="nav-item ml-5">
@@ -52,8 +56,25 @@
                 </li>
             </ul>
             <div class="navbar-nav ml-auto d-flex align-items-center">
-                <img src="../images/User.jpg" class="rounded-circle" alt="Foto de Perfil" width="40" height="40">
-                <span class="mx-3 text-white fw-bold"><b>Carlos Ponchiroli</b></span>
+                <!-- Dropdown -->
+                <div class="dropdown">
+                    <a class="dropdown-toggle d-flex align-items-center text-white" href="#" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img src="../images/User.jpg" class="rounded-circle" alt="Foto de Perfil" width="40" height="40">
+                        <span class="mx-3 fw-bold"><b>Carlos Ponchiroli</b></span>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="#">
+                            <i class="fas fa-user"></i> Perfil
+                        </a>
+                        <a class="dropdown-item" href="#">
+                            <i class="fas fa-cogs"></i> Configurações
+                        </a>
+                        <div class="dropdown-divider dropdown-divider-custom"></div>
+                        <a class="dropdown-item" href="#">
+                            <i class="fas fa-sign-out-alt"></i> Deslogar
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </nav>
