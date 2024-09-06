@@ -64,3 +64,18 @@ body {
 .pop-up-aula div{
     padding: 10px;
 }
+
+.div-search-funcionario{
+    width: 100%;
+    border-radius: 5px;
+    border: solid black 2px;
+    background-color: #ffffff;
+}
+
+.search-funcionario{
+    width: 100%;
+    border: none;
+    outline: none;
+}
+
+>>>>>>> Stashed changes
