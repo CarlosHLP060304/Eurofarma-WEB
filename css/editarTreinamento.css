@@ -64,3 +64,18 @@ body {
 .pop-up-aula div{
     padding: 10px;
 }
+
+.div-search-funcionario{
+    width: 100%;
+    border-radius: 20px;
+    padding: 0px;
+    background-color: white;
+    border: solid black 2px;
+}
+
+.search-funcionario{
+    width: 100%;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+}

@@ -193,7 +193,10 @@ function carregarElementosDinamicos(dadosTreinamento){
             }
         }
     )
-
+    document.getElementById("pesquisa_funcionario").addEventListener("input", async function() {
+        let tipo_pesquisa = document.querySelector("#select_tipo_pesquisa").value
+        exibirPesquisaFuncionarios(tipo_pesquisa,this)
+    });
       
     escolheAcao(id_treinamento,aulas,apostilas,dados_alunos_json,ids_aulas_deletadas_ou_nao,ids_alunos_deletados_ou_nao,ids_apostilas_deletadas_ou_nao)
 
@@ -318,6 +321,40 @@ function guardaApostilasBancoDeletadasOuNao(btn,ids_apostilas_deletadas_ou_nao){
      }
 }
 
+
+async function exibirPesquisaFuncionarios(tipo_pesquisa,object){
+
+    const query = object.value;
+
+    try {
+        let response = null
+        if(tipo_pesquisa !== "setor"){
+            response = await fetch(`http://localhost:8080/usuario/research/cpf_re_nome?query=${query}`);
+        }else{
+            response = await fetch(`http://localhost:8080/usuario/setor/${query}`);
+        }
+        const data = await response.json();
+        console.log(data)
+        const list = document.querySelector("#lista_pesquisa");
+        list.innerHTML = `
+            ${data.map(item => {
+                return returnAlunos(item)
+            }).join(" ")
+            }
+        `
+
+    } catch (error) {
+        console.error('Erro ao buscar as sugestões:', error);
+    }
+}
+
+
+
+function returnAlunos(item){
+    if(item.tipo === "ALUNO"){
+        return `<li>Nome: ${item.nome} - RE: ${item.re} - CPF: ${item.cpf}</li> `
+    }
+}
 
 
 carregarDadosHTML()
