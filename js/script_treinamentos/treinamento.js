@@ -1,6 +1,6 @@
 import { postTreinamento, putTreinamento } from "./treinamento_service.js"
 import { getTreinamento } from "../script_treinamentos/treinamento_service.js"
-import { exibirAlunos, exibirApostilas, exibirAulas, listarAlunosSelect, TreinamentoBody } from "./template_treinamento.js"
+import { exibirAlunos, exibirApostilas, exibirAulas,exibirSelectSetores,returnMetodoDePesquisa, TreinamentoBody } from "./template_treinamento.js"
 import { getAulas } from "../script_aulas/aula_service.js"
 import { getApostilas } from "../script_apostilas/apostila_service.js"
 import { adicionarAlunosNovos, getAlunosByTreinamento} from "../script_usuarios/aluno_service.js"
@@ -9,7 +9,6 @@ let id_treinamento = window.location.search.split("=")[1]
 console.log(id_treinamento)
 
 let dadosTreinamento = {}
-
 
 async function getDadosTreinamento(id_treinamento){
     dadosTreinamento = await getTreinamento(id_treinamento)
@@ -53,6 +52,7 @@ function carregarElementosDinamicos(dadosTreinamento){
     const conteudo_pop_up =  document.querySelector("#conteudo-pop-up")
     const sessao_aulas =document.querySelector("#aulas")
     const sala = document.querySelector("#div_sala")
+    const select_tipo_pesquisa= document.querySelector("#select_tipo_pesquisa")
     let dados_alunos_json = dadosTreinamento.alunos ? dadosTreinamento.alunos : []
     
     let aulas = dadosTreinamento.aulas ? dadosTreinamento.aulas : []
@@ -161,10 +161,24 @@ function carregarElementosDinamicos(dadosTreinamento){
     })
 
 
-    listarAlunosSelect()   
+    select_tipo_pesquisa.addEventListener(
+        "change",()=>{
+            document.querySelector("#pesquisa_selecionada").innerHTML = returnMetodoDePesquisa(select_tipo_pesquisa.value)
+            if(select_tipo_pesquisa.value==="setor"){
+                exibirSelectSetores()
+            }
+            realizarTipoPesquisaEspecifica(select_tipo_pesquisa)
+        }
+    )
+
+    
+    document.querySelector("#pesquisa_selecionada").innerHTML = returnMetodoDePesquisa(select_tipo_pesquisa.value)
+        
     exibirApostilas(apostilas)
     exibirAlunos(alunos)
     exibirAulas(modalidade,aulas)
+    exibirSelectSetores()
+    realizarTipoPesquisaEspecifica(select_tipo_pesquisa)
 
     document.addEventListener(
         "click",(e)=>{
@@ -193,15 +207,11 @@ function carregarElementosDinamicos(dadosTreinamento){
             }
         }
     )
-    document.getElementById("pesquisa_funcionario").addEventListener("input", async function() {
-        let tipo_pesquisa = document.querySelector("#select_tipo_pesquisa").value
-        exibirPesquisaFuncionarios(tipo_pesquisa,this)
-    });
+
       
     escolheAcao(id_treinamento,aulas,apostilas,dados_alunos_json,ids_aulas_deletadas_ou_nao,ids_alunos_deletados_ou_nao,ids_apostilas_deletadas_ou_nao)
 
 }
-
 
 function trocarDeFormatoDeTreinamento(modalidade,sessao_aulas,sala){
     if(modalidade.value.toLowerCase() === "presencial"){
@@ -321,19 +331,34 @@ function guardaApostilasBancoDeletadasOuNao(btn,ids_apostilas_deletadas_ou_nao){
      }
 }
 
+export function realizarTipoPesquisaEspecifica(select_tipo_pesquisa){
+    let tipo_pesquisa = document.querySelector("#select_tipo_pesquisa").value
+    if(select_tipo_pesquisa.value !== "setor"){
+        document.getElementById("pesquisa_funcionario").addEventListener("input", async function() {
+            exibirListaFuncionariosPesquisa(tipo_pesquisa,this)
+        });
+    }else{
+        document.querySelector("#tipo_setor").addEventListener("change",(e)=>{
+            exibirListaFuncionariosPesquisa(tipo_pesquisa,e.target)
+        })
+    }
+}
 
-async function exibirPesquisaFuncionarios(tipo_pesquisa,object){
-
-    const query = object.value;
+async function exibirListaFuncionariosPesquisa(tipo_pesquisa,object){
+    
+    let query = object.value;
 
     try {
         let response = null
         if(tipo_pesquisa !== "setor"){
             response = await fetch(`http://localhost:8080/usuario/research/cpf_re_nome?query=${query}`);
         }else{
+            query = document.querySelector("#tipo_setor").value 
+            console.log(query)
             response = await fetch(`http://localhost:8080/usuario/setor/${query}`);
         }
-        const data = await response.json();
+        let data = await response.json();
+        
         console.log(data)
         const list = document.querySelector("#lista_pesquisa");
         list.innerHTML = `
@@ -347,7 +372,6 @@ async function exibirPesquisaFuncionarios(tipo_pesquisa,object){
         console.error('Erro ao buscar as sugestões:', error);
     }
 }
-
 
 
 function returnAlunos(item){

@@ -16,6 +16,14 @@ export function getAlunosByTreinamento(id_treinamento) {
     return response
 }
 
+export function getSetoresAlunos(){
+    let response = fetch(`http://localhost:8080/usuario/setor`,{
+        method:"GET",
+    }).then(
+        response => response.json()
+    )
+    return response
+}
 
 export async function adicionarAlunosNovos(aluno_adicionado,alunos_adicionados,id_treinamento){
     const alunos_banco = await getAlunosByTreinamento(id_treinamento)

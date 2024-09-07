@@ -68,7 +68,6 @@ function returnLocalAulas(treinamento){
     return aulas
 }
 
-
 function returnLocalAlunos(treinamento){
     console.log(treinamento)
     return treinamento.alunos
@@ -206,3 +205,5 @@ export function deleteTreinamento(id){
         },
     })
 }
+
+

@@ -1,4 +1,4 @@
-import { getFuncionarios } from "../script_usuarios/aluno_service.js"
+import { getFuncionarios, getSetoresAlunos } from "../script_usuarios/aluno_service.js"
 
 export function TreinamentoBody(props,id_treinamento){
     return `
@@ -22,15 +22,15 @@ export function TreinamentoBody(props,id_treinamento){
     
                 </div>
     
-                <div class="form-group">
-                    <label for="data_inicio"><b>Data Início:</b></label>
-                    <input type="datetime-local" id="dataInicio" name="dataInicio" value=${props.dataInicio ? props.dataInicio : ""}> 
-                </div>
-    
-                
-                <div class="form-group">
-                    <label for="data_fim"><b>Data Fim:</b></label>
-                    <input type="datetime-local" id="dataFim" name="dataFim" value=${props.dataFim ? props.dataFim : ""}> 
+                <div class="d-flex justify-content-between py-2" >
+                    <div class="form-group d-flex align-items-center" style="width:40%">
+                        <label class="mb-0" for="data_inicio" style="width:50%"><b>Data Início:</b></label>
+                        <input type="datetime-local" id="dataInicio"  class="p-2" name="dataInicio" value=${props.dataInicio ? props.dataInicio : ""}> 
+                    </div>
+                    <div class="form-group d-flex justify-content-around align-items-center" style="width:40%">
+                        <label for="data_fim" class="mb-0"  style="width:50%"><b>Data Fim:</b></label>
+                        <input type="datetime-local" id="dataFim"  class="p-2"  name="dataFim" value=${props.dataFim ? props.dataFim : ""}> 
+                    </div>                
                 </div>
     
                 <div class="form-group">
@@ -59,15 +59,6 @@ export function TreinamentoBody(props,id_treinamento){
                     <button type="button" class="btn btn-success px-4 mb-2" id="btn_pop_up_adicionar_aula" btn_adicionar>Adicionar</button>
                 </div>
     
-                <div class="form-group">
-                    <label for="buscar-aluno"><b>Buscar aluno por nome ou email</b></label>
-                    <select name="buscar-aluno" id="aluno" name="aluno">
-                        
-                    </select>
-                    <blockquote>apos buscar, clique sobre o aluno e aperte em "adicionar"</blockquote>
-    
-                </div>
-
                 <fieldset id="selecionar_funcionarios" class="py-4">
                     <label><b>Selecionar funcionários</b></label>
                   
@@ -76,15 +67,11 @@ export function TreinamentoBody(props,id_treinamento){
                             <option value="setor">Setor</option>
                             <option value="individual">Individualmente (CPF, RE ou Nome)</option>
                         </select>
-                        <div id="pesquisa_selecionada">
-
-                        </div>
-                        <div class="d-flex justify-content-center align-items-center div-search-funcionario">
-                            <input type="search" name="pesquisa_funcionario" id="pesquisa_funcionario" class="search-funcionario p-2"  style="width: 100%;">
-                            <button type="button" class="btn" id="btn_pesquisa_funcionario">🔎</button>
+                        <div id="pesquisa_selecionada" style="width:100%">
+                            
                         </div>
                     </div>
-                    <blockquote class="mt-2">após buscar, clique sobre o aluno e aperte em "adicionar"</blockquote>
+
                     <ul id="lista_pesquisa">
                         
                     </ul>
@@ -164,6 +151,25 @@ export function exibirApostilas(apostilas){
     //console.log(apostilas_html)
 }
 
+export function returnMetodoDePesquisa(tipoPesquisa){
+    
+    if(tipoPesquisa === "setor"){
+        return `<select class="p-2" id="tipo_setor">
+                    
+            </select>
+            `           
+    }else{
+        return `
+            <div class="d-flex justify-content-center align-items-center div-search-funcionario">
+                <input type="search" name="pesquisa_funcionario" id="pesquisa_funcionario" class="search-funcionario p-2"  style="width: 100%;">
+                <button type="button" class="btn" id="btn_pesquisa_funcionario">🔎</button>
+            </div>
+        `
+    }
+}
+
+
+
 export function exibirAulas(modalidade,aulas){
     const aulas_html = document.querySelector("#lista_aulas")
     let id = 0
@@ -189,19 +195,17 @@ export function exibirAulas(modalidade,aulas){
     //console.log(aulas)
 }
 
-export function listarAlunosSelect(){
-        getFuncionarios().then(data=>
-            document.querySelector("#aluno").innerHTML = data.content.map(
-                element=>{
-                    if(element.tipo === "ALUNO"){
-                        return `
-                           <option value="${element.id}-${element.nome}-${element.re}-${element.cpf}">Nome: ${element.nome} - RE: ${element.re} - CPF: ${element.cpf}</option>
-                        ` 
-                    }
 
-                }
+export function exibirSelectSetores(){
+    getSetoresAlunos().then(data=>document.querySelector("#tipo_setor").innerHTML =`
+       <option value="">Selecionar setor</option>
+       ${ 
+            data.map(
+                (setor)=>`<option value="${setor}">${setor}</option>`
             )
-        )
+        
+    }
+    `)
 }
 
 function retornabotaoForm(id_treinamento){
