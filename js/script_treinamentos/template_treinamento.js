@@ -1,4 +1,4 @@
-import { getFuncionarios } from "../script_usuarios/aluno_service.js"
+import { getFuncionarios, getSetoresAlunos } from "../script_usuarios/aluno_service.js"
 
 export function TreinamentoBody(props,id_treinamento){
     return `
@@ -10,37 +10,37 @@ export function TreinamentoBody(props,id_treinamento){
     
                 <div class="form-group">
                     <label for="nome"><b>Nome do Treinamento:</b></label>
-                    <input type="text" id="nome" name="nome" value="${props.nome ? props.nome : ""}">
+                    <input type="text" id="nome" name="nome" value="${props.nome ? props.nome : ""}" dado_treinamento>
                 </div>
                 <div class="form-group">
                     <label for="formato"><b>Selecione o formato </b></label>
                     
-                    <select name="formato">
+                    <select name="formato" dado_treinamento>
                         <option value="presencial" ${props.formato.toLowerCase()==="presencial" ? "selected" : ""}>Presencial</option>
                         <option value="online" ${props.formato.toLowerCase()==="online" ? "selected" : ""}>Remoto</option>
                     </select>
     
                 </div>
     
-                <div class="form-group">
-                    <label for="data_inicio"><b>Data Início:</b></label>
-                    <input type="datetime-local" id="dataInicio" name="dataInicio" value=${props.dataInicio ? props.dataInicio : ""}> 
-                </div>
-    
-                
-                <div class="form-group">
-                    <label for="data_fim"><b>Data Fim:</b></label>
-                    <input type="datetime-local" id="dataFim" name="dataFim" value=${props.dataFim ? props.dataFim : ""}> 
+                <div class="d-flex justify-content-between py-2" >
+                    <div class="form-group d-flex align-items-center" style="width:40%">
+                        <label class="mb-0" for="data_inicio" style="width:50%"><b>Data Início:</b></label>
+                        <input type="datetime-local" id="dataInicio"  class="p-2" name="dataInicio" value="${props.dataInicio ? props.dataInicio : ""}" dado_treinamento> 
+                    </div>
+                    <div class="form-group d-flex justify-content-around align-items-center" style="width:40%">
+                        <label for="data_fim" class="mb-0"  style="width:50%"><b>Data Fim:</b></label>
+                        <input type="datetime-local" id="dataFim"  class="p-2"  name="dataFim" value="${props.dataFim ? props.dataFim : ""}" dado_treinamento> 
+                    </div>                
                 </div>
     
                 <div class="form-group">
                     <label for="descricao"><b>Descrição do Treinamento:</b></label>
-                    <textarea id="descricao" name="descricao">${props.descricao ? props.descricao : ""}</textarea>
+                    <textarea id="descricao" name="descricao" dado_treinamento>${props.descricao ? props.descricao : ""}</textarea>
                 </div>
     
                 <div class="form-group" id="div_sala">
                     <label for="sala"><b>Local/Sala:</b></label>
-                    <input id="sala" name="sala" value=${props.aulas.length===1 && props.formato.toLowerCase() === "presencial" ? props.aulas[0].sala : ""}>
+                    <input id="sala" name="sala" value="${props.aulas.length===1 && props.formato.toLowerCase() === "presencial" ? props.aulas[0].sala : ""}" dado_treinamento>
                 </div>
                 
     
@@ -59,19 +59,28 @@ export function TreinamentoBody(props,id_treinamento){
                     <button type="button" class="btn btn-success px-4 mb-2" id="btn_pop_up_adicionar_aula" btn_adicionar>Adicionar</button>
                 </div>
     
-                <div class="form-group">
-                    <label for="buscar-aluno"><b>Buscar aluno por nome ou email</b></label>
-                    <select name="buscar-aluno" id="aluno" name="aluno">
+                <fieldset id="selecionar_funcionarios" class="py-4">
+                    <label><b>Selecionar funcionários</b></label>
+                  
+                    <div class="d-flex">
+                        <select class="mr-2" style="border-radius: 5px;" id="select_tipo_pesquisa">
+                            <option value="setor">Setor</option>
+                            <option value="individual">Individualmente (CPF, RE ou Nome)</option>
+                        </select>
+                        <div id="pesquisa_selecionada" style="width:100%">
+                            
+                        </div>
+                    </div>
+
+                    <ul id="lista_pesquisa">
                         
-                    </select>
-                    <blockquote>apos buscar, clique sobre o aluno e aperte em "adicionar"</blockquote>
-    
-                </div>
+                    </ul>
+                </fieldset>
     
                 <!-- lista de aluno  -->
                 <div class="form-group">
                     <ul id="alunos-lista">
-                      
+
                     </ul>
     
                     <div class=" text-center">
@@ -85,7 +94,7 @@ export function TreinamentoBody(props,id_treinamento){
                 <!-- lista de professor  -->
                 <div class="form-group">
                     <label for="buscar-professor"><b>Insira o nome do professor </b></label>
-                    <input type="text" name="nomeProfessor" value=${props.nomeProfessor? props.nomeProfessor : ""}>
+                    <input type="text" name="nomeProfessor" value="${props.nomeProfessor? props.nomeProfessor : ""}" dado_treinamento>
                 </div>
     
     
@@ -117,14 +126,20 @@ export function TreinamentoBody(props,id_treinamento){
     
 }
 
-export function exibirAlunos(alunos){
+export function exibirAlunos(funcionarios){
     const alunos_html = document.querySelector("#alunos-lista")
+    alunos_html.innerHTML =`
+        ${
+            Array.from(funcionarios).map(
+                (funcionario,index) => {
+                    if(funcionario.tipo === "ALUNO")
+                        return `<li>Nome: ${funcionario.nome} - RE: ${funcionario.re} - CPF: ${funcionario.cpf}<span id_aluno_banco="${funcionario.id}" id_aluno="${index}" class="remove-btn">❌</span></li>`
+                }
+            ).join("")
+        }
+    `
+     
 
-    let id = 0
-    alunos_html.innerHTML = alunos.map((aluno)=>
-        `<li>${aluno.exibicao}<span class="remove-btn" id_aluno=${id++} id_aluno_banco=${aluno.id}>❌</span></li>` 
-    ).join("")
-    //console.log(alunos_html)
 }
 
 export function exibirApostilas(apostilas){
@@ -141,6 +156,25 @@ export function exibirApostilas(apostilas){
     //console.log(apostilas)
     //console.log(apostilas_html)
 }
+
+export function returnMetodoDePesquisa(tipoPesquisa){
+    
+    if(tipoPesquisa === "setor"){
+        return `<select class="p-2" id="aluno_setor" name="setor" >
+                    
+            </select>
+            `           
+    }else{
+        return `
+            <div class="d-flex justify-content-center align-items-center div-search-funcionario">
+                <input type="search" name="pesquisa_funcionario" id="pesquisa_funcionario" class="search-funcionario p-2"  style="width: 100%;">
+                <button type="button" class="btn" id="btn_pesquisa_funcionario">🔎</button>
+            </div>
+        `
+    }
+}
+
+
 
 export function exibirAulas(modalidade,aulas){
     const aulas_html = document.querySelector("#lista_aulas")
@@ -167,19 +201,17 @@ export function exibirAulas(modalidade,aulas){
     //console.log(aulas)
 }
 
-export function listarAlunosSelect(){
-        getFuncionarios().then(data=>
-            document.querySelector("#aluno").innerHTML = data.content.map(
-                element=>{
-                    if(element.tipo === "ALUNO"){
-                        return `
-                           <option value="${element.id}-${element.nome}-${element.re}-${element.cpf}">Nome: ${element.nome} - RE: ${element.re} - CPF: ${element.cpf}</option>
-                        ` 
-                    }
 
-                }
+export function exibirSelectSetores(){
+    getSetoresAlunos().then(data=>document.querySelector("#aluno_setor").innerHTML =`
+       <option value="">Selecionar setor</option>
+       ${ 
+            data.map(
+                (setor)=>`<option value="${setor}">${setor}</option>`
             )
-        )
+        
+    }
+    `)
 }
 
 function retornabotaoForm(id_treinamento){
@@ -200,6 +232,3 @@ function retornabotaoForm(id_treinamento){
                     </div>`
 }
 
-
-
-   

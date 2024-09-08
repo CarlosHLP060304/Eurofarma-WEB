@@ -35,3 +35,7 @@
     justify-content: center;
 }
 
+        .dropdown-divider-custom {
+            border-top: 3px solid #002952; /* Cor escura do divisor */
+        }
+

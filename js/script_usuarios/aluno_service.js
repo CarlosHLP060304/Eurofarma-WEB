@@ -16,16 +16,37 @@ export function getAlunosByTreinamento(id_treinamento) {
     return response
 }
 
+export function getSetoresAlunos(){
+    let response = fetch(`http://localhost:8080/usuario/setor`,{
+        method:"GET",
+    }).then(
+        response => response.json()
+    )
+    return response
+}
 
-export async function adicionarAlunosNovos(aluno_adicionado,alunos_adicionados,id_treinamento){
-    const alunos_banco = await getAlunosByTreinamento(id_treinamento)
+export async function adicionarAlunosNovos(listaAlunosPesquisa,alunos_adicionados,id_treinamento){
     
-    const idProcurado = parseInt(aluno_adicionado.split("-")[0])
-    const usuarioEncontrado = alunos_banco.find(aluno => aluno.id === idProcurado);
-
-    if (!usuarioEncontrado) {
-        alunos_adicionados.push(idProcurado)
+    if(id_treinamento){
+        const alunos_banco = await getAlunosByTreinamento(id_treinamento)
+        
+        listaAlunosPesquisa.forEach(alunoPesquisa => {
+            const idProcurado = alunoPesquisa.id
+        
+            const usuarioEncontrado = alunos_banco.find(aluno => aluno.id === idProcurado);
+        
+            if (!usuarioEncontrado) {
+                alunos_adicionados.push(idProcurado)
+                console.log(alunos_adicionados)
+            }
+        });
+    }else{
+        listaAlunosPesquisa.forEach(alunoPesquisa => {
+            alunos_adicionados.push(alunoPesquisa)
+        });
+        //console.log(alunos_adicionados)
     }
+
 }
 
 

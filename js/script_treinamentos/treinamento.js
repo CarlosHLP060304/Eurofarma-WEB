@@ -1,6 +1,6 @@
 import { postTreinamento, putTreinamento } from "./treinamento_service.js"
 import { getTreinamento } from "../script_treinamentos/treinamento_service.js"
-import { exibirAlunos, exibirApostilas, exibirAulas, listarAlunosSelect, TreinamentoBody } from "./template_treinamento.js"
+import { exibirAlunos, exibirApostilas, exibirAulas,exibirSelectSetores,returnMetodoDePesquisa, TreinamentoBody } from "./template_treinamento.js"
 import { getAulas } from "../script_aulas/aula_service.js"
 import { getApostilas } from "../script_apostilas/apostila_service.js"
 import { adicionarAlunosNovos, getAlunosByTreinamento} from "../script_usuarios/aluno_service.js"
@@ -9,7 +9,6 @@ let id_treinamento = window.location.search.split("=")[1]
 console.log(id_treinamento)
 
 let dadosTreinamento = {}
-
 
 async function getDadosTreinamento(id_treinamento){
     dadosTreinamento = await getTreinamento(id_treinamento)
@@ -42,7 +41,7 @@ function carregarElementosDinamicos(dadosTreinamento){
         ids_apostilas_deletadas : [],
         ids_apostilas_nao_deletadas : []
     }
-    const ids_alunos_deletados_ou_nao = {
+    const ids_alunos = {
         ids_alunos_deletados : [],
         ids_alunos_nao_deletados : [],
         ids_alunos_adicionados : []
@@ -53,16 +52,19 @@ function carregarElementosDinamicos(dadosTreinamento){
     const conteudo_pop_up =  document.querySelector("#conteudo-pop-up")
     const sessao_aulas =document.querySelector("#aulas")
     const sala = document.querySelector("#div_sala")
+    const select_tipo_pesquisa= document.querySelector("#select_tipo_pesquisa")
     let dados_alunos_json = dadosTreinamento.alunos ? dadosTreinamento.alunos : []
     
     let aulas = dadosTreinamento.aulas ? dadosTreinamento.aulas : []
     let apostilas = dadosTreinamento.apostilas ? dadosTreinamento.apostilas : []
-    let alunos = dadosTreinamento.alunos ? retornaListaUsuariosTreinamento(dadosTreinamento.alunos) : []
-
+    let jsonPesquisa ={
+        listaAlunosPesquisa : []
+    }
+    
     const btns_adicionar= document.querySelectorAll("[btn_adicionar]")
-    let dados_aluno = {}
+    
     btns_adicionar.forEach(
-        btn_adicionar=>{
+        btn_adicionar=>{ 
             btn_adicionar.addEventListener("click",()=>{
                 if(btn_adicionar.id.endsWith("apostila")){
                     let dados_apostila = {}
@@ -85,22 +87,12 @@ function carregarElementosDinamicos(dadosTreinamento){
                     }
                     aulas.push(dados_aula)
                     exibirAulas(modalidade,aulas)
-                }else{
-                    dados_aluno = document.querySelector('#aluno').value
-                    adicionarAlunosNovos(dados_aluno,ids_alunos_deletados_ou_nao.ids_alunos_adicionados,id_treinamento) 
-                    let dados_aluno_json = {
-                        "id":dados_aluno.split("-")[0]
-                    }
-                    let dados_aluno_exibicao = {
-                        "exibicao": `Nome: ${dados_aluno.split("-")[1]} - RE: ${dados_aluno.split("-")[2]} - CPF: ${dados_aluno.split("-")[3]}-${dados_aluno.split("-")[4]} `,
-                        "id":dados_aluno_json.id                        
-                    }
-                    console.log(dados_aluno.split("-"))
-                    dados_alunos_json.push(dados_aluno_json)
-                    alunos.push(dados_aluno_exibicao)
-                    exibirAlunos(alunos)
+                }else{        
+                    dados_alunos_json.push(...jsonPesquisa.listaAlunosPesquisa)
+                    adicionarAlunosNovos(jsonPesquisa.listaAlunosPesquisa,ids_alunos.ids_alunos_adicionados,id_treinamento)
+                    console.log(ids_alunos)
+                    exibirAlunos(dados_alunos_json)    
                 }
-                
                 
             })
         }
@@ -161,10 +153,24 @@ function carregarElementosDinamicos(dadosTreinamento){
     })
 
 
-    listarAlunosSelect()   
+    select_tipo_pesquisa.addEventListener(
+        "change",()=>{
+            document.querySelector("#pesquisa_selecionada").innerHTML = returnMetodoDePesquisa(select_tipo_pesquisa.value)
+            if(select_tipo_pesquisa.value==="setor"){
+                exibirSelectSetores()
+            }
+            realizarTipoPesquisaEspecifica(select_tipo_pesquisa,jsonPesquisa)
+        }
+    )
+    
+    
+    document.querySelector("#pesquisa_selecionada").innerHTML = returnMetodoDePesquisa(select_tipo_pesquisa.value)
+        
     exibirApostilas(apostilas)
-    exibirAlunos(alunos)
+    exibirAlunos(dados_alunos_json)
     exibirAulas(modalidade,aulas)
+    exibirSelectSetores()
+    realizarTipoPesquisaEspecifica(select_tipo_pesquisa,jsonPesquisa)
 
     document.addEventListener(
         "click",(e)=>{
@@ -174,10 +180,9 @@ function carregarElementosDinamicos(dadosTreinamento){
             if(btn.classList.contains("remove-btn")){
                     
                         if(btn.hasAttribute("id_aluno")){
-                            guardaAlunosBancoDeletadosOuNao(btn,ids_alunos_deletados_ou_nao)
-                            alunos.splice(btn.getAttribute("id_aluno"),1)
+                            guardaAlunosBancoDeletadosOuNao(btn,ids_alunos)
                             dados_alunos_json.splice(btn.getAttribute("id_aluno"),1)
-                            exibirAlunos(alunos)
+                            exibirAlunos(dados_alunos_json)
                         }
                         else if(btn.hasAttribute("id_aula")){
                             guardaAulasBancoDeletadasOuNao(btn,ids_aulas_deletadas_ou_nao)
@@ -193,12 +198,10 @@ function carregarElementosDinamicos(dadosTreinamento){
             }
         }
     )
-
-      
-    escolheAcao(id_treinamento,aulas,apostilas,dados_alunos_json,ids_aulas_deletadas_ou_nao,ids_alunos_deletados_ou_nao,ids_apostilas_deletadas_ou_nao)
+   
+    escolheAcao(id_treinamento,aulas,apostilas,dados_alunos_json,ids_aulas_deletadas_ou_nao,ids_alunos,ids_apostilas_deletadas_ou_nao)
 
 }
-
 
 function trocarDeFormatoDeTreinamento(modalidade,sessao_aulas,sala){
     if(modalidade.value.toLowerCase() === "presencial"){
@@ -211,58 +214,34 @@ function trocarDeFormatoDeTreinamento(modalidade,sessao_aulas,sala){
     }
 }
 
-function retornaListaUsuariosTreinamento(alunos){
-    let alunos_treinamento = []
-    alunos.forEach(aluno => {
-        let dados_aluno_exibicao = {
-            "exibicao": `Nome: ${aluno.nome} - RE: ${aluno.re} - CPF: ${aluno.cpf}`,
-            "id": aluno.id                    
-        }
-        alunos_treinamento.push(dados_aluno_exibicao)
-    });
-    return alunos_treinamento
-}
-
 function retornaDadosTreinamento(aulas,apostilas,dados_alunos_json){
 
-    let dados_input_treinamento = document.querySelectorAll("input")
-    let dados_select_treinamento = document.querySelectorAll("select")
-    let dados_text_area_treinamento = document.querySelectorAll("textarea")
-    let dados_treinamento = {}
-    dados_input_treinamento.forEach(element => { 
-        dados_treinamento["aulas"] = aulas
-        if(element.id.startsWith("apostila"))
-            dados_treinamento["apostilas"] = apostilas
-        else{
-            dados_treinamento[element.name] = element.value
-            console.log(element)
-        }
-    });
-    
-    dados_text_area_treinamento.forEach(element=>{
-        dados_treinamento[element.name] = element.value
-    })
-    
-    dados_select_treinamento.forEach(element=>{
-        if(element.id.startsWith("aluno"))
-            dados_treinamento["alunos"] = dados_alunos_json
-        else if(element.name === "formato"){
-                console.log(element.name)
-                dados_treinamento[element.name] = element.value.toUpperCase()
-            } 
-        else{
-            dados_treinamento[element.name] = element.value
-            console.log(element)
-        }
+    let dados_treinamento =  document.querySelectorAll("[dado_treinamento]")
 
-    })
-    console.log(dadosTreinamento)
-    return dados_treinamento
+    let dados_treinamento_json = {}
+
+    dados_treinamento.forEach(
+        dado_treinamento=> {
+            if(dado_treinamento.name === "formato")
+                dados_treinamento_json[dado_treinamento.name] = dado_treinamento.value.toUpperCase()
+            else{
+                dados_treinamento_json[dado_treinamento.name] = dado_treinamento.value
+            }
+        }     
+    )
+
+    dados_treinamento_json["apostilas"] = apostilas 
+    dados_treinamento_json["aulas"] = aulas
+    dados_treinamento_json["alunos"] = dados_alunos_json
+
+    console.log(dados_treinamento_json)
+    return dados_treinamento_json
 }
 
 function salvarTreinamento(aulas,apostilas,dados_alunos_json){
     const btn_salvar = document.querySelector("#btn_salvar_treinamento")
     btn_salvar.addEventListener("click",()=>{
+        console.log(dados_alunos_json)
         let dados_treinamento = retornaDadosTreinamento(aulas,apostilas,dados_alunos_json)
         console.log(dadosTreinamento)
         localStorage.setItem("treinamento",JSON.stringify(dados_treinamento))
@@ -270,7 +249,7 @@ function salvarTreinamento(aulas,apostilas,dados_alunos_json){
     })
 }
 
-function salvarAlteracoes(aulas,apostilas,dados_alunos_json,id_treinamento,ids_aulas_deletadas_ou_nao,ids_alunos_deletados_ou_nao,ids_apostilas_deletadas_ou_nao){
+function salvarAlteracoes(aulas,apostilas,dados_alunos_json,id_treinamento,ids_aulas_deletadas_ou_nao,ids_alunos,ids_apostilas_deletadas_ou_nao){
     let btn_editar_treinamento = document.querySelector("#btn_editar_treinamento")
     btn_editar_treinamento.addEventListener("click",()=>{
         console.log("salvando alterações...")
@@ -278,14 +257,14 @@ function salvarAlteracoes(aulas,apostilas,dados_alunos_json,id_treinamento,ids_a
         console.log(dadosTreinamento)
         localStorage.setItem("treinamento",JSON.stringify(dados_treinamento))
         console.log(id_treinamento)
-        putTreinamento(id_treinamento,ids_aulas_deletadas_ou_nao,ids_alunos_deletados_ou_nao,ids_apostilas_deletadas_ou_nao)
+        putTreinamento(id_treinamento,ids_aulas_deletadas_ou_nao,ids_alunos,ids_apostilas_deletadas_ou_nao)
     })
 }
 
-function escolheAcao(id_treinamento,aulas,apostilas,dados_alunos_json,ids_aulas_deletadas_ou_nao,ids_alunos_deletados_ou_nao,ids_apostilas_deletadas_ou_nao){
-    
+function escolheAcao(id_treinamento,aulas,apostilas,dados_alunos_json,ids_aulas_deletadas_ou_nao,ids_alunos,ids_apostilas_deletadas_ou_nao){
+    console.log(dados_alunos_json)
     if(id_treinamento){
-        salvarAlteracoes(aulas,apostilas,dados_alunos_json,id_treinamento,ids_aulas_deletadas_ou_nao,ids_alunos_deletados_ou_nao,ids_apostilas_deletadas_ou_nao)
+        salvarAlteracoes(aulas,apostilas,dados_alunos_json,id_treinamento,ids_aulas_deletadas_ou_nao,ids_alunos,ids_apostilas_deletadas_ou_nao)
     }else{
         salvarTreinamento(aulas,apostilas,dados_alunos_json)
     }
@@ -300,12 +279,11 @@ function guardaAulasBancoDeletadasOuNao(btn,ids_aulas_deletadas_ou_nao){
     }
 }
 
-function guardaAlunosBancoDeletadosOuNao(btn,ids_alunos_deletados_ou_nao){
+function guardaAlunosBancoDeletadosOuNao(btn,ids_alunos){
     let id_aluno_banco=  btn.getAttribute("id_aluno_banco")
-    console.log("oiii")
     console.log(id_aluno_banco)
      if( id_aluno_banco !== "undefined"){
-         ids_alunos_deletados_ou_nao.ids_alunos_deletados.push(parseInt(id_aluno_banco))
+         ids_alunos.ids_alunos_deletados.push(parseInt(id_aluno_banco))
      }
 }
 
@@ -318,6 +296,53 @@ function guardaApostilasBancoDeletadasOuNao(btn,ids_apostilas_deletadas_ou_nao){
      }
 }
 
+export function realizarTipoPesquisaEspecifica(select_tipo_pesquisa,jsonPesquisa){
+    let tipo_pesquisa = document.querySelector("#select_tipo_pesquisa").value
+    if(select_tipo_pesquisa.value !== "setor"){
+        document.getElementById("pesquisa_funcionario").addEventListener("input", async function() {
+            exibirListaFuncionariosPesquisa(tipo_pesquisa,this,jsonPesquisa)
+        });
+    }else{
+        document.querySelector("#aluno_setor").addEventListener("change",(e)=>{
+            exibirListaFuncionariosPesquisa(tipo_pesquisa,e.target,jsonPesquisa)
+        })
+    }
+}
 
+async function exibirListaFuncionariosPesquisa(tipo_pesquisa,object,jsonPesquisa){
+    
+    let query = object.value;
+
+    try {
+        let response = null
+        if(tipo_pesquisa !== "setor"){
+            response = await fetch(`http://localhost:8080/usuario/research/cpf_re_nome?query=${query}`);
+        }else{
+            query = document.querySelector("#aluno_setor").value 
+            console.log(query)
+            response = await fetch(`http://localhost:8080/usuario/setor/${query}`);
+        }
+        let data = await response.json();
+        
+        jsonPesquisa.listaAlunosPesquisa = data
+
+        const list = document.querySelector("#lista_pesquisa");
+        list.innerHTML = `
+            ${data.map(item => {
+                return returnAlunos(item)
+            }).join(" ")
+            }
+        `
+
+    } catch (error) {
+        console.error('Erro ao buscar as sugestões:', error);
+    }
+}
+
+function returnAlunos(item){
+    if(item.tipo === "ALUNO"){
+        return `<li>Nome: ${item.nome} - RE: ${item.re} - CPF: ${item.cpf}</li> `
+    }
+}
 
 carregarDadosHTML()
