@@ -1,4 +1,4 @@
-import { returnBaseUrl } from "../enviroment/enviroment";
+import { returnBaseUrl } from "../enviroment/enviroment.js";
 
 export function getApostilas(id) {
     console.log(`${returnBaseUrl()}/apostila/treinamento/5`)

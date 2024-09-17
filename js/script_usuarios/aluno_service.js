@@ -1,4 +1,4 @@
-import { returnBaseUrl } from "../enviroment/enviroment";
+import { returnBaseUrl } from "../enviroment/enviroment.js";
 
 export function getFuncionarios() {
     let response =  fetch(`${returnBaseUrl()}/usuario`,{

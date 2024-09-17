@@ -1,6 +1,6 @@
 import { getTreinamento } from "../script_treinamentos/treinamento_service.js";
 import { getAlunoById } from "../script_usuarios/aluno_service.js";
-import { returnBaseUrl } from "../enviroment/enviroment";
+import { returnBaseUrl } from "../enviroment/enviroment.js";
 
 export async function criarExcelDetalhamentoAluno(id_aluno) {
     console.log(id_aluno)

@@ -1,4 +1,4 @@
-import { returnBaseUrl } from "../enviroment/enviroment";
+import { returnBaseUrl } from "../enviroment/enviroment.js";
 
 document.querySelector("#form").addEventListener("submit",(e)=>{
     e.preventDefault()

@@ -1,4 +1,4 @@
-import { returnBaseUrl } from "../enviroment/enviroment";
+import { returnBaseUrl } from "../enviroment/enviroment.js";
 
 export async function postQuestionario(questionario){
     console.log(questionario)

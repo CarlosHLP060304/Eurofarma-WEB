@@ -1,6 +1,6 @@
 import { alterarApostilasTreinamento, postApostilas } from "../script_apostilas/apostila_service.js"
 import { alterarAulasTreinamento, postAulas } from "../script_aulas/aula_service.js"
-import { returnBaseUrl } from "../enviroment/enviroment";
+import { returnBaseUrl } from "../enviroment/enviroment.js";
 
 export function getTreinamentos(){
     let response =  fetch(`${returnBaseUrl()}/treinamento`,{
