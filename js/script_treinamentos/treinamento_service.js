@@ -5,6 +5,9 @@ import { returnBaseUrl } from "../enviroment/enviroment.js";
 export function getTreinamentos(){
     let response =  fetch(`${returnBaseUrl()}/treinamento`,{
         method:"GET",
+        headers: {
+            'ngrok-skip-browser-warning': 'true'
+        }
     }).then(
         response => response.json()
     )
@@ -14,6 +17,9 @@ export function getTreinamentos(){
 export function getTreinamento(id){
     let response =  fetch(`${returnBaseUrl()}/treinamento/${id}`,{
         method:"GET",
+        headers: {
+            'ngrok-skip-browser-warning': 'true'
+          }
     }).then(
         response => response.json()
     )
