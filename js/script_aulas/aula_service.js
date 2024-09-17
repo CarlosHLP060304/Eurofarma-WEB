@@ -1,4 +1,4 @@
-import { returnBaseUrl } from "../enviroment/enviroment";
+import { returnBaseUrl } from "../enviroment/enviroment.js";
 export function getAulas(id) {
     console.log(`${returnBaseUrl()}/aula/treinamento/5`)
     let response = fetch(`${returnBaseUrl()}/aula/treinamento/${id}`,{
