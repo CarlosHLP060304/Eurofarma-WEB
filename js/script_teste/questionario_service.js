@@ -1,3 +1,5 @@
+import { returnBaseUrl } from "../enviroment/enviroment";
+
 export async function postQuestionario(questionario){
     console.log(questionario)
     let response = await fetch(`${returnBaseUrl()}/questionario`,{

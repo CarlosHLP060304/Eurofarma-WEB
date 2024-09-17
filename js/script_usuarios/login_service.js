@@ -1,3 +1,5 @@
+import { returnBaseUrl } from "../enviroment/enviroment";
+
 document.querySelector("#form").addEventListener("submit",(e)=>{
     e.preventDefault()
     let requestBody = {
