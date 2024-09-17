@@ -3,14 +3,14 @@ import { getAlunoById } from "../script_usuarios/aluno_service.js";
 import { returnBaseUrl } from "../enviroment/enviroment.js";
 
 export async function criarExcelDetalhamentoAluno(id_aluno) {
-    console.log(id_aluno)
+    
 
     // Função para buscar aluno pelo ID
     let aluno = await getAlunoById(id_aluno);
 
     // Verifique os dados recebidos para garantir que estão corretos
-    console.log(aluno);
-    console.log(aluno.re)
+    
+    
 
     // Envie a requisição para o backend
     fetch(`${returnBaseUrl()}/excel/download/historicoAluno?id=${id_aluno}`, {
@@ -48,7 +48,7 @@ export async function criarExcelDetalhamentoTreinamento(id_treinamento) {
     let treinamento = await getTreinamento(id_treinamento);
 
     // Verifique os dados recebidos para garantir que estão corretos
-    console.log(treinamento);
+    
 
     // Envie a requisição para o backend
     fetch(`${returnBaseUrl()}/excel/download/dadosTreinamento?id=${id_treinamento}`, {

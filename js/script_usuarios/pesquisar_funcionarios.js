@@ -6,7 +6,7 @@ getFuncionarios().then(
                     dados=> document.querySelector("tbody").innerHTML =  dados.content.map(
                         dado=>{
                             funcionarios.push(dado)
-                            console.log(dado.tipo==="ALUNO")
+                            
                             return returnAlunos(dado)
                         }
                 ).join("")

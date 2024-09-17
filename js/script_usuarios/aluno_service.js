@@ -48,14 +48,14 @@ export async function adicionarAlunosNovos(listaAlunosPesquisa,alunos_adicionado
         
             if (!usuarioEncontrado) {
                 alunos_adicionados.push(idProcurado)
-                console.log(alunos_adicionados)
+                
             }
         });
     }else{
         listaAlunosPesquisa.forEach(alunoPesquisa => {
             alunos_adicionados.push(alunoPesquisa)
         });
-        //console.log(alunos_adicionados)
+        //
     }
 
 }

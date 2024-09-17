@@ -7,7 +7,7 @@ const btn_gerar_qrcode = document.querySelector("#btn_gerar_qrcode")
 async function exibirTreinamentos(){
     const pageable = await getTreinamentos()
     const treinamentos = pageable.content
-    console.log(treinamentos)
+    
     select_treinamento.innerHTML = `
         ${treinamentos.map(
             treinamento => {

@@ -153,8 +153,8 @@ export function exibirApostilas(apostilas){
         
     
 
-    //console.log(apostilas)
-    //console.log(apostilas_html)
+    //
+    //
 }
 
 export function returnMetodoDePesquisa(tipoPesquisa){
@@ -179,7 +179,7 @@ export function returnMetodoDePesquisa(tipoPesquisa){
 export function exibirAulas(modalidade,aulas){
     const aulas_html = document.querySelector("#lista_aulas")
     let id = 0
-    console.log(modalidade.value)
+    
     if(modalidade.value.toLowerCase() === "online"){
         aulas_html.innerHTML = aulas.map((aula)=>
             
@@ -197,8 +197,8 @@ export function exibirAulas(modalidade,aulas){
             ` 
         ).join("")
     }
-    //console.log(aulas_html)
-    //console.log(aulas)
+    //
+    //
 }
 
 
@@ -215,7 +215,7 @@ export function exibirSelectSetores(){
 }
 
 function retornabotaoForm(id_treinamento){
-    console.log(id_treinamento)
+    
     if (id_treinamento) {
         return `
               <div class="row">

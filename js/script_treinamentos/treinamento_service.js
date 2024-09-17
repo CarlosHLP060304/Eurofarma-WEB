@@ -49,7 +49,7 @@ export function calculaDuracaoAula(treinamento){
 }
 
 function returnLocalOnlyTreinamento(treinamento){
-    console.log(treinamento)
+    
     delete treinamento.alunos
     delete treinamento.aulas
     delete treinamento.apostilas
@@ -70,13 +70,13 @@ function returnLocalAulas(treinamento){
                 "duracao": calculaDuracaoAula(treinamento)
             }
         ]
-        console.log(aulas)
+        
     }
     return aulas
 }
 
 function returnLocalAlunos(treinamento){
-    console.log(treinamento)
+    
     return treinamento.alunos
 }
 
@@ -86,14 +86,14 @@ function returnLocalApostilas(treinamento){
 
 export async function postTreinamento(){
     let local_storage_treinamento = JSON.parse(localStorage.getItem("treinamento"))
-    console.log(local_storage_treinamento)
+    
     let aulas = returnLocalAulas(local_storage_treinamento)
     let alunos = returnLocalAlunos(local_storage_treinamento)
     let apostilas = returnLocalApostilas(local_storage_treinamento) 
     let treinamento = returnLocalOnlyTreinamento(JSON.parse(localStorage.getItem("treinamento")))
      
-    console.log(alunos)
-    console.log(treinamento)
+    
+    
     
 
     let response_treinamento = await fetch(`${returnBaseUrl()}/treinamento`,{
@@ -106,7 +106,7 @@ export async function postTreinamento(){
         },
     })
     let treinamento_json = await response_treinamento.json()
-    console.log(treinamento_json)
+    
 
     aulas.forEach(aula => {
         aula["treinamento"] = {
@@ -126,7 +126,7 @@ export async function postTreinamento(){
             })
     } 
     funcResultadoFetchApostilas()
-    console.log(resultadoFetchApostilas)
+    
     if(response_treinamento.ok && response_aulas.ok && resultadoFetchApostilas){
         window.location.href = "/pages/listarTreinamento.html"
     }
@@ -139,8 +139,8 @@ export async function putTreinamento(id_treinamento,ids_aulas_deletadas_ou_nao,i
     let aulas = returnLocalAulas(local_storage_treinamento)
     let alunos = returnLocalAlunos(local_storage_treinamento)
     let apostilas = returnLocalApostilas(local_storage_treinamento) 
-    console.log(alunos)
-    console.log(treinamento)
+    
+    
 
     const response_treinamento= await fetch(`${returnBaseUrl()}/treinamento/${id_treinamento}`,{
         method:"PUT",
@@ -162,9 +162,9 @@ export async function putTreinamento(id_treinamento,ids_aulas_deletadas_ou_nao,i
     const responses_aula = await alterarAulasTreinamento(id_treinamento,aulas,alunos,ids_aulas_deletadas_ou_nao,ids_alunos_deletados_ou_nao)
     const responses_apostilas =  await alterarApostilasTreinamento(id_treinamento,apostilas,ids_apostilas_deletadas_ou_nao)
 
-    console.log(response_treinamento)
-    console.log(responses_aula)
-    console.log(responses_apostilas)
+    
+    
+    
 
     let resultadoFetchAulas = true
     let resultadoFetchApostilas = true
