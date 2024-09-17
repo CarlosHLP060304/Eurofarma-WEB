@@ -1,6 +1,6 @@
 export function getAulas(id) {
-    console.log(`http://localhost:8080/aula/treinamento/5`)
-    let response = fetch(`http://localhost:8080/aula/treinamento/${id}`,{
+    console.log(`${returnBaseUrl()}/aula/treinamento/5`)
+    let response = fetch(`${returnBaseUrl()}/aula/treinamento/${id}`,{
         method:"GET"
     }).then(
         response=>response.json()
@@ -15,7 +15,7 @@ export async function postAulas(aulas,alunos){
         "aulas": aulas,
         "alunos":alunos
     }
-    return await fetch("http://localhost:8080/aula",
+    return await fetch(`${returnBaseUrl()}/aula`,
         {
             method:"POST",
             body: JSON.stringify(aulas_json),
@@ -30,7 +30,7 @@ export async function postAulas(aulas,alunos){
 
 export async function deleteAulas(ids_aulas_deletadas_ou_nao){
     let responses = ids_aulas_deletadas_ou_nao.ids_aulas_deletadas.map(id_aula_deletada => {
-        return fetch(`http://localhost:8080/aula/${id_aula_deletada.id}`,
+        return fetch(`${returnBaseUrl()}/aula/${id_aula_deletada.id}`,
             {
                 method:"DELETE",
                 headers: {
@@ -51,7 +51,7 @@ async function putAlunosAulas(id_treinamento,ids_aulas_nao_deletadas,ids_alunos_
     }
     console.log(ids_alunos_adicionados)
     console.log(aulas_json)
-    return await fetch("http://localhost:8080/aula/users/edit",
+    return await fetch(`${returnBaseUrl()}/aula/users/edit`,
         {
             method:"PUT",
             body: JSON.stringify(aulas_json),

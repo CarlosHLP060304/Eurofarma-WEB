@@ -10,7 +10,7 @@ document.querySelector("#form").addEventListener("submit",(e)=>{
 
 function fazerLogin(requestBody){
     
-    let response =  fetch("http://localhost:8080/login",{
+    let response =  fetch(`${returnBaseUrl()}/login`,{
         method:"POST",
         headers:{
             'Content-Type': 'application/json'

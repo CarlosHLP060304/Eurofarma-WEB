@@ -12,7 +12,7 @@ export async function criarExcelDetalhamentoAluno(id_aluno) {
     console.log(aluno.re)
 
     // Envie a requisição para o backend
-    fetch(`http://localhost:8080/excel/download/historicoAluno?id=${id_aluno}`, {
+    fetch(`${returnBaseUrl()}/excel/download/historicoAluno?id=${id_aluno}`, {
         
         method: 'GET',
         headers: {
@@ -49,7 +49,7 @@ export async function criarExcelDetalhamentoTreinamento(id_treinamento) {
     console.log(treinamento);
 
     // Envie a requisição para o backend
-    fetch(`http://localhost:8080/excel/download/dadosTreinamento?id=${id_treinamento}`, {
+    fetch(`${returnBaseUrl()}/excel/download/dadosTreinamento?id=${id_treinamento}`, {
         
         method: 'GET',
         headers: {
