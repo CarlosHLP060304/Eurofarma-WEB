@@ -4,7 +4,7 @@ import {criarExcelDetalhamentoTreinamento} from "../script_excel/excel_service.j
 getTreinamentos().then(
                     dados=> document.querySelector("tbody").innerHTML =  dados.content.map(
                         dado=>{
-                            console.log(dado)
+                            
                             if(dado.ativo == true){
                                return  ` 
                              <tr>
@@ -49,11 +49,11 @@ getTreinamentos().then(
                 ).then(deletarItensLista)
 
 function deletarItensLista() {
-        console.log(document.querySelectorAll(".btn-excluir"))
+        
         document.querySelectorAll(".btn-excluir").forEach(
             btn=>
                 btn.addEventListener("click",()=>{ 
-                console.log(btn.id)
+                
                 deleteTreinamento(btn.id)
                 window.location.href="/pages/listarTreinamento.html"
             })

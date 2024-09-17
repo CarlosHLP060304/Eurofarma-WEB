@@ -1,7 +1,7 @@
 import { returnBaseUrl } from "../enviroment/enviroment.js";
 
 export function getApostilas(id) {
-    console.log(`${returnBaseUrl()}/apostila/treinamento/5`)
+    
     let response = fetch(`${returnBaseUrl()}/apostila/treinamento/${id}`,{
         method:"GET",
         headers: {
@@ -14,9 +14,9 @@ export function getApostilas(id) {
 }
 
 export async function postApostilas(apostilas,treinamento_id){
-    console.log(apostilas)
+    
     let promises = apostilas.map(apostila => {
-        console.log(apostila)
+        
         let apostila_json = {
             "link": apostila.link,
             "treinamento":{
@@ -33,7 +33,7 @@ export async function postApostilas(apostilas,treinamento_id){
             body: JSON.stringify(apostila_json)
         })
     });
-    console.log(promises)
+    
     return await Promise.all(promises)
 }
 
@@ -43,7 +43,7 @@ export async function postApostilas(apostilas,treinamento_id){
 
 export async function deleteApostilas(ids_apostilas_deletadas_ou_nao){
     let responses = ids_apostilas_deletadas_ou_nao.ids_apostilas_deletadas.map(apostila => {
-        console.log(apostila)
+        
         fetch(`${returnBaseUrl()}/apostila/${apostila.id}`,{
             method: "DELETE",
             headers:
@@ -58,7 +58,7 @@ export async function deleteApostilas(ids_apostilas_deletadas_ou_nao){
 }
 
 export async function alterarApostilasTreinamento(id_treinamento,apostilas,ids_apostilas_deletadas_ou_nao){
-    console.log(ids_apostilas_deletadas_ou_nao)
+    
     let apostilas_sem_id = []
     let lista_responses = []
     apostilas.forEach(

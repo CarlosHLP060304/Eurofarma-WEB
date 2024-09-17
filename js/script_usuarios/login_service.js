@@ -6,7 +6,7 @@ document.querySelector("#form").addEventListener("submit",(e)=>{
         login: document.querySelector("#login").value,
         senha: document.querySelector("#senha").value
     };
-    console.log(login)
+    
     fazerLogin(requestBody)
 })
 

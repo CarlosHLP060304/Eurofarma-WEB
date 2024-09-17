@@ -4,7 +4,7 @@ import { getHistoricoAlunoTreinamentos } from "./aluno_service.js";
 let id_aluno = parseInt(window.location.search.split("id_aluno=")[1])
         
 document.querySelector("#btn_baixar_excel").addEventListener("click",()=>{
-    console.log(id_aluno)
+    
     criarExcelDetalhamentoAluno(id_aluno)         
 })
 
@@ -14,7 +14,7 @@ function preencherDadosIniciaisAluno(chave,valor){
 
 async function preencherDadosAluno(id_aluno) {
     const dados_aluno = await getHistoricoAlunoTreinamentos(id_aluno)
-    console.log(JSON.stringify(dados_aluno))
+    
     preencherDadosIniciaisAluno("#nome_funcionario",dados_aluno.dados_basicos_aluno.nome)
     preencherDadosIniciaisAluno("#re",dados_aluno.dados_basicos_aluno.re)
     preencherDadosIniciaisAluno("#cpf",dados_aluno.dados_basicos_aluno.cpf)
