@@ -101,7 +101,8 @@ export async function postTreinamento(){
         body: JSON.stringify(treinamento),
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem("token")}`
+            'Authorization': `Bearer ${localStorage.getItem("token")}`,
+            'ngrok-skip-browser-warning': 'true'
         },
     })
     let treinamento_json = await response_treinamento.json()
@@ -146,7 +147,8 @@ export async function putTreinamento(id_treinamento,ids_aulas_deletadas_ou_nao,i
         body: JSON.stringify(treinamento),
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem("token")}`
+            'Authorization': `Bearer ${localStorage.getItem("token")}`,
+            'ngrok-skip-browser-warning': 'true'
         },
     })
 
@@ -208,7 +210,8 @@ export function deleteTreinamento(id){
         method:"DELETE",
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem("token")}`
+            'Authorization': `Bearer ${localStorage.getItem("token")}`,
+            'ngrok-skip-browser-warning': 'true'
         },
     })
 }

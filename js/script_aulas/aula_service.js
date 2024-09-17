@@ -2,7 +2,10 @@ import { returnBaseUrl } from "../enviroment/enviroment.js";
 export function getAulas(id) {
     console.log(`${returnBaseUrl()}/aula/treinamento/5`)
     let response = fetch(`${returnBaseUrl()}/aula/treinamento/${id}`,{
-        method:"GET"
+        method:"GET",
+        headers: {
+            'ngrok-skip-browser-warning': 'true'
+        }
     }).then(
         response=>response.json()
     )
@@ -22,7 +25,8 @@ export async function postAulas(aulas,alunos){
             body: JSON.stringify(aulas_json),
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem("token")}`
+                'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                'ngrok-skip-browser-warning': 'true'
             }
         })
     
@@ -36,7 +40,8 @@ export async function deleteAulas(ids_aulas_deletadas_ou_nao){
                 method:"DELETE",
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem("token")}`
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                    'ngrok-skip-browser-warning': 'true'
                 }
             })
       
@@ -58,7 +63,8 @@ async function putAlunosAulas(id_treinamento,ids_aulas_nao_deletadas,ids_alunos_
             body: JSON.stringify(aulas_json),
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem("token")}`
+                'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                'ngrok-skip-browser-warning': 'true'
             }
         })
 }

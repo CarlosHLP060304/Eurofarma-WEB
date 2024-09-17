@@ -18,7 +18,8 @@ export async function criarExcelDetalhamentoAluno(id_aluno) {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${localStorage.getItem("token")}`,
-            'Accept': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            'Accept': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'ngrok-skip-browser-warning': 'true'
         },
     })
     .then(response => {
@@ -55,7 +56,8 @@ export async function criarExcelDetalhamentoTreinamento(id_treinamento) {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${localStorage.getItem("token")}`,
-            'Accept': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            'Accept': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'ngrok-skip-browser-warning': 'true'
         },
     })
     .then(response => {
