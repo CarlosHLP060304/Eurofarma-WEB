@@ -316,11 +316,19 @@ async function exibirListaFuncionariosPesquisa(tipo_pesquisa,object,jsonPesquisa
     try {
         let response = null
         if(tipo_pesquisa !== "setor"){
-            response = await fetch(`${returnBaseUrl()}/usuario/research/cpf_re_nome?query=${query}`);
+            response = await fetch(`${returnBaseUrl()}/usuario/research/cpf_re_nome?query=${query}`,{
+                headers: {
+                    'ngrok-skip-browser-warning': 'true'
+                }
+            });
         }else{
             query = document.querySelector("#aluno_setor").value 
             console.log(query)
-            response = await fetch(`${returnBaseUrl()}/usuario/setor/${query}`);
+            response = await fetch(`${returnBaseUrl()}/usuario/setor/${query}`,{
+                headers: {
+                    'ngrok-skip-browser-warning': 'true'
+                }
+            });
         }
         let data = await response.json();
         

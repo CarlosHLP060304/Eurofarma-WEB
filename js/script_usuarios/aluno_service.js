@@ -3,6 +3,9 @@ import { returnBaseUrl } from "../enviroment/enviroment.js";
 export function getFuncionarios() {
     let response =  fetch(`${returnBaseUrl()}/usuario`,{
         method:"GET",
+        headers: {
+            'ngrok-skip-browser-warning': 'true'
+        }
     }).then(
         response => response.json()
     )
