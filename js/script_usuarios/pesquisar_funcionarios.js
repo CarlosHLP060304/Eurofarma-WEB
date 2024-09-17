@@ -24,7 +24,11 @@ document.getElementById("pesquisa_funcionario").addEventListener("input", async 
     const query = this.value;
 
     try {
-        const response = await fetch(`${returnBaseUrl()}/usuario/research?query=${query}`);
+        const response = await fetch(`${returnBaseUrl()}/usuario/research?query=${query}`,{
+            headers: {
+                'ngrok-skip-browser-warning': 'true'
+            }
+        });
         const data = await response.json();
 
         const list = document.querySelector("tbody");
