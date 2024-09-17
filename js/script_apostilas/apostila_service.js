@@ -1,6 +1,8 @@
+import { returnBaseUrl } from "../enviroment/enviroment";
+
 export function getApostilas(id) {
-    console.log(`http://localhost:8080/apostila/treinamento/5`)
-    let response = fetch(`http://localhost:8080/apostila/treinamento/${id}`,{
+    console.log(`${returnBaseUrl()}/apostila/treinamento/5`)
+    let response = fetch(`${returnBaseUrl()}/apostila/treinamento/${id}`,{
         method:"GET"
     }).then(
         response=>response.json()
@@ -18,7 +20,7 @@ export async function postApostilas(apostilas,treinamento_id){
                 "id":treinamento_id
             }
         } 
-        return fetch("http://localhost:8080/apostila",{
+        return fetch(`${returnBaseUrl()}/apostila`,{
             method: "POST",
             headers:
                 {   'Content-Type': 'application/json',
@@ -38,7 +40,7 @@ export async function postApostilas(apostilas,treinamento_id){
 export async function deleteApostilas(ids_apostilas_deletadas_ou_nao){
     let responses = ids_apostilas_deletadas_ou_nao.ids_apostilas_deletadas.map(apostila => {
         console.log(apostila)
-        fetch(`http://localhost:8080/apostila/${apostila.id}`,{
+        fetch(`${returnBaseUrl()}/apostila/${apostila.id}`,{
             method: "DELETE",
             headers:
                 {   'Content-Type': 'application/json',

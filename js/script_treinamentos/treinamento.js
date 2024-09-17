@@ -316,11 +316,11 @@ async function exibirListaFuncionariosPesquisa(tipo_pesquisa,object,jsonPesquisa
     try {
         let response = null
         if(tipo_pesquisa !== "setor"){
-            response = await fetch(`http://localhost:8080/usuario/research/cpf_re_nome?query=${query}`);
+            response = await fetch(`${returnBaseUrl()}/usuario/research/cpf_re_nome?query=${query}`);
         }else{
             query = document.querySelector("#aluno_setor").value 
             console.log(query)
-            response = await fetch(`http://localhost:8080/usuario/setor/${query}`);
+            response = await fetch(`${returnBaseUrl()}/usuario/setor/${query}`);
         }
         let data = await response.json();
         

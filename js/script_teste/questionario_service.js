@@ -1,6 +1,6 @@
 export async function postQuestionario(questionario){
     console.log(questionario)
-    let response = await fetch("http://localhost:8080/questionario",{
+    let response = await fetch(`${returnBaseUrl()}/questionario`,{
             method:"POST",
             headers: {
                 'Content-Type': 'application/json',

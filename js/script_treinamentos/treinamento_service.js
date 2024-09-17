@@ -2,7 +2,7 @@ import { alterarApostilasTreinamento, postApostilas } from "../script_apostilas/
 import { alterarAulasTreinamento, postAulas } from "../script_aulas/aula_service.js"
 
 export function getTreinamentos(){
-    let response =  fetch("http://localhost:8080/treinamento",{
+    let response =  fetch(`${returnBaseUrl()}/treinamento`,{
         method:"GET",
     }).then(
         response => response.json()
@@ -11,7 +11,7 @@ export function getTreinamentos(){
 }
 
 export function getTreinamento(id){
-    let response =  fetch(`http://localhost:8080/treinamento/${id}`,{
+    let response =  fetch(`${returnBaseUrl()}/treinamento/${id}`,{
         method:"GET",
     }).then(
         response => response.json()
@@ -89,7 +89,7 @@ export async function postTreinamento(){
     console.log(treinamento)
     
 
-    let response_treinamento = await fetch("http://localhost:8080/treinamento",{
+    let response_treinamento = await fetch(`${returnBaseUrl()}/treinamento`,{
         method:"POST",
         body: JSON.stringify(treinamento),
         headers: {
@@ -134,7 +134,7 @@ export async function putTreinamento(id_treinamento,ids_aulas_deletadas_ou_nao,i
     console.log(alunos)
     console.log(treinamento)
 
-    const response_treinamento= await fetch(`http://localhost:8080/treinamento/${id_treinamento}`,{
+    const response_treinamento= await fetch(`${returnBaseUrl()}/treinamento/${id_treinamento}`,{
         method:"PUT",
         body: JSON.stringify(treinamento),
         headers: {
@@ -197,7 +197,7 @@ export async function putTreinamento(id_treinamento,ids_aulas_deletadas_ou_nao,i
 }
 
 export function deleteTreinamento(id){
-    fetch(`http://localhost:8080/treinamento/${id}`,{
+    fetch(`${returnBaseUrl()}/treinamento/${id}`,{
         method:"DELETE",
         headers: {
             'Content-Type': 'application/json',
