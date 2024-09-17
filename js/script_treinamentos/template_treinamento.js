@@ -148,7 +148,7 @@ export function exibirApostilas(apostilas){
         
             apostilas_html.innerHTML =  apostilas.map((apostila)=>
 
-                `<li><a href=${apostila} target="_blank">${apostila.link}</a><span class="remove-btn" id_apostila=${id++} id_apostila_banco=${apostila.id}>❌</span></li>` 
+                `<li><a href="${apostila.link}" target="_blank">${apostila.link}</a><span class="remove-btn" id_apostila=${id++} id_apostila_banco=${apostila.id}>❌</span></li>` 
             ).join("")
         
     
