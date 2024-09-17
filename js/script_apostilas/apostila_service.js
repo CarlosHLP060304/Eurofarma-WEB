@@ -3,7 +3,10 @@ import { returnBaseUrl } from "../enviroment/enviroment.js";
 export function getApostilas(id) {
     console.log(`${returnBaseUrl()}/apostila/treinamento/5`)
     let response = fetch(`${returnBaseUrl()}/apostila/treinamento/${id}`,{
-        method:"GET"
+        method:"GET",
+        headers: {
+            'ngrok-skip-browser-warning': 'true'
+        }
     }).then(
         response=>response.json()
     )
@@ -24,7 +27,8 @@ export async function postApostilas(apostilas,treinamento_id){
             method: "POST",
             headers:
                 {   'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem("token")}`
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                    'ngrok-skip-browser-warning': 'true'
                 },
             body: JSON.stringify(apostila_json)
         })
