@@ -44,7 +44,7 @@ export async function postApostilas(apostilas,treinamento_id){
 export async function deleteApostilas(ids_apostilas_deletadas_ou_nao){
     let responses = ids_apostilas_deletadas_ou_nao.ids_apostilas_deletadas.map(apostila => {
         
-        fetch(`${returnBaseUrl()}/apostila/${apostila.id}`,{
+        return fetch(`${returnBaseUrl()}/apostila/${apostila.id}`,{
             method: "DELETE",
             headers:
                 {   'Content-Type': 'application/json',
