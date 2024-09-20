@@ -12,16 +12,12 @@ export function TreinamentoBody(props,id_treinamento){
                     <label for="nome"><b>Nome do Treinamento:</b></label>
                     <input type="text" id="nome" name="nome" value="${props.nome ? props.nome : ""}" dado_treinamento>
                 </div>
+
                 <div class="form-group">
-                    <label for="formato"><b>Selecione o formato </b></label>
-                    
-                    <select name="formato" dado_treinamento>
-                        <option value="presencial" ${props.formato.toLowerCase()==="presencial" ? "selected" : ""}>Presencial</option>
-                        <option value="online" ${props.formato.toLowerCase()==="online" ? "selected" : ""}>Remoto</option>
-                    </select>
-    
+                    <label for="descricao"><b>Descrição do Treinamento:</b></label>
+                    <textarea id="descricao" name="descricao" dado_treinamento>${props.descricao ? props.descricao : ""}</textarea>
                 </div>
-    
+
                 <div class="d-flex justify-content-between py-2" >
                     <div class="form-group d-flex align-items-center" style="width:40%">
                         <label class="mb-0" for="data_inicio" style="width:50%"><b>Data Início:</b></label>
@@ -32,33 +28,7 @@ export function TreinamentoBody(props,id_treinamento){
                         <input type="datetime-local" id="dataFim"  class="p-2"  name="dataFim" value="${props.dataFim ? props.dataFim : ""}" dado_treinamento> 
                     </div>                
                 </div>
-    
-                <div class="form-group">
-                    <label for="descricao"><b>Descrição do Treinamento:</b></label>
-                    <textarea id="descricao" name="descricao" dado_treinamento>${props.descricao ? props.descricao : ""}</textarea>
-                </div>
-    
-                <div class="form-group" id="div_sala">
-                    <label for="sala"><b>Local/Sala:</b></label>
-                    <input id="sala" name="sala" value="${props.aulas.length===1 && props.formato.toLowerCase() === "presencial" ? props.aulas[0].sala : ""}" dado_treinamento>
-                </div>
-                
-    
-                <div class="form-group d-none" id="aulas">
-                    <label><b>Aulas</b></label>
-                    <ul id="lista_aulas">
-                        
-                    </ul>
-                    <button type="button" class="btn btn-success px-4" id="btn_adicionar_aula">Adicionar</button>
-                </div>
-    
-                <div class="pop-up-aula d-none" id="pop_up_aula">
-                    <button type="button" id="btn_fechar_pop_up" class="btn d-flex justify-content-end " style="width: 100%"><span>❌</span></button>
-                    <h2>Adicionar Aula</h2>
-                    <div class="conteudo-pop-up" id="conteudo-pop-up"></div>
-                    <button type="button" class="btn btn-success px-4 mb-2" id="btn_pop_up_adicionar_aula" btn_adicionar>Adicionar</button>
-                </div>
-    
+
                 <fieldset id="selecionar_funcionarios" class="py-4">
                     <label><b>Selecionar funcionários</b></label>
                   
@@ -76,7 +46,7 @@ export function TreinamentoBody(props,id_treinamento){
                         
                     </ul>
                 </fieldset>
-    
+
                 <!-- lista de aluno  -->
                 <div class="form-group">
                     <ul id="alunos-lista">
@@ -89,6 +59,27 @@ export function TreinamentoBody(props,id_treinamento){
                 </div>
     
                 <!-- fim da lista de alunos -->
+    
+                <div class="form-group" id="div_sala">
+                    <label for="sala"><b>Local/Sala:</b></label>
+                    <input id="sala" name="sala" value="${props.aulas.length===1 ? props.aulas[0].sala : ""}" dado_treinamento>
+                </div>
+                
+    
+                <div class="form-group d-none" id="aulas">
+                    <label><b>Aulas</b></label>
+                    <ul id="lista_aulas">
+                        
+                    </ul>
+                    <button type="button" class="btn btn-success px-4" id="btn_adicionar_aula">Adicionar</button>
+                </div>
+    
+                <div class="pop-up-aula d-none" id="pop_up_aula">
+                    <button type="button" id="btn_fechar_pop_up" class="btn d-flex justify-content-end " style="width: 100%"><span>❌</span></button>
+                    <h2>Adicionar Aula</h2>
+                    <div class="conteudo-pop-up" id="conteudo-pop-up"></div>
+                    <button type="button" class="btn btn-success px-4 mb-2" id="btn_pop_up_adicionar_aula" btn_adicionar>Adicionar</button>
+                </div>
     
     
                 <!-- lista de professor  -->
@@ -175,20 +166,10 @@ export function returnMetodoDePesquisa(tipoPesquisa){
 }
 
 
-
 export function exibirAulas(modalidade,aulas){
     const aulas_html = document.querySelector("#lista_aulas")
     let id = 0
     
-    if(modalidade.value.toLowerCase() === "online"){
-        aulas_html.innerHTML = aulas.map((aula)=>
-            
-            `
-                <li>Aula:${aula.nome}  / Link para aula: <a href=${aula.link} target="_blank">${aula.link}</a> / Duração:${aula.duracao} min<span class="remove-btn" id_aula=${id++} id_aula_banco=${aula.id}>❌</span></li>
-                </br>
-            ` 
-        ).join("")
-    }else{
         aulas_html.innerHTML = aulas.map((aula)=>
             
             `
@@ -196,7 +177,6 @@ export function exibirAulas(modalidade,aulas){
                 </br>
             ` 
         ).join("")
-    }
     //
     //
 }

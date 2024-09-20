@@ -24,11 +24,6 @@ getTreinamentos().then(
                                     </div>
                                 </td>
                                 <td>
-                                     <div class="d-flex justify-content-center" >
-                                        ${dado.formato}
-                                    </div>
-                                </td>
-                                <td>
                                     <div class="d-flex px-2">
                                         <a href="../pages/editarTreinamento.html?id_treinamento=${dado.id}" class="btn btn-primary-dark btn-sm"><button class="btn btn-primary-dark btn-sm">Editar</button></a>
                                         <button class="btn btn-danger-dark btn-sm btn-excluir mx-2" id=${dado.id}>Excluir</button>
