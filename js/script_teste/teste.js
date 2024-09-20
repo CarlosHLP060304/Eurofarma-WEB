@@ -37,35 +37,7 @@ function QuestaoObjetiva() {
 
 btn_criar_questao.addEventListener("click", () => {
     pop_up_criacao_questao.classList.remove("d-none")
-})
 
-close_pop_up_adicionar_questao.addEventListener("click", () => {
-    pop_up_criacao_questao.classList.add("d-none")
-})
-
-btn_adicionar_questao.addEventListener("click", () => {
-    let dadosQuestao = {}
-    let alternativas = []
-    let numero_alternativa = 0
-
-    // Acessa os elementos apenas após eles serem gerados
-    pop_up_criacao_questao.querySelectorAll("[alternativa]").forEach(alternativa => {
-        numero_alternativa++
-        alternativas.push(alternativa.value)
-    })
-
-    dadosQuestao["pergunta"] = document.querySelector("#pergunta").value
-    dadosQuestao["alternativas"] = alternativas
-    dadosQuestao["resposta"] = document.querySelector("#resposta").value
-    questoes.push(dadosQuestao)
-    guardarDadosDB(questoes)
-    exibirQuestoes(questoes)
-})
-
-tipo_questao.addEventListener("change", () => {
-    let valor_tipo_questao = tipo_questao.value;
-
-    if (valor_tipo_questao === "objetiva") {
         div_criacao_questao_especificada.innerHTML = QuestaoObjetiva()
 
         // Gera as alternativas ao mudar a quantidade
@@ -93,10 +65,31 @@ tipo_questao.addEventListener("change", () => {
             // Adiciona event listeners para inputs de alternativas
             adicionarListenersParaAlternativas()
         })
-    } else {
-        div_criacao_questao_especificada.innerHTML = ''
-    }
 })
+
+close_pop_up_adicionar_questao.addEventListener("click", () => {
+    pop_up_criacao_questao.classList.add("d-none")
+})
+
+btn_adicionar_questao.addEventListener("click", () => {
+    let dadosQuestao = {}
+    let alternativas = []
+    let numero_alternativa = 0
+
+    // Acessa os elementos apenas após eles serem gerados
+    pop_up_criacao_questao.querySelectorAll("[alternativa]").forEach(alternativa => {
+        numero_alternativa++
+        alternativas.push(alternativa.value)
+    })
+
+    dadosQuestao["pergunta"] = document.querySelector("#pergunta").value
+    dadosQuestao["alternativas"] = alternativas
+    dadosQuestao["resposta"] = document.querySelector("#resposta").value
+    questoes.push(dadosQuestao)
+    guardarDadosDB(questoes)
+    exibirQuestoes(questoes)
+})
+
 
 function exibirQuestoes(questoes) {
     const questoesContainer = document.querySelector("#questoes")

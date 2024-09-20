@@ -27,14 +27,12 @@ export function getTreinamento(id){
 }
 
 export function calculaDuracaoTreinamento(treinamento){
-    if(treinamento.formato === "PRESENCIAL"){
         let dataInicio = new Date(treinamento.dataInicio)
         let dataFim = new Date(treinamento.dataFim)
         let totalMinutosInicio = dataInicio.getHours()*60 + dataInicio.getMinutes()
         let totalMinutosFim = dataFim.getHours()*60 + dataFim.getMinutes() 
         let diferenca_minutos = totalMinutosFim - totalMinutosInicio
         return diferenca_minutos 
-    }
 }
 
 export function calculaDuracaoAula(treinamento){
@@ -60,8 +58,6 @@ function returnLocalOnlyTreinamento(treinamento){
 function returnLocalAulas(treinamento){
 
     let aulas = treinamento.aulas
-    
-    if(treinamento.formato==="PRESENCIAL"){
         aulas = [
             {   
                 "id": treinamento.aulas[0] ? treinamento.aulas[0].id : "",
@@ -70,8 +66,6 @@ function returnLocalAulas(treinamento){
                 "duracao": calculaDuracaoAula(treinamento)
             }
         ]
-        
-    }
     return aulas
 }
 
@@ -161,10 +155,6 @@ export async function putTreinamento(id_treinamento,ids_aulas_deletadas_ou_nao,i
 
     const responses_aula = await alterarAulasTreinamento(id_treinamento,aulas,alunos,ids_aulas_deletadas_ou_nao,ids_alunos_deletados_ou_nao)
     const responses_apostilas =  await alterarApostilasTreinamento(id_treinamento,apostilas,ids_apostilas_deletadas_ou_nao)
-
-    
-    
-    
 
     let resultadoFetchAulas = true
     let resultadoFetchApostilas = true

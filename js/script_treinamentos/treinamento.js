@@ -103,9 +103,7 @@ function carregarElementosDinamicos(dadosTreinamento) {
 
 
 
-    modalidade.addEventListener("change", () => {
-        trocarDeFormatoDeTreinamento(modalidade, sessao_aulas, sala)
-    })
+
 
     trocarDeFormatoDeTreinamento(modalidade, sessao_aulas, sala)
 
@@ -206,14 +204,9 @@ function carregarElementosDinamicos(dadosTreinamento) {
 }
 
 function trocarDeFormatoDeTreinamento(modalidade, sessao_aulas, sala) {
-    if (modalidade.value.toLowerCase() === "presencial") {
         sessao_aulas.classList.add("d-none")
         sala.classList.remove("d-none")
-    }
-    else {
-        sessao_aulas.classList.remove("d-none")
-        sala.classList.add("d-none")
-    }
+
 }
 
 function retornaDadosTreinamento(aulas, apostilas, dados_alunos_json) {
