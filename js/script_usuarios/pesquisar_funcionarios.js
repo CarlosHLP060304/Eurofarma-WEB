@@ -1,10 +1,11 @@
 import { getFuncionarios } from "./aluno_service.js";
+import {returnBaseUrl} from "../enviroment/enviroment.js"
 
 let funcionarios = []
 
 getFuncionarios().then(
                     dados=> document.querySelector("tbody").innerHTML =  dados.content.map(
-                        dado=>{
+                        dado=>{;
                             funcionarios.push(dado)
                             
                             return returnAlunos(dado)
