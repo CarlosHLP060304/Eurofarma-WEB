@@ -34,8 +34,11 @@ async function preencherDadosAluno(id_aluno) {
 
 function returnDataFormatada(data_nao_formatada){
     let data = new Date(data_nao_formatada)
-    let dia = data.getDate()
-    let mes = data.getMonth()
+    console.log(data_nao_formatada)
+    console.log(data)
+    console.log(data.getMonth())
+    let dia = data.getDate() < 10 ? "0"+data.getDate() : data.getDate()
+    let mes = data.getMonth() + 1< 10 ? "0"+(data.getMonth() +1) : data.getMonth() +1
     let ano = data.getFullYear()
 
     return `${dia}/${mes}/${ano}`
