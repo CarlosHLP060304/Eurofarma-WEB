@@ -5,7 +5,7 @@ let funcionarios = []
 
 getFuncionarios().then(
                     dados=> document.querySelector("tbody").innerHTML =  dados.content.map(
-                        dado=>{
+                        dado=>{;
                             funcionarios.push(dado)
                             
                             return returnAlunos(dado)
