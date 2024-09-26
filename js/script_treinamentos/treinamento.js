@@ -3,7 +3,7 @@ import { getTreinamento } from "../script_treinamentos/treinamento_service.js"
 import { exibirAlunos, exibirApostilas, exibirAulas, exibirSelectSetores, returnMetodoDePesquisa, TreinamentoBody } from "./template_treinamento.js"
 import { getAulas } from "../script_aulas/aula_service.js"
 import { getApostilas } from "../script_apostilas/apostila_service.js"
-import { adicionarAlunosNovos, getAlunosByTreinamento } from "../script_usuarios/aluno_service.js"
+import { getAlunosByTreinamento } from "../script_usuarios/aluno_service.js"
 import { returnBaseUrl } from "../enviroment/enviroment.js"
 
 
@@ -55,7 +55,7 @@ function carregarElementosDinamicos(dadosTreinamento) {
     const sessao_aulas = document.querySelector("#aulas")
     const sala = document.querySelector("#div_sala")
     const select_tipo_pesquisa = document.querySelector("#select_tipo_pesquisa")
-    let dados_alunos_json = dadosTreinamento.alunos ? dadosTreinamento.alunos : []
+    let dados_alunos_json = dadosTreinamento.alunos ? new Set(dadosTreinamento.alunos) : new Set()
 
     let aulas = dadosTreinamento.aulas ? dadosTreinamento.aulas : []
     let apostilas = dadosTreinamento.apostilas ? dadosTreinamento.apostilas : []
@@ -90,8 +90,23 @@ function carregarElementosDinamicos(dadosTreinamento) {
                     aulas.push(dados_aula)
                     exibirAulas(modalidade, aulas)
                 } else {
-                    dados_alunos_json.push(...jsonPesquisa.listaAlunosPesquisa)
-                    adicionarAlunosNovos(jsonPesquisa.listaAlunosPesquisa, ids_alunos.ids_alunos_adicionados, id_treinamento)
+                    let listaAlunosPesquisaString = jsonPesquisa.listaAlunosPesquisa.map(
+                        alunoPesquisa => JSON.stringify(alunoPesquisa)
+                    )
+                     
+                    dados_alunos_json = new Set(Array.from(dados_alunos_json).map(
+                        alunoJson => JSON.stringify(alunoJson)
+                    ) )
+
+                    listaAlunosPesquisaString.forEach(element => {    
+                        dados_alunos_json.add(element)
+                    });
+
+                    dados_alunos_json = new Set(Array.from(dados_alunos_json).map(
+                        alunoJson => JSON.parse(alunoJson)
+                    ) )
+
+                    console.log(dados_alunos_json)
 
                     exibirAlunos(dados_alunos_json)
                 }

@@ -36,30 +36,6 @@ export function getSetoresAlunos(){
     return response
 }
 
-export async function adicionarAlunosNovos(listaAlunosPesquisa,alunos_adicionados,id_treinamento){
-    
-    if(id_treinamento){
-        const alunos_banco = await getAlunosByTreinamento(id_treinamento)
-        
-        listaAlunosPesquisa.forEach(alunoPesquisa => {
-            const idProcurado = alunoPesquisa.id
-        
-            const usuarioEncontrado = alunos_banco.find(aluno => aluno.id === idProcurado);
-        
-            if (!usuarioEncontrado) {
-                alunos_adicionados.push(idProcurado)
-                
-            }
-        });
-    }else{
-        listaAlunosPesquisa.forEach(alunoPesquisa => {
-            alunos_adicionados.push(alunoPesquisa)
-        });
-        //
-    }
-
-}
-
 
 export async function deleteUsuarios(id_treinamento){
     const usuarios_banco = await getAlunosByTreinamento(id_treinamento)
