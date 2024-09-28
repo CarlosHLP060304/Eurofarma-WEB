@@ -46,7 +46,8 @@ function carregarElementosDinamicos(dadosTreinamento) {
     const ids_alunos = {
         ids_alunos_deletados: [],
         ids_alunos_nao_deletados: [],
-        ids_alunos_adicionados: []
+        ids_alunos_adicionados_set: new Set(),
+        ids_alunos_adicionados:[]
     }
 
     const pop_up_aula = document.querySelector("#pop_up_aula")
@@ -55,7 +56,7 @@ function carregarElementosDinamicos(dadosTreinamento) {
     const sessao_aulas = document.querySelector("#aulas")
     const sala = document.querySelector("#div_sala")
     const select_tipo_pesquisa = document.querySelector("#select_tipo_pesquisa")
-    let dados_alunos_json = dadosTreinamento.alunos ? new Set(dadosTreinamento.alunos) : new Set()
+    let dados_alunos_json = dadosTreinamento.alunos ? dadosTreinamento.alunos : []
 
     let aulas = dadosTreinamento.aulas ? dadosTreinamento.aulas : []
     let apostilas = dadosTreinamento.apostilas ? dadosTreinamento.apostilas : []
@@ -102,10 +103,29 @@ function carregarElementosDinamicos(dadosTreinamento) {
                         dados_alunos_json.add(element)
                     });
 
-                    dados_alunos_json = new Set(Array.from(dados_alunos_json).map(
+                    dados_alunos_json = Array.from(dados_alunos_json).map(
                         alunoJson => JSON.parse(alunoJson)
-                    ) )
+                    ) 
 
+                
+                    dados_alunos_json.forEach(
+                        alunoJson => {
+                            if(dadosTreinamento.alunos){
+                                dadosTreinamento.alunos.forEach(
+                                    alunoBanco => {
+                                        if(alunoBanco.id !== alunoJson.id) {
+                                            ids_alunos.ids_alunos_adicionados_set.add(alunoJson.id)
+                                        } 
+                                    }
+                                )
+                            }else{
+                                ids_alunos.ids_alunos_adicionados_set.add(alunoJson.id)
+                            }
+
+                        }
+                    )
+
+                    ids_alunos.ids_alunos_adicionados = Array.from(ids_alunos.ids_alunos_adicionados_set)
                     console.log(dados_alunos_json)
 
                     exibirAlunos(dados_alunos_json)
