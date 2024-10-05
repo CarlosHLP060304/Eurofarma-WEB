@@ -107,10 +107,9 @@ function carregarElementosDinamicos(dadosTreinamento) {
                         alunoJson => JSON.parse(alunoJson)
                     ) 
 
-                
                     dados_alunos_json.forEach(
                         alunoJson => {
-                            if(dadosTreinamento.alunos){
+                            if(dadosTreinamento.alunos.length>0){
                                 dadosTreinamento.alunos.forEach(
                                     alunoBanco => {
                                         if(alunoBanco.id !== alunoJson.id) {
@@ -126,7 +125,6 @@ function carregarElementosDinamicos(dadosTreinamento) {
                     )
 
                     ids_alunos.ids_alunos_adicionados = Array.from(ids_alunos.ids_alunos_adicionados_set)
-                    console.log(dados_alunos_json)
 
                     exibirAlunos(dados_alunos_json)
                 }
