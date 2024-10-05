@@ -51,7 +51,6 @@ function returnAlunos(item){
         return `
         <tr id_aluno=${item.id} class="tr-body">
             <td>${item.nome}</td>
-            <td>${item.cpf}</td>
             <td>${item.re}</td>
             <td>${item.setor}</td>
         </tr>`

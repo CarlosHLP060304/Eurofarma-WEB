@@ -344,7 +344,7 @@ async function exibirListaFuncionariosPesquisa(tipo_pesquisa, object, jsonPesqui
     try {
         let response = null
         if (tipo_pesquisa !== "setor") {
-            response = await fetch(`${returnBaseUrl()}/usuario/research/cpf_re_nome?query=${query}`, {
+            response = await fetch(`${returnBaseUrl()}/usuario/research/re_nome?query=${query}`, {
                 headers: {
                     'ngrok-skip-browser-warning': 'true'
                 }
@@ -377,7 +377,7 @@ async function exibirListaFuncionariosPesquisa(tipo_pesquisa, object, jsonPesqui
 
 function returnAlunos(item) {
     if (item.tipo === "ALUNO") {
-        return `<li>Nome: ${item.nome} - RE: ${item.re} - CPF: ${item.cpf}</li> `
+        return `<li>Nome: ${item.nome} - RE: ${item.re} - Setor: ${item.setor}</li> `
     }
 }
 
