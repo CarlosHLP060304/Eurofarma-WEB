@@ -17,7 +17,7 @@ async function preencherDadosAluno(id_aluno) {
     
     preencherDadosIniciaisAluno("#nome_funcionario",dados_aluno.dados_basicos_aluno.nome)
     preencherDadosIniciaisAluno("#re",dados_aluno.dados_basicos_aluno.re)
-    preencherDadosIniciaisAluno("#cpf",dados_aluno.dados_basicos_aluno.cpf)
+    preencherDadosIniciaisAluno("#setor",dados_aluno.dados_basicos_aluno.setor)
     document.querySelector("#listagem_treinamentos").innerHTML =`
         ${dados_aluno.presencas_aluno.map(
             presenca_aluno => `

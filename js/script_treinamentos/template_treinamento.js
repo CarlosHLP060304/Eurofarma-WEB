@@ -35,7 +35,7 @@ export function TreinamentoBody(props,id_treinamento){
                     <div class="d-flex">
                         <select class="mr-2" style="border-radius: 5px;" id="select_tipo_pesquisa">
                             <option value="setor">Setor</option>
-                            <option value="individual">Individualmente (CPF, RE ou Nome)</option>
+                            <option value="individual">Individualmente (RE ou Nome)</option>
                         </select>
                         <div id="pesquisa_selecionada" style="width:100%">
                             
@@ -124,7 +124,7 @@ export function exibirAlunos(funcionarios){
             Array.from(funcionarios).map(
                 (funcionario,index) => {
                     if(funcionario.tipo === "ALUNO")
-                        return `<li>Nome: ${funcionario.nome} - RE: ${funcionario.re} - CPF: ${funcionario.cpf}<span id_aluno_banco="${funcionario.id}" id_aluno="${index}" class="remove-btn">❌</span></li>`
+                        return `<li>Nome: ${funcionario.nome} - RE: ${funcionario.re} - Setor: ${funcionario.setor}<span id_aluno_banco="${funcionario.id}" id_aluno="${index}" class="remove-btn">❌</span></li>`
                 }
             ).join("")
         }
