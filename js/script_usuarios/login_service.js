@@ -2,9 +2,11 @@ import { returnBaseUrl } from "../enviroment/enviroment.js";
 
 document.querySelector("#form").addEventListener("submit",(e)=>{
     e.preventDefault()
+    console.log(turnstile.getResponse())
     let requestBody = {
         login: document.querySelector("#login").value,
-        senha: document.querySelector("#senha").value
+        senha: document.querySelector("#senha").value,
+        tokenCloudFlare: turnstile.getResponse()
     };
     
     fazerLogin(requestBody)
