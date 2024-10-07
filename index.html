@@ -10,34 +10,38 @@
    
 </head>
 <body>
-    <div class="header">
-        <div class="">
-            <span class="logo"> <img  src="./images/logo.png" width="75px" height="80px" alt=""> Euro Tech</span>
-        </div>
+    <div class="background-image"></div>
+    <div class="logo-container">
+        <img src="./images/eurotech_logo.png" alt="logo"  class="login-logo">
     </div>
 
-    <h2 class=" text-center my-5">Página de Administrador</h2>
-
-    <div class="container login-container">
+    <div class="container login-container d-flex justify-content-center align-items-center">
 
         <div class="login-box">
             
             <form id="form">
                 <div class="form-group" >
 
-                    <h3 class="mb-2 text-center">Login</h3>
+                    <h3 class="mb-2 text-center">Acesse sua conta</h3>
                     
-                    <label class="my-2" for="login">Login</label>
+                    <label class="my-2" for="login">RE:</label>
                     <input type="text" class="form-control" id="login" placeholder="Digite seu RE">
                 </div>
-                <div class="form-group">
-                    <label for="senha">Senha</label>
+                <div class="form-group mb-4">
+                    <label for="senha">Senha:</label>
                     <input type="password" class="form-control" id="senha" placeholder="Digite sua senha">
                 </div>
-                <div class="mb-3 w-100">
+             
+
+                <div class="mb-3 w-100 cloudflare-container">
                     <div class="cf-turnstile" data-sitekey="0x4AAAAAAAwyV_ObUn0QSKd2" data-theme="light"></div>
                 </div>
                 <button type="submit" class="btn btn-primary btn-block my-4" id="entrar">Entrar</button>
+
+                  
+                <div class="d-flex justify-content-center"> <!-- Usando flexbox para alinhar à direita -->
+                    <a href="#" class="forgot-password-link">Esqueceu sua senha?</a>
+                </div>
             </form>
         </div>
     </div>
