@@ -25,14 +25,17 @@
             <form id="form">
                 <div class="form-group" >
 
-                    <h3 class="mb-2 text-center"> Login</h3>
+                    <h3 class="mb-2 text-center">Login</h3>
                     
                     <label class="my-2" for="login">Login</label>
-                    <input type="text" class="form-control" id="login" placeholder="000.000.000-00">
+                    <input type="text" class="form-control" id="login" placeholder="Digite seu RE">
                 </div>
                 <div class="form-group">
                     <label for="senha">Senha</label>
-                    <input type="password" class="form-control" id="senha" placeholder="********">
+                    <input type="password" class="form-control" id="senha" placeholder="Digite sua senha">
+                </div>
+                <div class="mb-3 w-100">
+                    <div class="cf-turnstile" data-sitekey="0x4AAAAAAAwyV_ObUn0QSKd2" data-theme="light"></div>
                 </div>
                 <button type="submit" class="btn btn-primary btn-block my-4" id="entrar">Entrar</button>
             </form>
@@ -42,5 +45,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="./js/script_usuarios/login_service.js" type="module"></script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js"></script>
 </body>
 </html>
