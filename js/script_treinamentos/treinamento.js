@@ -109,7 +109,7 @@ function carregarElementosDinamicos(dadosTreinamento) {
 
                     dados_alunos_json.forEach(
                         alunoJson => {
-                            if(dadosTreinamento.alunos.length>0){
+                            if(dadosTreinamento.alunos && dadosTreinamento.alunos.length>0){
                                 dadosTreinamento.alunos.forEach(
                                     alunoBanco => {
                                         if(alunoBanco.id !== alunoJson.id) {
@@ -132,11 +132,6 @@ function carregarElementosDinamicos(dadosTreinamento) {
             })
         }
     )
-
-
-
-
-
 
     trocarDeFormatoDeTreinamento(modalidade, sessao_aulas, sala)
 
