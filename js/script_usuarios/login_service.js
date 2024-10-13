@@ -28,7 +28,7 @@ function fazerLogin(requestBody){
             localStorage.setItem("token",data.token)
             let token = data.token
             if(token === null || token === undefined)
-                window.location.href = "/"
+                console.log("Erro no login")
             else
                 window.location.href = "pages/listarTreinamento.html"
         } 
