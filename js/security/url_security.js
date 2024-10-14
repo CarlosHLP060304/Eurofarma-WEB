@@ -1,4 +1,4 @@
-import { returnBaseUrl } from "../enviroment/enviroment"
+import { returnBaseUrl } from "../enviroment/enviroment.js"
 
 function redirecionarParaPaginaDeLogin() {
     let token = localStorage.getItem("token") 
