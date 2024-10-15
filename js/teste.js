@@ -2,6 +2,7 @@
             fetch('navbar.html')
                 .then(response => response.text())
                 .then(data => {
-                    document.getElementById('navbar-placeholder').innerHTML = data;
+                    let navbar = data.replace("{nomeAdministrador}",JSON.parse(localStorage.getItem("usuarioLogado")).nome)
+                    document.getElementById('navbar-placeholder').innerHTML = navbar;
                 });
         });

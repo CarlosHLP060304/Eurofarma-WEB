@@ -31,6 +31,7 @@ function fazerLogin(requestBody){
                 console.log("Erro no login")
             else
                 window.location.href = "pages/listarTreinamento.html"
+                localStorage.setItem("idUsuario",data.id_usuario)
         } 
     )
 }
