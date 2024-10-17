@@ -2,7 +2,15 @@ body {
     background-color: #e0f7fa !important;
 }
 
-
+.treinamento-box {
+    background-color: #f1f1f1;
+    padding-left: 15vh;
+    padding-right: 15vh;
+    padding-top: 5vh;
+    padding-bottom: 5vh;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
 
 .form-group {
     margin-bottom: 15px;
