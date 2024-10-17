@@ -5,7 +5,7 @@ export function TreinamentoBody(props,id_treinamento){
    
 
     <div class="container">
-        <div class="login-box">
+        <div class="treinamento-box">
             <form class="p-5">
     
                 <div class="form-group">
