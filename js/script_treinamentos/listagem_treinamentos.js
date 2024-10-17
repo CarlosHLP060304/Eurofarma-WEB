@@ -25,7 +25,7 @@ getTreinamentos().then(
                                 </td>
                                 <td>
                                     <div class="d-flex px-2 justify-content-center">
-                                        <a href="../pages/editarTreinamento.html?id_treinamento=${dado.id}" class="btn btn-primary-dark btn-sm"><button class="btn btn-primary-dark btn-sm">Editar</button></a>
+                                        <a href="../pages/treinamento.html?id_treinamento=${dado.id}" class="btn btn-primary-dark btn-sm"><button class="btn btn-primary-dark btn-sm">Editar</button></a>
                                         <button class="btn btn-danger-dark btn-sm btn-excluir mx-2" id=${dado.id}>Excluir</button>
                                         <button type="button" class="btn btn-secondary btn-sm d-flex align-items-center justify-content-center" id="btn_baixar_excel_${dado.id}" style="background-color: #217346;">
                                             <span class="mr-2">Excel</span>
