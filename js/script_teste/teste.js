@@ -1,5 +1,6 @@
-import { getTreinamentos } from "../script_treinamentos/treinamento_service.js"
-import { postQuestionario } from "./questionario_service.js"
+import { getTreinamento, getTreinamentos } from "../script_treinamentos/treinamento_service.js"
+import { PopUpQuestionario } from "./components/PopUpQuestionario/index.js"
+import { getQuestionario, postQuestionario } from "./questionario_service.js"
 
 const btn_criar_questao = document.querySelector("#btn_criar_questao")
 const pop_up_criacao_questao = document.querySelector("#pop_up_criacao_questao")
@@ -181,4 +182,32 @@ function adicionarListenersParaAlternativas() {
     })
 }
 
-exibirTreinamentos()
+async function exibirQuestionario() {
+        const questionario = await getQuestionario(select_treinamento.value)
+        const treinamento = await getTreinamento(questionario.id_treinamento)
+        document.querySelector("#questionarioModal").innerHTML = PopUpQuestionario({questoes:questionario.questoes || [] ,nomeTreinamento:treinamento.nome})
+}
+
+async function controlarAtivacaoDoBotaoDeExibicaoQuestionario() {
+    const questionario = await getQuestionario(select_treinamento.value);
+    if (questionario.status === 500) {
+        document.querySelector("#btn_exibir_questionario").setAttribute("disabled","")
+        console.log(questionario)
+    }else{
+        document.querySelector("#btn_exibir_questionario").removeAttribute("disabled")
+    }
+}
+
+select_treinamento.addEventListener("change",()=>{
+    exibirQuestionario()
+    controlarAtivacaoDoBotaoDeExibicaoQuestionario()
+})
+
+exibirTreinamentos().then(
+    ()=>{
+        exibirQuestionario()
+        controlarAtivacaoDoBotaoDeExibicaoQuestionario()
+    }
+)
+
+
