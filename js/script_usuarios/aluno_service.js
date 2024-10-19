@@ -1,7 +1,7 @@
 import { returnBaseUrl } from "../enviroment/enviroment.js";
 
-export function getFuncionarios() {
-    let response =  fetch(`${returnBaseUrl()}/usuario`,{
+export function getFuncionarios(page=0,size) {
+    let response =  fetch(`${returnBaseUrl()}/usuario?page=${page}&size=${size}`,{
         method:"GET",
         headers: {
             'ngrok-skip-browser-warning': 'true'

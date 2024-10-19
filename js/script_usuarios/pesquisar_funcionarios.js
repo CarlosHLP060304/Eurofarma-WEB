@@ -1,17 +1,22 @@
 import { getFuncionarios } from "./aluno_service.js";
 import {returnBaseUrl} from "../enviroment/enviroment.js"
+import { PaginacaoContainer } from "../components/PaginacaoContainer/index.js";
 
 let funcionarios = []
+const paginacaoContainerClass = new PaginacaoContainer() 
+const paginacaoContainer = document.querySelector("#paginacaoContainer")
 
-getFuncionarios().then(
-                    dados=> document.querySelector("tbody").innerHTML =  dados.content.map(
-                        dado=>{;
-                            funcionarios.push(dado)
-                            
-                            return returnAlunos(dado)
-                        }
-                ).join("")
-)
+function exibirFuncionarios(page) {
+    getFuncionarios(page,10).then(
+                        dados=> document.querySelector("tbody").innerHTML =  dados.content.map(
+                            dado=>{;
+                                funcionarios.push(dado)
+                                
+                                return returnAlunos(dado)
+                            }
+                    ).join("")
+    )
+}
 
 
 document.addEventListener("click",(e)=>{
@@ -56,3 +61,7 @@ function returnAlunos(item){
         </tr>`
     }
 }
+
+paginacaoContainer.innerHTML = paginacaoContainerClass.returnComponente()
+paginacaoContainerClass.init(exibirFuncionarios)
+exibirFuncionarios()

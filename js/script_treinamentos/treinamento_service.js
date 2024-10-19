@@ -2,8 +2,8 @@ import { alterarApostilasTreinamento, postApostilas } from "../script_apostilas/
 import { alterarAulasTreinamento, postAulas } from "../script_aulas/aula_service.js"
 import { returnBaseUrl } from "../enviroment/enviroment.js";
 
-export function getTreinamentos(){
-    let response =  fetch(`${returnBaseUrl()}/treinamento`,{
+export function getTreinamentos(page=0,size){
+    let response =  fetch(`${returnBaseUrl()}/treinamento?page=${page}&size=${size}`,{
         method:"GET",
         headers: {
             'ngrok-skip-browser-warning': 'true'
@@ -86,10 +86,6 @@ export async function postTreinamento(){
     let apostilas = returnLocalApostilas(local_storage_treinamento) 
     let treinamento = returnLocalOnlyTreinamento(JSON.parse(localStorage.getItem("treinamento")))
      
-    
-    
-    
-
     let response_treinamento = await fetch(`${returnBaseUrl()}/treinamento`,{
         method:"POST",
         body: JSON.stringify(treinamento),
