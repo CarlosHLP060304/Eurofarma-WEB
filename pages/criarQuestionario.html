@@ -25,56 +25,15 @@
 
     <!-- Botão para abrir o modal -->
     <div class="d-flex justify-content-center my-4">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#questionarioModal">
+        <button type="button" id="btn_exibir_questionario" class="btn btn-primary" data-toggle="modal" data-target="#questionarioModal">
             Exibir Questionário
         </button>
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="questionarioModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalLabel">Questionário do treinamento ${String}</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <h2 class="text-center mb-4">Visualização do Questionário</h2>
-
-                    <!-- Questão 1 -->
-                  <div class="question mb-4">
-                        <h5>Questão 1</h5>
-                        <p>Qual é o nome real do carlos?</p>
-                        <div class="alternatives">
-                            <p class="correct"><strong>A)</strong> Osama Bin carlos</p>
-                            <p><strong>B)</strong> Carlinhos</p>
-                            <p ><strong>C)</strong> carlos ponchi</p> 
-                            <p><strong>D)</strong> Carlão</p>
-                        </div>
-                    </div>
-
-                    <div class="question mb-4">
-                        <h5>Questão 2</h5>
-                        <p>Qual é o nome real do carlos?</p>
-                        <div class="alternatives">
-                            <p class="correct"><strong>A)</strong> Osama Bin carlos</p>
-                            <p><strong>B)</strong> Carlinhos</p>
-                            <p ><strong>C)</strong> carlos ponchi</p> 
-                            <p><strong>D)</strong> Carlão</p>
-                        </div>
-                    </div>
-
-                    <!-- Adicionar mais questões aqui -->
-                </div>
-                <div class="modal-footer d-flex justify-content-center">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btn-danger">Excluir</button>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="modal fade" id="questionarioModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    
+</div>
 
 
     <div class="questionario-body">
@@ -100,8 +59,8 @@
             </div>
 
             <dialog class=" text-center">
-                <h1>Concluido com sucesso</h1>
-                <p>Seu questionario foi criado e adicionado com sucesso!</p>
+                <h1>Concluído com sucesso</h1>
+                <p>Seu questionário foi criado e adicionado com sucesso!</p>
                 <button id="close_pop_up_questionario">Confirmar</button>
             </dialog>
 
@@ -111,12 +70,10 @@
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="../js/teste.js"></script>
     <script src="../js/script_teste/teste.js" type="module"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="../js/security/url_security.js" type="module"></script>
-
     <div vw class="enabled">
         <div vw-access-button class="active"></div>
         <div vw-plugin-wrapper>

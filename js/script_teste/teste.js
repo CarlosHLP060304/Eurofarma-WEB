@@ -1,5 +1,7 @@
-import { getTreinamentos } from "../script_treinamentos/treinamento_service.js"
-import { postQuestionario } from "./questionario_service.js"
+import { SelectTreinamento } from "../components/SelectTreinamento/index.js"
+import { getTreinamento, getTreinamentos } from "../script_treinamentos/treinamento_service.js"
+import { PopUpQuestionario } from "./components/PopUpQuestionario/index.js"
+import { getQuestionario, postQuestionario } from "./questionario_service.js"
 
 const btn_criar_questao = document.querySelector("#btn_criar_questao")
 const pop_up_criacao_questao = document.querySelector("#pop_up_criacao_questao")
@@ -7,7 +9,8 @@ const tipo_questao = document.querySelector("#tipo_questao")
 const div_criacao_questao_especificada = document.querySelector("#div_criacao_questao_especificada")
 const close_pop_up_adicionar_questao = document.querySelector("#close_pop_up_adicionar_questao")
 const btn_adicionar_questao = document.querySelector("#btn-adicionar-questao")
-const select_treinamento = document.querySelector("#select_treinamento")
+const selectTreinamento = new SelectTreinamento()
+selectTreinamento.init()
 const btn_adicionar_questionario = document.querySelector("#btn_adicionar_questionario")
 const btn_close_pop_up = document.querySelector("#close_pop_up_questionario")
 const modal = document.querySelector("dialog")
@@ -133,15 +136,11 @@ function excluirQuestao(index) {
 }
 
 async function exibirTreinamentos() {
-    const pageable = await getTreinamentos()
+    let pageable = await getTreinamentos()
+    pageable = await getTreinamentos(0,pageable.totalElements)
     const treinamentos = pageable.content
-    select_treinamento.innerHTML = `
-        ${treinamentos.map(treinamento => {
-            if (treinamento.ativo) {
-                return `<option value=${treinamento.id}>${treinamento.nome}</option>`
-            }
-        }).join('')}
-    `
+    selectTreinamento.setTreinamentos(treinamentos)
+    selectTreinamento.exibeSelectTreinamento()
 }
 
 function guardarDadosDB(questoes) {
@@ -181,4 +180,30 @@ function adicionarListenersParaAlternativas() {
     })
 }
 
-exibirTreinamentos()
+async function exibirQuestionario() {
+        const questionario = await getQuestionario(selectTreinamento.getValue())
+        const treinamento = await getTreinamento(questionario.id_treinamento)
+        document.querySelector("#questionarioModal").innerHTML = PopUpQuestionario({questoes:questionario.questoes || [] ,nomeTreinamento:treinamento.nome})
+}
+
+async function controlarAtivacaoDoBotaoDeExibicaoQuestionario() {
+    const questionario = await getQuestionario(selectTreinamento.getValue());
+    if (questionario.status === 500) {
+        document.querySelector("#btn_exibir_questionario").setAttribute("disabled","")
+        console.log(questionario)
+    }else{
+        document.querySelector("#btn_exibir_questionario").removeAttribute("disabled")
+    }
+}
+
+selectTreinamento.getSelectTreinamentoHTML().addEventListener("change",async()=>{
+    await exibirQuestionario()
+    await controlarAtivacaoDoBotaoDeExibicaoQuestionario()
+})
+
+exibirTreinamentos().then(
+    async()=>{
+        await exibirQuestionario()
+        await controlarAtivacaoDoBotaoDeExibicaoQuestionario()
+    }
+)

@@ -260,3 +260,10 @@ dialog .close {
             background-color: #59fb7e88 !important;
         }
 
+        button.btn:disabled {
+            background-color: #bfbfbf; 
+            border-color: #bfbfbf;    
+            color: #fff;    
+            cursor: not-allowed;      
+            opacity: 0.6;            
+        }

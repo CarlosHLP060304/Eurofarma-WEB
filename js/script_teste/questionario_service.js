@@ -11,7 +11,11 @@ export async function postQuestionario(questionario){
             },
             body:JSON.stringify(questionario),
         })
-   
-
     
 }
+
+
+export async function getQuestionario(idTreinamento) {
+    return (await fetch(`http://localhost:8080/questionario/${idTreinamento}`)).json()
+}
+
