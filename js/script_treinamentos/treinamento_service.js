@@ -14,6 +14,20 @@ export function getTreinamentos(page=0,size){
     return response
 }
 
+export function getTreinamentosByNome(nome){
+    let response =  fetch(`${returnBaseUrl()}/treinamento/search?nome=${nome}`,{
+        method:"GET",
+        headers: {
+            'ngrok-skip-browser-warning': 'true'
+        }
+    }).then(
+        response => response.json()
+    )
+    return response
+}
+
+
+
 export function getTreinamento(id){
     let response =  fetch(`${returnBaseUrl()}/treinamento/${id}`,{
         method:"GET",
