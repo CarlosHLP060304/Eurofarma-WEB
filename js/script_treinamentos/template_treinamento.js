@@ -1,9 +1,8 @@
 import { getFuncionarios, getSetoresAlunos } from "../script_usuarios/aluno_service.js"
+import { SelectFuso } from "./components/SelectFuso/index.js"
 
 export function TreinamentoBody(props,id_treinamento){
     return `
-   
-
     <div class="container">
         <div class="treinamento-box">
             <form class="p-5">
@@ -17,7 +16,9 @@ export function TreinamentoBody(props,id_treinamento){
                     <label for="descricao"><b>Descrição do Treinamento:</b></label>
                     <textarea id="descricao" name="descricao" dado_treinamento>${props.descricao ? props.descricao : ""}</textarea>
                 </div>
-
+                <label><b>Selecione o fuso:</b></label>
+                <br/>
+                ${SelectFuso(props.timezone)}
                 <div class="d-flex justify-content-between py-2" >
                     <div class="form-group d-flex align-items-center" style="width:40%">
                         <label class="mb-0" for="data_inicio" style="width:50%"><b>Data Início:</b></label>
