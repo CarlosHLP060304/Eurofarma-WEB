@@ -16,6 +16,6 @@ export async function postQuestionario(questionario){
 
 
 export async function getQuestionario(idTreinamento) {
-    return (await fetch(`http://localhost:8080/questionario/${idTreinamento}`)).json()
+    return (await fetch(`${returnBaseUrl()}/questionario/${idTreinamento}`)).json()
 }
 
