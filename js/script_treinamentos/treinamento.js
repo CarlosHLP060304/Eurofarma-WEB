@@ -109,7 +109,7 @@ function carregarElementosDinamicos(dadosTreinamento) {
 
                     dados_alunos_json.forEach(
                         alunoJson => {
-                            if(dadosTreinamento.alunos && dadosTreinamento.alunos.length>0){
+                            if(dadosTreinamento.alunos){
                                 dadosTreinamento.alunos.forEach(
                                     alunoBanco => {
                                         if(alunoBanco.id !== alunoJson.id) {
@@ -124,6 +124,7 @@ function carregarElementosDinamicos(dadosTreinamento) {
                         }
                     )
 
+                    localStorage.setItem("alunos_teste",JSON.stringify(dados_alunos_json))
                     ids_alunos.ids_alunos_adicionados = Array.from(ids_alunos.ids_alunos_adicionados_set)
 
                     exibirAlunos(dados_alunos_json)
@@ -255,8 +256,7 @@ function retornaDadosTreinamento(aulas, apostilas, dados_alunos_json) {
 
     dados_treinamento_json["apostilas"] = apostilas
     dados_treinamento_json["aulas"] = aulas
-    dados_treinamento_json["alunos"] = dados_alunos_json
-
+    dados_treinamento_json["alunos"] = JSON.parse(localStorage.getItem("alunos_teste"))
 
     return dados_treinamento_json
 }
@@ -265,7 +265,7 @@ function salvarTreinamento(aulas, apostilas, dados_alunos_json) {
     const btn_salvar = document.querySelector("#btn_salvar_treinamento")
     btn_salvar.addEventListener("click", () => {
 
-        let dados_treinamento = retornaDadosTreinamento(aulas, apostilas, dados_alunos_json)
+        let dados_treinamento = retornaDadosTreinamento(aulas, apostilas, localStorage.getItem("alunos_teste"))
 
         localStorage.setItem("treinamento", JSON.stringify(dados_treinamento))
         postTreinamento()
