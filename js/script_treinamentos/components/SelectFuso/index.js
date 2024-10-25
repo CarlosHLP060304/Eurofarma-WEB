@@ -10,8 +10,9 @@ export function SelectFuso(selectedTimezone) {
         <select name="timezone" dado_treinamento class="p-2">
             ${timezones.map(
                 timezone => {
+                    let numeroTimezone = timezone.split(":")[0]
                     return `
-                                <option value="${timezone}"  ${selectedTimezone === timezone ? "selected" : ""}>${timezone}</option>
+                                <option value="${timezone}"  ${selectedTimezone === timezone ? "selected" : ""}>UTC${numeroTimezone}</option>
                             `
                 }
             ).join("")}
