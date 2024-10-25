@@ -16,7 +16,7 @@ export function TreinamentoBody(props,id_treinamento){
                     <label for="descricao"><b>Descrição do Treinamento:</b></label>
                     <textarea id="descricao" name="descricao" dado_treinamento>${props.descricao ? props.descricao : ""}</textarea>
                 </div>
-                <label><b>Selecione o fuso:</b></label>
+                <label><b>Selecione o fuso da unidade onde será realizado o treinamento:</b></label>
                 <br/>
                 ${SelectFuso(props.timezone)}
                 <div class="d-flex justify-content-between py-2" >
